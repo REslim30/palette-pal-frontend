@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Arimo&family=Didact+Gothic&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,5 +9,8 @@
   }
   a:hover {
     @apply border-purple-700 text-purple-700 pb-0.5
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-header
   }
 }
