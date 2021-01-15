@@ -1,17 +1,12 @@
 import React from "react"
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/core/styles";
 
 import SEO from "../components/seo"
 import "../tailwind.css"
 import Home from "../scenes/Home/index"
+import theme from '../services/muiTheme';
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#BC0A6F'
-    }
-  }
-});
+
 
 const IndexPage = () => (
   <>

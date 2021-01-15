@@ -8,8 +8,8 @@ export default function Home(props) {
       <header className="flex justify-between items-center p-4">
         <h1 className="text-3xl">Palette Pal</h1>
         <nav>
-          <a className="text-lg" href="">login</a>
-          <a className="text-lg text-primary-600 ml-4" href="">signup</a>
+          <a className="text-lg" href="/login/">login</a>
+          <a className="text-lg text-primary-600 ml-4" href="/signup/">signup</a>
         </nav>
       </header>
 
