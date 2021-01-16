@@ -43,7 +43,7 @@ export default function SignUp(props) {
       if (body.jwt) {
         // Handle Success
         localStorage.setItem('jwt', body.jwt);
-        window.location = '/palettes'
+        window.location = '/palettes';
       } else if (body.statusCode === 400) {
         // Handle failure
         setErrorMessage(body.data[0].messages[0].message)
