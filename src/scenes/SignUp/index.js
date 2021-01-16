@@ -37,18 +37,15 @@ export default function SignUp(props) {
       body: JSON.stringify(data)
     })
     .then(response => {
-      // Handle success
-      if (response.status === 200) {
-        console.log("Successfully signed up!");
-        return null;
-      }
-
       return response.json();
     })
     .then(body => {
-      // Handle failure
-      if (body !== null) {
-        console.log(body.data[0].messages[0].message)
+      if (body.jwt) {
+        // Handle Success
+        localStorage.setItem('jwt', body.jwt);
+        window.location = '/palettes'
+      } else if (body.statusCode === 400) {
+        // Handle failure
         setErrorMessage(body.data[0].messages[0].message)
       }
     })
