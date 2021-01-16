@@ -69,9 +69,5 @@ export default function SignUp(props) {
       <Button className="w-full" variant="contained" color="primary" type="submit">Sign Up</Button>
 
     </form>
-
-    <TextHorizontalRule>Or</TextHorizontalRule>
-
-
   </div>
 }
