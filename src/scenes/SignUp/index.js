@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { TextField, Button } from "@material-ui/core";
 import TextHorizontalRule from '../../components/TextHorizontalRule/index';
 import { useStaticQuery, graphql } from 'gatsby';
 
 
 export default function SignUp(props) {
+  const [errorMessage, setErrorMessage] = useState("");
 
   // Get URL of backend website
   const query = useStaticQuery(
@@ -48,6 +49,7 @@ export default function SignUp(props) {
       // Handle failure
       if (body !== null) {
         console.log(body.data[0].messages[0].message)
+        setErrorMessage(body.data[0].messages[0].message)
       }
     })
     .catch(error => {
@@ -65,7 +67,10 @@ export default function SignUp(props) {
       <TextField className="w-full" label="Username" inputProps={{name: "username"}} variant="outlined"/>
       <TextField className="w-full" label="Email" inputProps={{name: "email"}} variant="outlined"/>
       <TextField type="password" className="w-full" label="Password" inputProps={{name: "password"}} variant="outlined"/>
+      { errorMessage && 
+        <p className="text-red-700">{errorMessage}</p> }
       <Button className="w-full" variant="contained" color="primary" type="submit">Sign Up</Button>
+
     </form>
 
     <TextHorizontalRule>Or</TextHorizontalRule>
