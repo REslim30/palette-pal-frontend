@@ -13,10 +13,7 @@ const useStyles = makeStyles((theme) => ({
   },
   addButton: {
     marginRight: '-12px',
-  },
-  title: {
-    flexGrow: 1,
-  },
+  }
 }));
 
 
