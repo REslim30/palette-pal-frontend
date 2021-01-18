@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -6,19 +6,41 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import AddIcon from '@material-ui/icons/Add';
+import useBackendApi from '../../services/useBackendApi';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
   addButton: {
     marginRight: '-12px',
-  }
+  },
 }));
 
 
 export default function PaletteView(props) {
   const classes = useStyles();
+  const [palettes, setPalettes] = useState(null);
+  const backendApiUrl = useBackendApi();
+
+  // Get palettes from api
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(`${backendApiUrl}/palettes`, {
+        headers: {
+          Authorization: `bearer ${localStorage.getItem('jwt')}`,
+        }
+      });
+
+      switch(response.status) {
+        case 403:
+          window.location = '/login/'
+          return;
+      }
+
+      const body = await response.json();
+
+      console.log(body);
+    }
+    fetchData();
+  });
 
   return <>
     <AppBar position="static">
@@ -32,5 +54,10 @@ export default function PaletteView(props) {
         </IconButton>
       </Toolbar>
     </AppBar>
+
+    {palettes 
+      ? <h1>You have palettes</h1> 
+      : <h1>You have no palettes</h1> 
+    }
   </>
 }
