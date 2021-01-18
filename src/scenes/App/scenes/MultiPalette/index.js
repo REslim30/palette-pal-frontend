@@ -7,6 +7,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AddIcon from '@material-ui/icons/Add';
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import { useQuery, gql } from '@apollo/client';
+import { Link } from "gatsby";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -20,13 +21,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function PaletteView(props) {
+export default function MultiPalette(props) {
   const classes = useStyles();
   const { loading, error, data } = useQuery(gql`
     query GetPalettes {
       palettes {
+        id
         name
         colors {
+          id
           shades
         }
       }
@@ -70,11 +73,11 @@ export default function PaletteView(props) {
             colors.push(colors[1])
 
 
-          return <article className="rounded-md shadow-md h-40 border-2 border-grey-300 flex flex-col truncate">
+          return <article className="rounded-md shadow-md h-40 border-2 border-grey-300 flex flex-col truncate" key={palette.id}>
 
             {/* Title and More button */}
             <div className="p-2 flex justify-between">
-              <h2 className="text-xl flex-grow">{palette.name}</h2>
+              <h2 className="text-xl flex-grow"><Link to={`/palettes/${palette.id}`}>{palette.name}</Link></h2>
               <IconButton className={ classes.paletteMoreButton } aria-label="More options">
                 <MoreVertIcon/>
               </IconButton>
@@ -83,8 +86,8 @@ export default function PaletteView(props) {
             {/* Three palette sample stripes */}
             <div className="flex-grow flex flex-col justify-between">
             {
-              colors.slice(0, 3).map(({shades}, index) => {
-                return <div className="flex">
+              colors.slice(0, 3).map(({shades,id}, index) => {
+                return <div className="flex" key={id}>
                   {(shades.length === 2
                   ? [
                       shades[0],

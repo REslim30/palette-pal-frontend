@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { ThemeProvider } from "@material-ui/core/styles";
 import theme from '../services/muiTheme';
 
-import PaletteView from '../scenes/PaletteView/index';
+import App from '../scenes/App/index';
 import { ApolloProvider, ApolloClient, InMemoryCache, gql } from '@apollo/client';
 import useBackendApi from '../services/useBackendApi';
 
@@ -28,7 +28,7 @@ export default function PalettePage(props) {
   return <>
     <ApolloProvider client={client}>
       <ThemeProvider theme={theme}>
-        <PaletteView></PaletteView>
+        <App></App>
       </ThemeProvider>
     </ApolloProvider>
 
