@@ -1,6 +1,7 @@
 import React from "react"
 import { Button } from "@material-ui/core";
 import artVectorIllustration from "./art-vector-illustration.svg"
+import { Link } from "gatsby";
 
 export default function Home(props) {
   const goToSignUp = function(event) {
@@ -12,8 +13,8 @@ export default function Home(props) {
       <header className="flex justify-between items-center p-4">
         <h1 className="text-3xl">Palette Pal</h1>
         <nav>
-          <a className="text-lg" href="/login/">login</a>
-          <a className="text-lg text-primary-600 ml-4" href="/signup/">signup</a>
+          <Link className="text-lg" to="/login/">login</Link>
+          <Link className="text-lg text-primary-600 ml-4" to="/signup/">signup</Link>
         </nav>
       </header>
 
