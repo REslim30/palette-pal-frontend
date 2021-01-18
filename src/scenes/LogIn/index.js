@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { TextField, Button } from "@material-ui/core";
-import TextHorizontalRule from '../../components/TextHorizontalRule/index';
 import { useStaticQuery, graphql } from 'gatsby';
 
 
@@ -41,7 +40,7 @@ export default function LogIn(props) {
 
     if (body.jwt) {
       localStorage.setItem('jwt', body.jwt);
-      window.location = '/palettes';
+      window.location = '/app/palettes';
     } else {
       setErrorMessage(body.data[0].messages[0].message)
     }

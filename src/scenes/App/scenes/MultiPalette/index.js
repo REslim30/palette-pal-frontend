@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -77,7 +77,7 @@ export default function MultiPalette(props) {
 
             {/* Title and More button */}
             <div className="p-2 flex justify-between">
-              <h2 className="text-xl flex-grow"><Link to={`/palettes/${palette.id}`}>{palette.name}</Link></h2>
+              <h2 className="text-xl flex-grow"><Link to={`/app/palettes/${palette.id}`}>{palette.name}</Link></h2>
               <IconButton className={ classes.paletteMoreButton } aria-label="More options">
                 <MoreVertIcon/>
               </IconButton>

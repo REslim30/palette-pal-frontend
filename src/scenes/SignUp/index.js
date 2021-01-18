@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { TextField, Button } from "@material-ui/core";
-import TextHorizontalRule from '../../components/TextHorizontalRule/index';
 import { useStaticQuery, graphql } from 'gatsby';
 
 
@@ -43,7 +42,7 @@ export default function SignUp(props) {
       if (body.jwt) {
         // Handle Success
         localStorage.setItem('jwt', body.jwt);
-        window.location = '/palettes';
+        window.location = '/app/palettes';
       } else if (body.statusCode === 400) {
         // Handle failure
         setErrorMessage(body.data[0].messages[0].message)

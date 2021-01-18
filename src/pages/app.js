@@ -3,11 +3,11 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import theme from '../services/muiTheme';
 
 import App from '../scenes/App/index';
-import { ApolloProvider, ApolloClient, InMemoryCache, gql } from '@apollo/client';
+import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 import useBackendApi from '../services/useBackendApi';
 
 
-export default function PalettePage(props) {
+export default function AppPage(props) {
   const backendApiUrl = useBackendApi();
   // Check if user is logged in
   useEffect(() => {
