@@ -1,63 +1,110 @@
 import React, { useEffect, useState } from 'react';
-
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import AddIcon from '@material-ui/icons/Add';
-import useBackendApi from '../../services/useBackendApi';
+import MoreVertIcon from '@material-ui/icons/MoreVert'
+import { useQuery, gql } from '@apollo/client';
+
 
 const useStyles = makeStyles((theme) => ({
-  addButton: {
+  rightEdgeButton: {
     marginRight: '-12px',
   },
+  paletteMoreButton: {
+    marginRight: '-10px',
+    marginTop: '-10px'
+  }
 }));
 
 
 export default function PaletteView(props) {
   const classes = useStyles();
-  const [palettes, setPalettes] = useState(null);
-  const backendApiUrl = useBackendApi();
-
-  // Get palettes from api
-  useEffect(() => {
-    async function fetchData() {
-      const response = await fetch(`${backendApiUrl}/palettes`, {
-        headers: {
-          Authorization: `bearer ${localStorage.getItem('jwt')}`,
+  const { loading, error, data } = useQuery(gql`
+    query GetPalettes {
+      palettes {
+        name
+        colors {
+          shades
         }
-      });
-
-      switch(response.status) {
-        case 403:
-          window.location = '/login/'
-          return;
       }
-
-      const body = await response.json();
-
-      console.log(body);
     }
-    fetchData();
-  });
+  `);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error...</p>;
+
 
   return <>
+    {/* App Bar */}
     <AppBar position="static">
       <Toolbar>
-        <IconButton edge="start" color="inherit" aria-label="menu">
+        <IconButton edge="start" color="inherit" aria-label="Menu">
           <MenuIcon />
         </IconButton>
-        <h1 className='text-xl flex-grow'>All</h1>
-        <IconButton edge="start" className={ classes.addButton } color="inherit" aria-label="Add Palette">
+        <h1 className='pl-4 text-xl flex-grow'>All</h1>
+        <IconButton edge="start" className={ classes.rightEdgeButton } color="inherit" aria-label="Add Palette">
           <AddIcon />
         </IconButton>
       </Toolbar>
     </AppBar>
 
-    {palettes 
-      ? <h1>You have palettes</h1> 
-      : <h1>You have no palettes</h1> 
+    {/* Main palette View */}
+    {data.palettes.length === 0 
+      ? <p>You have no palettes. Click on '+' to create your first palette!</p>
+      : (<main className="p-4 grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))' }}>
+        
+        {/* Palette card */}
+        { data.palettes.map(palette => {
+          //Ensure that there are at least three colors
+          const colors = [...palette.colors];
+          if (colors.length === 0)
+            colors.push({shades: ['#FFFFFF']})
+          
+          if (colors.length === 1)
+            colors.push(colors[0])
+
+          if (colors.length === 2)
+            colors.push(colors[1])
+
+
+          return <article className="rounded-md shadow-md h-40 border-2 border-grey-300 flex flex-col truncate">
+
+            {/* Title and More button */}
+            <div className="p-2 flex justify-between">
+              <h2 className="text-xl flex-grow">{palette.name}</h2>
+              <IconButton className={ classes.paletteMoreButton } aria-label="More options">
+                <MoreVertIcon/>
+              </IconButton>
+            </div>
+
+            {/* Three palette sample stripes */}
+            <div className="flex-grow flex flex-col justify-between">
+            {
+              colors.slice(0, 3).map(({shades}, index) => {
+                return <div className="flex">
+                  {(shades.length === 2
+                  ? [
+                      shades[0],
+                      shades[shades.length-1]
+                    ]
+                  : [
+                      shades[0],
+                      shades[shades.length/2],
+                      shades[shades.length-1],
+                    ]
+                  ).map(shade => {
+                    return <span className="flex-grow h-5" style={{ backgroundColor: shade }}/>
+                  })}
+                </div>
+              })
+            }
+            </div>
+          </article>
+        }) }
+      </main>)
     }
   </>
 }

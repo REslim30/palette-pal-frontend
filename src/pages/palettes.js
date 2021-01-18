@@ -3,19 +3,34 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import theme from '../services/muiTheme';
 
 import PaletteView from '../scenes/PaletteView/index';
+import { ApolloProvider, ApolloClient, InMemoryCache, gql } from '@apollo/client';
+import useBackendApi from '../services/useBackendApi';
 
-export default function SignUpPage(props) {
 
+export default function PalettePage(props) {
+  const backendApiUrl = useBackendApi();
+  // Check if user is logged in
   useEffect(() => {
-    // Check if user is logged in
     if (!localStorage.getItem('jwt')) {
       window.location = '/login/'
     }
   });
 
+  // Create Apollo Graphql client
+  const client = new ApolloClient({
+    uri: `${backendApiUrl}/graphql`,
+    cache: new InMemoryCache(),
+    headers: {
+      authorization: `Bearer ${localStorage.getItem('jwt')}`
+    }
+  });
+
   return <>
-    <ThemeProvider theme={theme}>
-      <PaletteView></PaletteView>
-    </ThemeProvider>
+    <ApolloProvider client={client}>
+      <ThemeProvider theme={theme}>
+        <PaletteView></PaletteView>
+      </ThemeProvider>
+    </ApolloProvider>
+
   </>
 }

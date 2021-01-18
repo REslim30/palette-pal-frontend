@@ -6,6 +6,7 @@ module.exports = {
     backendApi: 'http://localhost:1337',
   },
   plugins: [
+    `gatsby-plugin-apollo`,
     `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-source-filesystem`,
