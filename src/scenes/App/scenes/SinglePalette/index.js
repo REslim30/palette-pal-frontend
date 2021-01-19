@@ -11,6 +11,8 @@ import  ArrowBackIcon  from "@material-ui/icons/ArrowBack";
 import Dialog  from '@material-ui/core/Dialog';
 import DialogTitle  from '@material-ui/core/DialogTitle';
 
+import hexToHsl from 'hex-to-hsl';
+
 
 const useStyles = makeStyles((theme) => ({
   rightEdgeButton: {
@@ -23,7 +25,15 @@ export default function SinglePalette(props) {
   const classes = useStyles();
   // Dialog state
   const [selectedColor, setSelectedColor] = useState(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
+
+  // Calculate hsl and rgb css strings
+  let hslSelectedColor;
+  let rgbSelectedColor;
+  if (selectedColor) {
+    const hslArray = hexToHsl(selectedColor);
+    hslSelectedColor = `hsl(${hslArray[0]}, ${hslArray[1]}%, ${hslArray[2]}%)`;
+    rgbSelectedColor = hexToRgb(selectedColor);
+  }
 
   const { loading, error, data } = useQuery(gql`
     query GetSinglePalette {
@@ -45,13 +55,12 @@ export default function SinglePalette(props) {
   //Dialog Handlers
   const makeHandleOpen = (shade) => {
     return (event) => {
-      setDialogOpen(true);
       setSelectedColor(shade);
     }
   }
 
   const handleClose = () => {
-    setDialogOpen(false);
+    setSelectedColor(null);
   }
 
 
@@ -93,9 +102,9 @@ export default function SinglePalette(props) {
         })
       }
     {/* Dialog box for copying color to clipboard */}
-    <Dialog onClose={handleClose} aria-labelledby="dialog-title" open={dialogOpen}>
+    <Dialog onClose={handleClose} aria-labelledby="dialog-title" open={Boolean(selectedColor)}>
       <DialogTitle id='dialog-title' disableTypography="true">Copy color {selectedColor} to clipboard</DialogTitle>
-      {[selectedColor, hexToRgb(selectedColor)]}
+      {[selectedColor, rgbSelectedColor, hslSelectedColor]}
     </Dialog>
     </main>
   </>
