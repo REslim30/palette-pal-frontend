@@ -60,7 +60,7 @@ export default function MultiPalette(props) {
     {/* Main palette View */}
     {data.palettes.length === 0 
       ? <p>You have no palettes. Click on '+' to create your first palette!</p>
-      : (<main className="p-4 grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))' }}>
+      : (<main className="p-6 grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))' }}>
         
         {/* Palette card */}
         { data.palettes.map(palette => {

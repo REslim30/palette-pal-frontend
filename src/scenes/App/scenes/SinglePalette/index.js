@@ -120,7 +120,7 @@ export default function SinglePalette(props) {
     </AppBar>
 
     {/* List of colors */}
-    <main className="p-4">
+    <main className="p-6">
       {
         data.palette.colors.map(color => {
           return <section className="mb-10" key={color.id}>

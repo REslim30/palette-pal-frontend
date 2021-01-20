@@ -45,8 +45,8 @@ export default function CreatePalette(props) {
       </Toolbar>
     </AppBar>
 
-    <main className="p-4">
-      <div className="grid grid-cols-2 gap-2">
+    <main className="p-6">
+      <div className="grid grid-cols-2 gap-4">
         <TextField variant="outlined" label="Name"></TextField>
         <FormControl className={classes.formControl} variant="outlined">
           <InputLabel htmlfor="group-select-label">Group</InputLabel>
