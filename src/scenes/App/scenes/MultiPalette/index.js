@@ -39,6 +39,9 @@ export default function MultiPalette(props) {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error...</p>;
 
+  const onAddPalette = (event) => {
+    window.location = "/app/palettes/new"
+  }
 
   return <>
     {/* App Bar */}
@@ -48,7 +51,7 @@ export default function MultiPalette(props) {
           <MenuIcon />
         </IconButton>
         <h1 className='pl-4 text-xl flex-grow'>All</h1>
-        <IconButton edge="start" className={ classes.rightEdgeButton } color="inherit" aria-label="Add Palette">
+        <IconButton edge="start" className={ classes.rightEdgeButton } color="inherit" aria-label="Add Palette" onClick={onAddPalette}>
           <AddIcon />
         </IconButton>
       </Toolbar>

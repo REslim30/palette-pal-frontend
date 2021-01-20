@@ -29,7 +29,6 @@ export default function SinglePalette(props) {
   // Dialog state
   const [selectedColor, setSelectedColor] = useState(null);
   const [successCopySnackbarOpen, setSuccessCopySnackbarOpen] = useState(false);
-  const [errorCopySnackbarOpen, setErrorCopySnackbarOpen] = useState(false);
 
   const { loading, error, data } = useQuery(gql`
     query GetSinglePalette {
@@ -92,10 +91,6 @@ export default function SinglePalette(props) {
 
   const handleSuccessCopySnackbarClose = () => {
     setSuccessCopySnackbarOpen(false);
-  }
-
-  const handleErrorCopySnackbarClose = () => {
-    setErrorCopySnackbarOpen(false);
   }
 
   const onArrowBack = (event) => {
