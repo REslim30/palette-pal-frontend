@@ -11,6 +11,8 @@ import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 
+import { useQuery, gql } from '@apollo/client';
+
 const useStyles = makeStyles((theme) => ({
   rightEdgeButton: {
     marginRight: '-12px',
@@ -23,6 +25,19 @@ const useStyles = makeStyles((theme) => ({
 export default function CreatePalette(props) {
   const classes = useStyles();
   const [group, setGroup] = useState('');
+
+  // Graphql query
+  const { loading, error, data } = useQuery(gql`
+    query GetGroups {
+      groups {
+        id
+        name
+      }
+    }
+  `);
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error...</p>;
+
 
   const onArrowBack = (event) => {
     window.history.back();
@@ -46,7 +61,7 @@ export default function CreatePalette(props) {
     </AppBar>
 
     <main className="p-6">
-      <div className="grid grid-cols-2 gap-4">
+      <section className="grid grid-cols-2 gap-4">
         <TextField variant="outlined" label="Name"></TextField>
         <FormControl className={classes.formControl} variant="outlined">
           <InputLabel htmlfor="group-select-label">Group</InputLabel>
@@ -61,9 +76,16 @@ export default function CreatePalette(props) {
             }}
           >
             <option aria-label="none" value=""/>
+            {data.groups.map(group => {
+              return <option value={group.id}>{group.name}</option>
+            })}
           </Select>
         </FormControl> 
-      </div>
+      </section>
+
+      <section>
+
+      </section>
     </main>
   </>
 };
