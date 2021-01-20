@@ -16,7 +16,6 @@ import Snackbar from "@material-ui/core/Snackbar";
 
 
 import hexToHsl from 'hex-to-hsl';
-import copyIcon from "./copy.svg";
 
 const useStyles = makeStyles((theme) => ({
   rightEdgeButton: {
@@ -147,7 +146,11 @@ export default function SinglePalette(props) {
       }
       {/* Dialog box for copying color to clipboard */}
       <Dialog onClose={handleClose} aria-labelledby="dialog-title" open={Boolean(selectedColor)}>
-        <DialogTitle id='dialog-title' disableTypography={true}>Copy color to clipboard</DialogTitle>
+        <DialogTitle id='dialog-title' disableTypography={true}>
+          <span className="h-4 w-4 mr-2 rounded-full inline-block" style={{ backgroundColor: selectedColor}}/>
+          Copy color to clipboard
+        </DialogTitle>
+        
         <List>
           {[selectedColor, rgbSelectedColor, hslSelectedColor].map(color => {
             return <ListItem button onClick={handleCopy}>
