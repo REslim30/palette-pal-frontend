@@ -136,7 +136,7 @@ export default function SinglePalette(props) {
                 color.shades.map((shade, index) => {
                   return <button className="flex flex-col items-center rounded-lg border-2 border-gray-300 pt-2 pb-1 px-2" style={{ boxShadow: '0 4px 4px rgba(0, 0, 0, 0.25)' }} key={index} aria-label={shade} onClick={makeHandleOpen(shade)}>
                       <span className="inline-block h-12 w-12 rounded-lg mb-1.5" style={{ backgroundColor: shade }}/>
-                      <p>{shade.toUpperCase()}</p>
+                      <p className="text-neutral-600 font-mono">{shade.toUpperCase()}</p>
                     </button>
                 })
               }
@@ -152,11 +152,11 @@ export default function SinglePalette(props) {
         </DialogTitle>
         
         <List>
-          {[selectedColor, rgbSelectedColor, hslSelectedColor].map(color => {
+          {[selectedColor?.toUpperCase(), rgbSelectedColor, hslSelectedColor].map(color => {
             return <ListItem button onClick={handleCopy}>
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-copy text-neutral-500 mr-2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
 
-              <span className="js-color-text">{color}</span>
+              <span className="js-color-text font-mono">{color}</span>
             </ListItem>
           })}
         </List>
