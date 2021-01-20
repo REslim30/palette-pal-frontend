@@ -8,6 +8,7 @@
     "@apollo/client": "^3.3.7",
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.11.2",
+    "css-color-converter": "^2.0.0",
     "gatsby": "^2.26.1",
     "gatsby-image": "^2.5.0",
     "gatsby-plugin-apollo": "^3.0.2",
