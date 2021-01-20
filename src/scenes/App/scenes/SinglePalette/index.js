@@ -10,9 +10,13 @@ import { useQuery, gql } from '@apollo/client';
 import  ArrowBackIcon  from "@material-ui/icons/ArrowBack";
 import Dialog  from '@material-ui/core/Dialog';
 import DialogTitle  from '@material-ui/core/DialogTitle';
+import ListItem  from '@material-ui/core/ListItem';
+import List  from '@material-ui/core/List';
+import Snackbar from "@material-ui/core/Snackbar";
+
 
 import hexToHsl from 'hex-to-hsl';
-
+import copyIcon from "./copy.svg";
 
 const useStyles = makeStyles((theme) => ({
   rightEdgeButton: {
@@ -25,15 +29,8 @@ export default function SinglePalette(props) {
   const classes = useStyles();
   // Dialog state
   const [selectedColor, setSelectedColor] = useState(null);
-
-  // Calculate hsl and rgb css strings
-  let hslSelectedColor;
-  let rgbSelectedColor;
-  if (selectedColor) {
-    const hslArray = hexToHsl(selectedColor);
-    hslSelectedColor = `hsl(${hslArray[0]}, ${hslArray[1]}%, ${hslArray[2]}%)`;
-    rgbSelectedColor = hexToRgb(selectedColor);
-  }
+  const [successCopySnackbarOpen, setSuccessCopySnackbarOpen] = useState(false);
+  const [errorCopySnackbarOpen, setErrorCopySnackbarOpen] = useState(false);
 
   const { loading, error, data } = useQuery(gql`
     query GetSinglePalette {
@@ -63,9 +60,56 @@ export default function SinglePalette(props) {
     setSelectedColor(null);
   }
 
+  const handleCopy = (event) => {
+    // Creates a span that's off the page to copy
+    const colorSpan = document.createElement('span');
+    colorSpan.textContent = event.currentTarget.querySelector('.js-color-text').textContent;
+    colorSpan.className = 'absolute -left-96';
+    document.body.appendChild(colorSpan);
+
+    // Selects and copies
+    const selection = window.getSelection();
+    const range = document.createRange();
+
+    range.selectNodeContents(colorSpan);
+    selection.removeAllRanges();
+    selection.addRange(range);
+
+    try {
+      document.execCommand('copy');
+      selection.removeAllRanges();
+
+      setSuccessCopySnackbarOpen(true);
+    } catch (e) {
+      console.error('Could not copy to clipboard ' + e)
+    }
+
+    // Clean up dom
+    colorSpan.remove();
+
+    // Close dialog
+    setSelectedColor(null);
+  }
+
+  const handleSuccessCopySnackbarClose = () => {
+    setSuccessCopySnackbarOpen(false);
+  }
+
+  const handleErrorCopySnackbarClose = () => {
+    setErrorCopySnackbarOpen(false);
+  }
 
   const onArrowBack = (event) => {
     window.history.back();
+  }
+
+  // Calculate hsl and rgb css strings
+  let hslSelectedColor;
+  let rgbSelectedColor;
+  if (selectedColor) {
+    const hslArray = hexToHsl(selectedColor);
+    hslSelectedColor = `hsl(${hslArray[0]}, ${hslArray[1]}%, ${hslArray[2]}%)`;
+    rgbSelectedColor = hexToRgb(selectedColor);
   }
 
   return <>
@@ -101,11 +145,30 @@ export default function SinglePalette(props) {
           </section>
         })
       }
-    {/* Dialog box for copying color to clipboard */}
-    <Dialog onClose={handleClose} aria-labelledby="dialog-title" open={Boolean(selectedColor)}>
-      <DialogTitle id='dialog-title' disableTypography="true">Copy color {selectedColor} to clipboard</DialogTitle>
-      {[selectedColor, rgbSelectedColor, hslSelectedColor]}
-    </Dialog>
+      {/* Dialog box for copying color to clipboard */}
+      <Dialog onClose={handleClose} aria-labelledby="dialog-title" open={Boolean(selectedColor)}>
+        <DialogTitle id='dialog-title' disableTypography={true}>Copy color to clipboard</DialogTitle>
+        <List>
+          {[selectedColor, rgbSelectedColor, hslSelectedColor].map(color => {
+            return <ListItem button onClick={handleCopy}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-copy text-neutral-500 mr-2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+
+              <span className="js-color-text">{color}</span>
+            </ListItem>
+          })}
+        </List>
+      </Dialog>
+
+      {/* Copy success/error Snackbars */}
+      <Snackbar 
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left'
+        }}
+        open={successCopySnackbarOpen} 
+        autoHideDuration={6000} 
+        onClose={handleSuccessCopySnackbarClose} 
+        message="Copied!"/>
     </main>
   </>
 };
