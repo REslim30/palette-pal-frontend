@@ -59,6 +59,9 @@ export default function CreatePalette(props) {
     setColorDialogOpen(false);
   }
 
+  const addColor = (color) => {
+    setColors([...colors, color])
+  }
   
   return <>
     <AppBar position="static">
@@ -112,7 +115,10 @@ export default function CreatePalette(props) {
         </button>
       </section>
 
-      <AddColorDialog open={colorDialogOpen} handleClose={handleColorDialogClose}/>
+      <AddColorDialog 
+        open={colorDialogOpen} 
+        onClose={handleColorDialogClose}
+        addColor={addColor}/>
     </main>
   </>
 };

@@ -53,6 +53,12 @@ export default function AddColorDialog(props) {
   const handleSubmit = (event) => {
     props.addColor({ name, shades })
     props.onClose(event);
+
+    setCssColorString('');
+    setName('');
+    setShades([]);
+    setShadeInputError({});
+    setSubmitDisabled(true);
   }
 
 
@@ -60,7 +66,7 @@ export default function AddColorDialog(props) {
     <Dialog 
       open={props.open} 
       aria-labelledby="add-color-dialog-title" 
-      onClose={props.handleClose}>
+      onClose={props.onClose}>
 
       <div className="flex justify-between pb-4">
         {/* Dialog Title */}
@@ -90,6 +96,7 @@ export default function AddColorDialog(props) {
           placeholder="E.g. Primary, Blue, Neutrals"
           value={name}
           onChange={handleNameChange}
+          autoFocus
         />
 
         {/* List of Shades */}
@@ -119,7 +126,6 @@ export default function AddColorDialog(props) {
               label="CSS color string" 
               variant="outlined" size="small" 
               placeholder="e.g. hsl(10, 20%, 30%)" 
-              autoFocus 
               value={cssColorString}
               onChange={handleCssColorStringChange}
               onKeyDown={handleAddShadeKeyDown}/>
