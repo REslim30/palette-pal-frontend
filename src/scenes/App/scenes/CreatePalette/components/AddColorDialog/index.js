@@ -78,8 +78,20 @@ export default function AddColorDialog(props) {
   }
 
   const handleShadeDelete = (event) => {
-    const shadeIndex = shadeMenuAnchorEl.attributes.getNamedItem('shade-index').value;
-    setShades(shades.filter((shade, index) => index != shadeIndex));
+    const shadeIndex = parseInt(shadeMenuAnchorEl.dataset.index);
+    setShades(shades.filter((shade, index) => index !== shadeIndex));
+    handleShadeMenuClose(event);
+  }
+
+  const handleShadeMoveUp = (event) => {
+    const shadeIndex = parseInt(shadeMenuAnchorEl.dataset.index);
+    setShades(tryToSwapElementsImmutably(shades, shadeIndex, shadeIndex-1));
+    handleShadeMenuClose(event);
+  }
+
+  const handleShadeMoveDown = (event) => {
+    const shadeIndex = parseInt(shadeMenuAnchorEl.dataset.index);
+    setShades(tryToSwapElementsImmutably(shades, shadeIndex, shadeIndex+1));
     handleShadeMenuClose(event);
   }
 
@@ -135,7 +147,7 @@ export default function AddColorDialog(props) {
                   size="small" 
                   aria-controls='shade-options-menu' 
                   onClick={handleShadeMenuOpen}
-                  shade-index={index}>
+                  data-index={index}>
                   <MoreVertIcon/>
                 </IconButton>
               </div>
@@ -147,13 +159,13 @@ export default function AddColorDialog(props) {
             anchorEl={shadeMenuAnchorEl}
             open={Boolean(shadeMenuAnchorEl)}
             onClose={handleShadeMenuClose}>
-            <MenuItem>
+            <MenuItem  onClick={handleShadeMoveUp}>
               <ListItemIcon>
                 <ArrowUpwardIcon/>
               </ListItemIcon>
               <ListItemText primary="Move up"/>
             </MenuItem>
-            <MenuItem>
+            <MenuItem onClick={handleShadeMoveDown}>
               <ListItemIcon>
                 <ArrowDownwardIcon/>
               </ListItemIcon>
@@ -187,3 +199,19 @@ export default function AddColorDialog(props) {
   </>
 };
 
+// Tries to swap elements and then
+// returns a NEW array
+function tryToSwapElementsImmutably(array, firstElement, secondElement) {
+  let newArray = [...array];
+
+  if (firstElement < 0 
+    || firstElement >= array.length 
+    || secondElement < 0 
+    || secondElement >= array.length)
+    return newArray;
+
+  newArray[firstElement] = array[secondElement];
+  newArray[secondElement] = array[firstElement];
+
+  return newArray;
+}
