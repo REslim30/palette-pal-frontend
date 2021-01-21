@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { ThemeProvider } from "@material-ui/core/styles";
-import theme from '../services/muiTheme';
+import theme from '#src/services/muiTheme';
 
-import App from '../scenes/App/index';
+import App from '#src/scenes/App/index';
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
-import useBackendApi from '../services/useBackendApi';
+import useBackendApi from '#src/services/useBackendApi';
 
 
 export default function AppPage(props) {

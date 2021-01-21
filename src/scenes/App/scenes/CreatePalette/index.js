@@ -13,7 +13,7 @@ import AddIcon from "@material-ui/icons/Add";
 
 import { useQuery, gql } from '@apollo/client';
 import AddColorDialog from "./components/AddColorDialog/index";
-import SendIcon from "../../../../components/SendIcon/index";
+import SendIcon from "#src/components/SendIcon/index";
 
 const useStyles = makeStyles((theme) => ({
   rightEdgeButton: {

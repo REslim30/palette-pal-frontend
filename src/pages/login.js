@@ -1,8 +1,8 @@
 import React from 'react';
 import { ThemeProvider } from "@material-ui/core/styles";
-import theme from '../services/muiTheme';
+import theme from '#src/services/muiTheme';
 
-import LogIn from '../scenes/LogIn';
+import LogIn from '#src/scenes/LogIn';
 
 export default function LoginPage(props) {
   return <>

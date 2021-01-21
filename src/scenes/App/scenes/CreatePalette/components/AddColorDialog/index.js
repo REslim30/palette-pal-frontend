@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import AddIcon from "@material-ui/icons/Add";
 import Fab from "@material-ui/core/Fab";
 import Button from "@material-ui/core/Button";
-import SendIcon from "../../../../../../components/SendIcon/index";
+import SendIcon from "#src/components/SendIcon/index";
 
 // Dialog on CreatePalette that adds a color
 export default function AddColorDialog(props) {
