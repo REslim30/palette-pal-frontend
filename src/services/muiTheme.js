@@ -14,7 +14,7 @@ let theme = createMuiTheme({
     MuiDialogTitle: {
       root: {
         fontFamily: '"Didact Gothic", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
-        fontSize: "1.25rem",
+        fontSize: "1.5rem",
         fontWeight: '600'
       }
     }

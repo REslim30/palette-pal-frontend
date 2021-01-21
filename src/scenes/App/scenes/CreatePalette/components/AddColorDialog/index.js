@@ -4,9 +4,11 @@ import React, { useState, useRef } from 'react';
 import Dialog  from '@material-ui/core/Dialog';
 import DialogTitle  from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
-import AddIcon from "@material-ui/icons/Add";
 import Fab from "@material-ui/core/Fab";
 import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+
 import SendIcon from "#src/components/SendIcon/index";
 
 import { fromString } from "css-color-converter";
@@ -42,17 +44,43 @@ export default function AddColorDialog(props) {
 
   return <>
     <Dialog open={props.open} aria-labelledby="add-color-dialog-title" onClose={props.handleClose}>
-      <DialogTitle id="add=color-dialog-title" disableTypography={true}>Add a Color</DialogTitle>
+      <div className="flex justify-between pb-4">
+        {/* Dialog Title */}
+        <DialogTitle id="add=color-dialog-title" disableTypography={true}>Add a Color </DialogTitle>
+        {/* Submit button */}
+        <span className="p-4">
+          <Fab
+            aria-label="Add color"
+            size="small"
+            color="primary"
+            onClick={props.handleClose}
+          >
+            <SendIcon className="text-white mt-1 mr-1"/>
+          </Fab>
+        </span>
+      </div>
       <div className="pb-6 px-6">
         {/* Color Name */}
         <TextField label="Name" variant="outlined" placeholder="E.g. Primary, Blue, Neutrals"/>
 
         {/* List of Shades */}
-        {shades.map((shade, index) => {
-          return <div key={shade + index}>
-            <span className="h-4 w-4 block" style={{ backgroundColor: shade }}></span>
-          </div>
-        })}
+        <div className="pt-6">
+          {shades.map((shade, index) => {
+            return <>
+              <div 
+                className="grid gap-4 items-center my-3" 
+                style={{ gridTemplateColumns: 'min-content auto min-content' }} 
+                key={shade + index}
+              >
+                <span className="h-4 w-4 block rounded-full" style={{ backgroundColor: shade }}></span>
+                <span>{shade}</span>
+                <IconButton size="small">
+                  <MoreVertIcon/>
+                </IconButton>
+              </div>
+            </>
+          })}
+        </div>
 
         {/* Shade Adder */}
         <div className="pt-4">
@@ -72,17 +100,7 @@ export default function AddColorDialog(props) {
             <Button color="primary" onClick={handleAddShade}>Add shade</Button>
           </div>
 
-          {/* Submit button */}
-          <div className="flex justify-end">
-            <Fab
-              aria-label="Add color"
-              size="small"
-              color="primary"
-              onClick={props.handleClose}
-            >
-              <SendIcon className="text-white mt-1 mr-1"/>
-            </Fab>
-          </div>
+
         </div>
       </div>
     </Dialog>
