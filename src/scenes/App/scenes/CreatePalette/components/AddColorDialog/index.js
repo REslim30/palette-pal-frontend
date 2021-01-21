@@ -14,7 +14,6 @@ import { fromString } from "css-color-converter";
 // Dialog on CreatePalette that adds a color
 export default function AddColorDialog(props) {
   const [shades, setShades] = useState([]);
-  const [addShadeInputOpen, setAddShadeInputOpen] = useState(false);
   const [cssColorString, setCssColorString] = useState('');
   const [shadeInputError, setShadeInputError] = useState({});
   
@@ -22,19 +21,15 @@ export default function AddColorDialog(props) {
     setCssColorString(event.target.value);
   };
 
-  const handleAddShadeInputOpen = (event) => {
-    setAddShadeInputOpen(true);
-  };
 
   const handleAddShade = (event) => {
     const hexValue = fromString(cssColorString)?.toHexString();
     if (hexValue) {
       setShadeInputError({});
       setShades([...shades, hexValue.toUpperCase()]);
-      setAddShadeInputOpen(false);
-      setCssColorString(false);
+      setCssColorString('');
     } else {
-      setShadeInputError({error: true, helperText: 'Please use a valid hex, rgb, or hsl CSS string.'})
+      setShadeInputError({error: true, helperText: 'Invalid hex, rgb, or hsl CSS string.'})
     }
   }
 
@@ -61,25 +56,23 @@ export default function AddColorDialog(props) {
 
         {/* Shade Adder */}
         <div className="pt-4">
-          {addShadeInputOpen
-            ? <div className="flex flex-col items-end">
-                <TextField 
-                  {...shadeInputError}
-                  label="CSS color string" 
-                  variant="outlined" size="small" 
-                  placeholder="e.g. hsl(10, 20%, 30%)" 
-                  autoFocus 
-                  onChange={handleCssColorStringChange}
-                  onKeyDown={handleAddShadeKeyDown}
-                />
-                <Button color="primary" onClick={handleAddShade}>Add shade</Button>
-              </div>
-            : <button className="grid gap-4 w-full" style={{ gridTemplateColumns: 'auto 24px' }} onClick={handleAddShadeInputOpen}>
-                <span className="text-neutral-500 text-left self-end pt-0.5">Add shade</span>
-                <AddIcon className="text-primary-500"/>
-              </button>
-          }
           
+          {/* Add Shade Input */}
+          <div className="flex flex-col items-end">
+            <TextField 
+              {...shadeInputError}
+              label="CSS color string" 
+              variant="outlined" size="small" 
+              placeholder="e.g. hsl(10, 20%, 30%)" 
+              autoFocus 
+              value={cssColorString}
+              onChange={handleCssColorStringChange}
+              onKeyDown={handleAddShadeKeyDown}
+            />
+            <Button color="primary" onClick={handleAddShade}>Add shade</Button>
+          </div>
+
+          {/* Submit button */}
           <div className="flex justify-end">
             <Fab
               aria-label="Add color"
