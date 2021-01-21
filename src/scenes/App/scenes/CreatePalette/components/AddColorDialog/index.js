@@ -9,6 +9,13 @@ import Fab from "@material-ui/core/Fab";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@material-ui/core/Menu";
+import DeleteIcon from "@material-ui/icons/DeleteOutline";
+import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
+import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
 
 // Dialog that adds a color to a palette
 export default function AddColorDialog(props) {
@@ -17,6 +24,7 @@ export default function AddColorDialog(props) {
   const [name, setName] = useState('');
   const [shadeInputError, setShadeInputError] = useState({});
   const [submitDisabled, setSubmitDisabled] = useState(true);
+  const [shadeMenuAnchorEl, setShadeMenuAnchorEl] = useState(null);
 
   
   useEffect(() => {
@@ -61,6 +69,17 @@ export default function AddColorDialog(props) {
     setSubmitDisabled(true);
   }
 
+  const handleShadeMenuOpen = (event) => {
+    setShadeMenuAnchorEl(event.currentTarget);
+  }
+
+  const handleShadeMenuClose = (event) => {
+    setShadeMenuAnchorEl(null);
+  }
+
+  const handleShadeDelete = (event) => {
+    
+  }
 
   return <>
     <Dialog 
@@ -96,26 +115,52 @@ export default function AddColorDialog(props) {
           placeholder="E.g. Primary, Blue, Neutrals"
           value={name}
           onChange={handleNameChange}
-          autoFocus
-        />
+          autoFocus/>
 
         {/* List of Shades */}
         <div className="pt-6">
+          <h2 className="text-xl">Shades:</h2>
           {shades.map((shade, index) => {
             return <>
               <div 
                 className="grid gap-4 items-center my-3" 
                 style={{ gridTemplateColumns: 'min-content auto min-content' }} 
-                key={shade + index}
-              >
-                <span className="h-4 w-4 block rounded-full" style={{ backgroundColor: shade }}></span>
+                key={shade + index}>
+                <span 
+                  className="h-4 w-4 block rounded-full" 
+                  style={{ backgroundColor: shade }}/>
                 <span>{shade}</span>
-                <IconButton size="small">
+                <IconButton size="small" aria-controls='shade-options-menu' onClick={handleShadeMenuOpen}>
                   <MoreVertIcon/>
                 </IconButton>
               </div>
             </>
           })}
+          {/* Menu for shade */}
+          <Menu
+            id="shade-options-menu"
+            anchorEl={shadeMenuAnchorEl}
+            open={Boolean(shadeMenuAnchorEl)}
+            onClose={handleShadeMenuClose}>
+            <MenuItem onClick={}>
+              <ListItemIcon>
+                <ArrowUpwardIcon/>
+              </ListItemIcon>
+              <ListItemText primary="Move up"/>
+            </MenuItem>
+            <MenuItem onClick={}>
+              <ListItemIcon>
+                <ArrowDownwardIcon/>
+              </ListItemIcon>
+              <ListItemText primary="Move down"/>
+            </MenuItem>
+            <MenuItem onClick={}>
+              <ListItemIcon>
+                <DeleteIcon className="text-red-800"/>
+              </ListItemIcon>
+              <ListItemText primary="Delete"/>
+            </MenuItem>
+          </Menu>
         </div>
 
         {/* Add shade input */}
