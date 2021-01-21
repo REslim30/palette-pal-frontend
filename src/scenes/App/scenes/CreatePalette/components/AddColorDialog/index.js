@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Material UI components
 import Dialog  from '@material-ui/core/Dialog';
@@ -17,12 +17,22 @@ import { fromString } from "css-color-converter";
 export default function AddColorDialog(props) {
   const [shades, setShades] = useState([]);
   const [cssColorString, setCssColorString] = useState('');
+  const [name, setName] = useState('');
   const [shadeInputError, setShadeInputError] = useState({});
+  const [submitDisabled, setSubmitDisabled] = useState(true);
   
+  // Check if color is valid
+  useEffect(() => {
+    setSubmitDisabled(shades.length <= 0 || !name);
+  });
+
+  const handleNameChange = (event) => {
+    setName(event.target.value);
+  };
+
   const handleCssColorStringChange = (event) => {
     setCssColorString(event.target.value);
   };
-
 
   const handleAddShade = (event) => {
     const hexValue = fromString(cssColorString)?.toHexString();
@@ -54,6 +64,7 @@ export default function AddColorDialog(props) {
             size="small"
             color="primary"
             onClick={props.handleClose}
+            disabled={submitDisabled}
           >
             <SendIcon className="text-white mt-1 mr-1"/>
           </Fab>
@@ -61,7 +72,13 @@ export default function AddColorDialog(props) {
       </div>
       <div className="pb-6 px-6">
         {/* Color Name */}
-        <TextField label="Name" variant="outlined" placeholder="E.g. Primary, Blue, Neutrals"/>
+        <TextField 
+          label="Name" 
+          variant="outlined" 
+          placeholder="E.g. Primary, Blue, Neutrals"
+          value={name}
+          onChange={handleNameChange}
+        />
 
         {/* List of Shades */}
         <div className="pt-6">
