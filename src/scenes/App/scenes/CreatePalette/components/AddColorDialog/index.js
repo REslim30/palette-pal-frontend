@@ -78,7 +78,9 @@ export default function AddColorDialog(props) {
   }
 
   const handleShadeDelete = (event) => {
-    
+    const shadeIndex = shadeMenuAnchorEl.attributes.getNamedItem('shade-index').value;
+    setShades(shades.filter((shade, index) => index != shadeIndex));
+    handleShadeMenuClose(event);
   }
 
   return <>
@@ -114,8 +116,7 @@ export default function AddColorDialog(props) {
           variant="outlined" 
           placeholder="E.g. Primary, Blue, Neutrals"
           value={name}
-          onChange={handleNameChange}
-          autoFocus/>
+          onChange={handleNameChange}/>
 
         {/* List of Shades */}
         <div className="pt-6">
@@ -130,7 +131,11 @@ export default function AddColorDialog(props) {
                   className="h-4 w-4 block rounded-full" 
                   style={{ backgroundColor: shade }}/>
                 <span>{shade}</span>
-                <IconButton size="small" aria-controls='shade-options-menu' onClick={handleShadeMenuOpen}>
+                <IconButton 
+                  size="small" 
+                  aria-controls='shade-options-menu' 
+                  onClick={handleShadeMenuOpen}
+                  shade-index={index}>
                   <MoreVertIcon/>
                 </IconButton>
               </div>
@@ -142,19 +147,19 @@ export default function AddColorDialog(props) {
             anchorEl={shadeMenuAnchorEl}
             open={Boolean(shadeMenuAnchorEl)}
             onClose={handleShadeMenuClose}>
-            <MenuItem onClick={}>
+            <MenuItem>
               <ListItemIcon>
                 <ArrowUpwardIcon/>
               </ListItemIcon>
               <ListItemText primary="Move up"/>
             </MenuItem>
-            <MenuItem onClick={}>
+            <MenuItem>
               <ListItemIcon>
                 <ArrowDownwardIcon/>
               </ListItemIcon>
               <ListItemText primary="Move down"/>
             </MenuItem>
-            <MenuItem onClick={}>
+            <MenuItem onClick={handleShadeDelete}>
               <ListItemIcon>
                 <DeleteIcon className="text-red-800"/>
               </ListItemIcon>
