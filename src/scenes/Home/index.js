@@ -3,6 +3,7 @@ import { Button } from "@material-ui/core";
 import artVectorIllustration from "./art-vector-illustration.svg"
 import { Link } from "gatsby";
 
+// Landing page
 export default function Home(props) {
   const goToSignUp = function(event) {
     window.location = '/signup/';

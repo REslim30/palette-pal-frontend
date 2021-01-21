@@ -5,6 +5,7 @@ import MultiPalette from './scenes/MultiPalette/index';
 import SinglePalette from './scenes/SinglePalette/index';
 import CreatePalette from "./scenes/CreatePalette/index";
 
+// App scene for implementation of business features
 export default function App(props) {
   return <>
   <Router basepath="/app">
