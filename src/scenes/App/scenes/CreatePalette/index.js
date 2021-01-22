@@ -14,13 +14,18 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/DeleteOutline";
+import EditIcon from "@material-ui/icons/Edit";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
-
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -40,6 +45,7 @@ export default function CreatePalette(props) {
   const [colorToEdit, setColorToEdit] = useState({});
   const [colorToBeDeleted, setColorToBeDeleted] = useState(null);
   const [submitColor, setSubmitColor] = useState(() => addColor);
+  const [colorOptionsAnchorEl, setColorOptionsAnchorEl] = useState(null);
 
   const { loading, error, data } = useQuery(gql`
     query GetGroups {
@@ -61,11 +67,12 @@ export default function CreatePalette(props) {
     setGroup(event.target.value);
   }
 
-  const handleNewColorCreate = (event) => {
+  const handleNewColorCreate = () => {
+    setSubmitColor(() => addColor);
     setColorToEdit({ name: '', shades: [] });
   }
 
-  const handleColorDialogClose = (event) => {
+  const handleColorDialogClose = () => {
     setColorToEdit(null);
   }
 
@@ -73,8 +80,8 @@ export default function CreatePalette(props) {
     setColors([...colors, color])
   }
 
-  const handleEditColor = (event) => {
-    const colorIndex = parseInt(event.currentTarget.dataset.index);
+  const handleEditColor = () => {
+    const colorIndex = parseInt(colorOptionsAnchorEl.dataset.index);
 
     const editColor = (newColor) => {
       const newColors = [...colors];
@@ -86,18 +93,27 @@ export default function CreatePalette(props) {
     setColorToEdit(colors[colorIndex]);
   }
 
-  const handleDeleteColorDialogOpen = (event) => {
-    const colorIndex = parseInt(event.currentTarget.dataset.index);
+  const handleDeleteColorDialogOpen = () => {
+    const colorIndex = parseInt(colorOptionsAnchorEl.dataset.index);
     setColorToBeDeleted(colorIndex);
+    setColorOptionsAnchorEl(null);
   }
 
-  const handleDeleteColorDialogClose = (event) => {
+  const handleDeleteColorDialogClose = () => {
     setColorToBeDeleted(null);
   };
 
   const handleDeleteColor = () => {
     setColors(colors.filter((color, index) => colorToBeDeleted !== index));
     setColorToBeDeleted(null);
+  }
+
+  const handleColorOptionsOpen = (event) => {
+    setColorOptionsAnchorEl(event.currentTarget);
+  }
+
+  const handleColorOptionsClose = () => {
+    setColorOptionsAnchorEl(null);
   }
   
   return <>
@@ -140,14 +156,18 @@ export default function CreatePalette(props) {
       <section className="mt-6">
         {/* List of colors */}
         {colors.map((color, index) => {
-          return <button 
-            className="clickable-card w-full mt-4 py-2 pl-4 pr-2 grid gap-x-4 gap-y-2 items-center" 
+          return <div 
+            className="border-2 border-neutral-200 rounded w-full mt-4 py-2 pl-4 pr-2 grid gap-x-4 gap-y-2 items-center" 
             style={{ gridTemplateColumns: 'auto min-content' }}
-            onClick={ handleEditColor }
             data-index={index}>
             <h2 className="text-left">{color.name}</h2>
-            <IconButton onClick={handleDeleteColorDialogOpen} data-index={index} size="small">
-              <DeleteIcon className="text-red-800"/>
+            <IconButton
+              aria-controls="color-options-menu"
+              aria-haspopup="true"
+              onClick={handleColorOptionsOpen}
+              data-index={index} 
+              size="small">
+              <MoreVertIcon className="text-neutral-500"/>
             </IconButton>
             <div className="grid gap-x-3 gap-y-2 pb-2" style={{ gridTemplateColumns: 'repeat(auto-fill, 1rem)' }}>
               { color.shades.length === 1
@@ -156,9 +176,29 @@ export default function CreatePalette(props) {
                   return <span className="color-ball mr-3 " style={{ backgroundColor: shade }}/>
                 })}
             </div>
-          </button>
+          </div>
         })}
-        {/* Delete 'are you sure' dialog */}
+        {/* Color options */}
+        <Menu
+          id="color-options-menu"
+          anchorEl={colorOptionsAnchorEl}
+          open={Boolean(colorOptionsAnchorEl)}
+          onClose={handleColorOptionsClose}>
+          <MenuItem onClick={handleEditColor}>
+            <ListItemIcon>
+              <EditIcon/>
+            </ListItemIcon>
+            <ListItemText primary="Edit" />
+          </MenuItem>
+          <MenuItem onClick={handleDeleteColorDialogOpen}>
+            <ListItemIcon>
+              <DeleteIcon className="text-red-700"/>
+            </ListItemIcon>
+            <ListItemText primary="Delete"/>
+          </MenuItem>
+        </Menu>
+
+        {/* Color delete 'are you sure' dialog */}
         <Dialog
           open={colorToBeDeleted !== null}
           onClose={handleDeleteColorDialogClose}
@@ -187,7 +227,7 @@ export default function CreatePalette(props) {
         </button>
       </section>
 
-      <AddColorDialog 
+      <ColorDialog 
         open={Boolean(colorToEdit)} 
         onClose={handleColorDialogClose}
         submitColor={submitColor}
