@@ -13,6 +13,7 @@ import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import AddIcon from "@material-ui/icons/Add";
+import DeleteIcon from "@material-ui/icons/DeleteOutline";
 
 const useStyles = makeStyles((theme) => ({
   rightEdgeButton: {
@@ -62,6 +63,11 @@ export default function CreatePalette(props) {
   const addColor = (color) => {
     setColors([...colors, color])
   }
+
+  const handleColorDelete = (event) => {
+    const colorIndex = event.currentTarget.dataset.index;
+    setColors(colors.filter((color, index) => colorIndex != index));
+  }
   
   return <>
     <AppBar position="static">
@@ -100,16 +106,21 @@ export default function CreatePalette(props) {
         </FormControl> 
       </section>
 
-      <section>
+      <section className="mt-6">
         {/* List of colors */}
-        {colors.map(color => {
-          return <div>
-            <h2>{color.name}</h2>
+        {colors.map((color, index) => {
+          return <div className="clickable-card mt-4 py-2 px-4">
+            <div className="grid gap-4 items-center" style={{ gridTemplateColumns: 'auto min-content' }}>
+              <h2>{color.name}</h2>
+              <IconButton onClick={handleColorDelete} data-index={index} size="small">
+                <DeleteIcon className="text-red-800"/>
+              </IconButton>
+            </div>
           </div>
         })}
 
         {/* Add color button */}
-        <button className="py-2 px-4 rounded-md shadow-md flex items-center justify-between w-full border-2" onClick={handleColorDialogOpen}>
+        <button className="py-2 px-4 clickable-card flex items-center justify-between w-full mt-4" onClick={handleColorDialogOpen}>
           <span className="text-neutral-500">Add Color</span>
           <AddIcon alt="Add Color" className="text-primary-500"/>
         </button>
