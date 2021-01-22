@@ -14,6 +14,14 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/DeleteOutline";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
+import Button from "@material-ui/core/Button";
+
+
 
 const useStyles = makeStyles((theme) => ({
   rightEdgeButton: {
@@ -30,6 +38,7 @@ export default function CreatePalette(props) {
   const [group, setGroup] = useState('');
   const [colors, setColors] = useState([]);
   const [colorDialogOpen, setColorDialogOpen] = useState(false);
+  const [colorToBeDeleted, setColorToBeDeleted] = useState(null);
 
   
   const { loading, error, data } = useQuery(gql`
@@ -64,9 +73,18 @@ export default function CreatePalette(props) {
     setColors([...colors, color])
   }
 
-  const handleColorDelete = (event) => {
-    const colorIndex = event.currentTarget.dataset.index;
-    setColors(colors.filter((color, index) => colorIndex != index));
+  const handleDeleteColorDialogOpen = (event) => {
+    const colorIndex = parseInt(event.currentTarget.dataset.index);
+    setColorToBeDeleted(colorIndex);
+  }
+
+  const handleDeleteColorDialogClose = (event) => {
+    setColorToBeDeleted(null);
+  };
+
+  const handleDeleteColor = () => {
+    setColors(colors.filter((color, index) => colorToBeDeleted !== index));
+    setColorToBeDeleted(null);
   }
   
   return <>
@@ -112,12 +130,33 @@ export default function CreatePalette(props) {
           return <div className="clickable-card mt-4 py-2 px-4">
             <div className="grid gap-4 items-center" style={{ gridTemplateColumns: 'auto min-content' }}>
               <h2>{color.name}</h2>
-              <IconButton onClick={handleColorDelete} data-index={index} size="small">
+              <IconButton onClick={handleDeleteColorDialogOpen} data-index={index} size="small">
                 <DeleteIcon className="text-red-800"/>
               </IconButton>
             </div>
           </div>
         })}
+        {/* Delete 'are you sure' dialog */}
+        <Dialog
+          open={colorToBeDeleted !== null}
+          onClose={handleDeleteColorDialogClose}
+          aria-labelledby="delete-color-dialog-title"
+          aria-describedby="delete-color-dialog-description">
+          <DialogTitle id="delete-color-dialog-title">Erase color?</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="delete-color-dialog-description">
+              You won't be able to recover this color. Are you sure?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleDeleteColorDialogClose}>
+              Cancel
+            </Button>
+            <Button onClick={handleDeleteColor} color="secondary">
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
 
         {/* Add color button */}
         <button className="py-2 px-4 clickable-card flex items-center justify-between w-full mt-4" onClick={handleColorDialogOpen}>
