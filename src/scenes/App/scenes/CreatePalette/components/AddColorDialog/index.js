@@ -29,7 +29,7 @@ export default function AddColorDialog(props) {
   
   useEffect(() => {
     setSubmitDisabled(shades.length <= 0 || !name);
-  });
+  }, [shades.length, name]);
 
 
   const handleNameChange = (event) => {
