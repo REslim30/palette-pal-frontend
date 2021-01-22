@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
-import { useQuery, gql } from '@apollo/client';
+import React, { useEffect, useState } from 'react';
+import { useQuery, useMutation } from '@apollo/client';
 import ColorDialog from "./components/ColorDialog/index";
 import SendIcon from "#src/components/SendIcon/index";
+import SUBMIT_PALETTE from "./services/submitPaletteGraphQL"
+import GET_GROUPS from "./services/getGroupsGraphQL"
 
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from "@material-ui/core/AppBar";
@@ -27,7 +29,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 
-
 const useStyles = makeStyles((theme) => ({
   rightEdgeButton: {
     marginRight: '-12px',
@@ -40,27 +41,37 @@ const useStyles = makeStyles((theme) => ({
 // Page to create a new palette
 export default function CreatePalette(props) {
   const classes = useStyles();
+  const [name, setName] = useState('');
   const [group, setGroup] = useState('');
   const [colors, setColors] = useState([]);
   const [colorToEdit, setColorToEdit] = useState({});
   const [colorToBeDeleted, setColorToBeDeleted] = useState(null);
   const [submitColor, setSubmitColor] = useState(() => addColor);
   const [colorOptionsAnchorEl, setColorOptionsAnchorEl] = useState(null);
+  const [paletteIsSubmittable, setPaletteIsSubmittable] = useState(false);
+  const [submitPalette, {data}] = useMutation(SUBMIT_PALETTE);
 
-  const { loading, error, data } = useQuery(gql`
-    query GetGroups {
-      groups {
-        id
-        name
-      }
-    }
-  `);
+  useEffect(() => {
+    if (name && group && colors.length !== 0)
+      setPaletteIsSubmittable(true);
+  }, [name, group, colors]);
+  
+  const { loading, error, data } = useQuery(GET_GROUPS);
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error...</p>;
 
 
   const onArrowBack = (event) => {
     window.history.back();
+  }
+
+  const handlePaletteSubmit = (event) => {
+
+  }
+
+  const handleNameChange = (event) => {
+    setName(event.target.value);
   }
 
   const handleGroupChange = (event) => {
@@ -123,7 +134,12 @@ export default function CreatePalette(props) {
           <ArrowBackIcon />
         </IconButton>
         <h1 className='pl-4 text-xl flex-grow'>Add Palette</h1>
-        <IconButton edge="end" className={ classes.rightEdgeButton } color="inherit" aria-label="Create palette">
+        <IconButton 
+          edge="end" 
+          className={ classes.rightEdgeButton } 
+          color="inherit" 
+          aria-label="Create palette"
+          disabled={!paletteIsSubmittable}>
           <SendIcon />
         </IconButton>
       </Toolbar>
@@ -132,7 +148,7 @@ export default function CreatePalette(props) {
     <main className="p-6">
       {/* Name and Group input*/}
       <section className="grid grid-cols-2 gap-4">
-        <TextField variant="outlined" label="Name"></TextField>
+        <TextField variant="outlined" label="Name" value={name} onChange={handleNameChange}></TextField>
         <FormControl className={classes.formControl} variant="outlined">
           <InputLabel htmlFor="group-select-label">Group</InputLabel>
           <Select 
