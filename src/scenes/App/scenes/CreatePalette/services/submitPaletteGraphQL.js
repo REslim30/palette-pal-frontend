@@ -10,14 +10,7 @@ export default gql`
       }
     }) {
       palette {
-        name
-        group {
-          name
-        }
-        colors {
-          name
-          shades
-        }
+        id
       }
     }
   }

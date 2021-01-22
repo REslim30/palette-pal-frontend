@@ -3,6 +3,7 @@ import { useQuery, useMutation } from '@apollo/client';
 import ColorDialog from "./components/ColorDialog/index";
 import SendIcon from "#src/components/SendIcon/index";
 import SUBMIT_PALETTE from "./services/submitPaletteGraphQL"
+import SUBMIT_COLOR from "./services/submitColorGraphQL";
 import GET_GROUPS from "./services/getGroupsGraphQL"
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -28,6 +29,7 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import { array } from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
   rightEdgeButton: {
@@ -46,28 +48,41 @@ export default function CreatePalette(props) {
   const [colors, setColors] = useState([]);
   const [colorToEdit, setColorToEdit] = useState({});
   const [colorToBeDeleted, setColorToBeDeleted] = useState(null);
-  const [submitColor, setSubmitColor] = useState(() => addColor);
+  const [editColor, setEditColor] = useState(() => addColor);
   const [colorOptionsAnchorEl, setColorOptionsAnchorEl] = useState(null);
   const [paletteIsSubmittable, setPaletteIsSubmittable] = useState(false);
-  const [submitPalette, {data}] = useMutation(SUBMIT_PALETTE);
+  const [submitPalette, submitPaletteResult] = useMutation(SUBMIT_PALETTE);
+  const [submitColor] = useMutation(SUBMIT_COLOR);
 
   useEffect(() => {
-    if (name && group && colors.length !== 0)
+    if (name && colors.length !== 0)
       setPaletteIsSubmittable(true);
   }, [name, group, colors]);
   
   const { loading, error, data } = useQuery(GET_GROUPS);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading || submitPaletteResult.loading) return <p>Loading...</p>;
   if (error) return <p>Error...</p>;
-
 
   const onArrowBack = (event) => {
     window.history.back();
   }
 
-  const handlePaletteSubmit = (event) => {
+  if (submitPaletteResult.data) {
+    window.location = `/app/palettes/${submitPaletteResult.data.createPalette.palette.id}`;
+  }
 
+  const handlePaletteSubmit = async(event) => {
+    const colorCreationPromises = colors.map(color => submitColor({variables: { name: color.name, shades: color.shades }}).catch(console.log))
+
+    // Must use a regular loop instead of .forEach due to async-await
+    const colorIds = []
+    for (let i=0; i<colorCreationPromises.length; i++) {
+      const colorCreation = await colorCreationPromises[i];
+      colorIds.push(colorCreation.data.createColor.color.id);
+    }
+
+    submitPalette({variables: { name: name, group: group, colors: colorIds }})
   }
 
   const handleNameChange = (event) => {
@@ -79,7 +94,7 @@ export default function CreatePalette(props) {
   }
 
   const handleNewColorCreate = () => {
-    setSubmitColor(() => addColor);
+    setEditColor(() => addColor);
     setColorToEdit({ name: '', shades: [] });
   }
 
@@ -100,7 +115,7 @@ export default function CreatePalette(props) {
       setColors(newColors);
     }
 
-    setSubmitColor(() => editColor);
+    setEditColor(() => editColor);
     setColorToEdit(colors[colorIndex]);
   }
 
@@ -139,7 +154,8 @@ export default function CreatePalette(props) {
           className={ classes.rightEdgeButton } 
           color="inherit" 
           aria-label="Create palette"
-          disabled={!paletteIsSubmittable}>
+          disabled={!paletteIsSubmittable}
+          onClick={ handlePaletteSubmit }>
           <SendIcon />
         </IconButton>
       </Toolbar>
@@ -246,7 +262,7 @@ export default function CreatePalette(props) {
       <ColorDialog 
         open={Boolean(colorToEdit)} 
         onClose={handleColorDialogClose}
-        submitColor={submitColor}
+        submitColor={editColor}
         color={colorToEdit}
         />
     </main>
