@@ -127,12 +127,17 @@ export default function CreatePalette(props) {
       <section className="mt-6">
         {/* List of colors */}
         {colors.map((color, index) => {
-          return <div className="clickable-card mt-4 py-2 px-4">
-            <div className="grid gap-4 items-center" style={{ gridTemplateColumns: 'auto min-content' }}>
-              <h2>{color.name}</h2>
-              <IconButton onClick={handleDeleteColorDialogOpen} data-index={index} size="small">
-                <DeleteIcon className="text-red-800"/>
-              </IconButton>
+          return <div className="clickable-card mt-4 py-2 pl-4 pr-2 grid gap-x-4 gap-y-2 items-center" style={{ gridTemplateColumns: 'auto min-content' }}>
+            <h2>{color.name}</h2>
+            <IconButton onClick={handleDeleteColorDialogOpen} data-index={index} size="small">
+              <DeleteIcon className="text-red-800"/>
+            </IconButton>
+            <div className="grid gap-x-3 gap-y-2 pb-2" style={{ gridTemplateColumns: 'repeat(auto-fill, 1rem)' }}>
+              { color.shades.length === 1
+              ? <span className="h-4 w-full rounded-full" style={{ backgroundColor: color.shades[0] }}/>
+              : color.shades.map((shade) => {
+                  return <span className="color-ball mr-3 " style={{ backgroundColor: shade }}/>
+                })}
             </div>
           </div>
         })}
