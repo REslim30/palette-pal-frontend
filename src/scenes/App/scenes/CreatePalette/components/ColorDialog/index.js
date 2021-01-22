@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import SendIcon from "#src/components/SendIcon/index";
+import SendIcon from "#src/components/SendIcon";
 import { fromString } from "css-color-converter";
 import PropTypes from 'prop-types';
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery, gql } from '@apollo/client';
-import AddColorDialog from "./components/AddColorDialog/index";
+import ColorDialog from "./components/ColorDialog/index";
 import SendIcon from "#src/components/SendIcon/index";
 
 import { makeStyles } from '@material-ui/core/styles';
