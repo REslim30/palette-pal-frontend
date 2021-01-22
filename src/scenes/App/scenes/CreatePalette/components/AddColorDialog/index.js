@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SendIcon from "#src/components/SendIcon/index";
 import { fromString } from "css-color-converter";
+import PropTypes from 'prop-types';
 
 import Dialog  from '@material-ui/core/Dialog';
 import DialogTitle  from '@material-ui/core/DialogTitle';
@@ -17,16 +18,41 @@ import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 
-// Dialog that adds a color to a palette
-export default function AddColorDialog(props) {
-  const [shades, setShades] = useState([]);
+// Dialog that creates or edits a color
+// passes color to submitColor
+ColorDialog.propTypes = {
+  submitColor: PropTypes.func.isRequired, //submitColor(color) : void
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  color: PropTypes.object, // can optionally iniialize fields by passing in object with fields { name: String, shades: [HexColors] }
+}
+
+export default function ColorDialog(props) {
   const [cssColorString, setCssColorString] = useState('');
   const [name, setName] = useState('');
+  const [shades, setShades] = useState([]);
   const [shadeInputError, setShadeInputError] = useState({});
   const [submitDisabled, setSubmitDisabled] = useState(true);
   const [shadeMenuAnchorEl, setShadeMenuAnchorEl] = useState(null);
 
-  
+  // Initialize name and shades if given
+  useEffect(() => {
+    const color = props.color;
+    if (color?.name)
+      setName(color.name);
+    
+    if (color?.shades)
+      setShades(color?.shades)
+
+    return () => {
+      setCssColorString('');
+      setName('');
+      setShades([]);
+      setShadeInputError({});
+      setSubmitDisabled(true);
+    }
+  }, [props.color])
+
   useEffect(() => {
     setSubmitDisabled(shades.length <= 0 || !name);
   }, [shades.length, name]);
@@ -59,14 +85,8 @@ export default function AddColorDialog(props) {
   }
 
   const handleSubmit = (event) => {
-    props.addColor({ name, shades })
+    props.submitColor({ name, shades })
     props.onClose(event);
-
-    setCssColorString('');
-    setName('');
-    setShades([]);
-    setShadeInputError({});
-    setSubmitDisabled(true);
   }
 
   const handleShadeMenuOpen = (event) => {
@@ -94,6 +114,8 @@ export default function AddColorDialog(props) {
     setShades(tryToSwapElementsImmutably(shades, shadeIndex, shadeIndex+1));
     handleShadeMenuClose(event);
   }
+
+
 
   return <>
     <Dialog 

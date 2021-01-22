@@ -37,10 +37,10 @@ export default function CreatePalette(props) {
   const classes = useStyles();
   const [group, setGroup] = useState('');
   const [colors, setColors] = useState([]);
-  const [colorDialogOpen, setColorDialogOpen] = useState(false);
+  const [colorToEdit, setColorToEdit] = useState({});
   const [colorToBeDeleted, setColorToBeDeleted] = useState(null);
+  const [submitColor, setSubmitColor] = useState(() => addColor);
 
-  
   const { loading, error, data } = useQuery(gql`
     query GetGroups {
       groups {
@@ -61,16 +61,29 @@ export default function CreatePalette(props) {
     setGroup(event.target.value);
   }
 
-  const handleColorDialogOpen = (event) => {
-    setColorDialogOpen(true);
+  const handleNewColorCreate = (event) => {
+    setColorToEdit({ name: '', shades: [] });
   }
 
   const handleColorDialogClose = (event) => {
-    setColorDialogOpen(false);
+    setColorToEdit(null);
   }
 
-  const addColor = (color) => {
+  function addColor(color) {
     setColors([...colors, color])
+  }
+
+  const handleEditColor = (event) => {
+    const colorIndex = parseInt(event.currentTarget.dataset.index);
+
+    const editColor = (newColor) => {
+      const newColors = [...colors];
+      newColors[colorIndex] = newColor;
+      setColors(newColors);
+    }
+
+    setSubmitColor(() => editColor);
+    setColorToEdit(colors[colorIndex]);
   }
 
   const handleDeleteColorDialogOpen = (event) => {
@@ -127,8 +140,12 @@ export default function CreatePalette(props) {
       <section className="mt-6">
         {/* List of colors */}
         {colors.map((color, index) => {
-          return <div className="clickable-card mt-4 py-2 pl-4 pr-2 grid gap-x-4 gap-y-2 items-center" style={{ gridTemplateColumns: 'auto min-content' }}>
-            <h2>{color.name}</h2>
+          return <button 
+            className="clickable-card w-full mt-4 py-2 pl-4 pr-2 grid gap-x-4 gap-y-2 items-center" 
+            style={{ gridTemplateColumns: 'auto min-content' }}
+            onClick={ handleEditColor }
+            data-index={index}>
+            <h2 className="text-left">{color.name}</h2>
             <IconButton onClick={handleDeleteColorDialogOpen} data-index={index} size="small">
               <DeleteIcon className="text-red-800"/>
             </IconButton>
@@ -139,7 +156,7 @@ export default function CreatePalette(props) {
                   return <span className="color-ball mr-3 " style={{ backgroundColor: shade }}/>
                 })}
             </div>
-          </div>
+          </button>
         })}
         {/* Delete 'are you sure' dialog */}
         <Dialog
@@ -164,16 +181,18 @@ export default function CreatePalette(props) {
         </Dialog>
 
         {/* Add color button */}
-        <button className="py-2 px-4 clickable-card flex items-center justify-between w-full mt-4" onClick={handleColorDialogOpen}>
+        <button className="py-2 px-4 clickable-card flex items-center justify-between w-full mt-4" onClick={handleNewColorCreate}>
           <span className="text-neutral-500">Add Color</span>
           <AddIcon alt="Add Color" className="text-primary-500"/>
         </button>
       </section>
 
       <AddColorDialog 
-        open={colorDialogOpen} 
+        open={Boolean(colorToEdit)} 
         onClose={handleColorDialogClose}
-        addColor={addColor}/>
+        submitColor={submitColor}
+        color={colorToEdit}
+        />
     </main>
   </>
 };
