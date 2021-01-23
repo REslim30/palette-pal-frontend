@@ -2,7 +2,7 @@ import React from 'react';
 import { Router } from '@reach/router';
 
 import MultiPalette from './scenes/MultiPalette/index.tsx';
-import SinglePalette from './scenes/SinglePalette/index';
+import SinglePalette from './scenes/SinglePalette/index.tsx';
 import CreatePalette from "./scenes/CreatePalette/index";
 
 // App scene for implementation of business features

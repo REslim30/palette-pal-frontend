@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import hexToHsl from 'hex-to-hsl';
 
 // Material UI imports
-import { hexToRgb, styled } from '@material-ui/core/styles';
+import { hexToRgb } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert'
-import { useQuery, gql } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import  ArrowBackIcon  from "@material-ui/icons/ArrowBack";
 import Dialog  from '@material-ui/core/Dialog';
 import DialogTitle  from '@material-ui/core/DialogTitle';
@@ -15,9 +15,14 @@ import ListItem  from '@material-ui/core/ListItem';
 import List  from '@material-ui/core/List';
 import Snackbar from "@material-ui/core/Snackbar";
 import RightEdgeIconButton from "#src/components/RightEdgeIconButton/index";
+import GET_SINGLE_PALETTE from "./services/getSinglePaletteGraphQL";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 export default function SinglePalette(props) {
-  const classes = useStyles();
+  const { loading, error, data } = useQuery(GET_SINGLE_PALETTE, {variables: {id: props.id}});
+  const onArrowBack = (event) => {
+    window.history.back();
+  }
 
   return <>
     <AppBar position="static">
@@ -25,38 +30,30 @@ export default function SinglePalette(props) {
         <IconButton edge="start" color="inherit" aria-label="Menu" onClick={onArrowBack}>
           <ArrowBackIcon />
         </IconButton>
-        <h1 className='pl-4 text-xl flex-grow'>{data.palette.name}</h1>
+        <h1 className='pl-4 text-xl flex-grow'>{data?.palette.name}</h1>
         <RightEdgeIconButton edge="end" color="inherit" aria-label="Add Palette">
           <MoreVertIcon />
         </RightEdgeIconButton>
       </Toolbar>
     </AppBar>
 
-    <ColorList/>
+    <ColorList palette={data?.palette} loading={loading} error={error}/>
   </>
 };
 
-function ColorList(props) {
+type ColorListProps = { 
+  palette: Palette | undefined, 
+  loading: boolean, 
+  error: ApolloError,
+}
+
+function ColorList(props: any) {
   // Dialog state
   const [selectedColor, setSelectedColor] = useState(null);
   const [successCopySnackbarOpen, setSuccessCopySnackbarOpen] = useState(false);
 
-  const { loading, error, data } = useQuery(gql`
-    query GetSinglePalette {
-      palette(id: ${props.id}) {
-        id
-        name
-        colors {
-          id
-          name
-          shades
-        }
-      }
-    }
-  `);
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error...</p>;
+  if (props.loading) return <CircularProgress/>;
+  if (props.error) return <p>Hello World...</p>;
 
   //Dialog Handlers
   const makeHandleOpen = (shade) => {
@@ -104,10 +101,6 @@ function ColorList(props) {
     setSuccessCopySnackbarOpen(false);
   }
 
-  const onArrowBack = (event) => {
-    window.history.back();
-  }
-
   // Calculate hsl and rgb css strings
   let hslSelectedColor;
   let rgbSelectedColor;
@@ -118,7 +111,7 @@ function ColorList(props) {
   }
 
   return <main className="p-6">
-    {data.palette.colors.map(color => {
+    {props.palette.colors.map(color => {
         return <section className="mb-10" key={color.id}>
           <h2 className="text-3xl mb-2">{color.name}</h2>
           <div className="grid gap-8" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(80px, 1fr))' }}>
