@@ -6,8 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import AddIcon from '@material-ui/icons/Add';
 import { useQuery } from '@apollo/client';
-import { Link } from "gatsby";
-import GET_PALETTE from "./services/getPalettesGraphQL";
+import GET_PALETTE from "./services/getPalettesGraphQL.ts";
 import PaletteCard from "./components/PaletteCard";
 
 
@@ -52,9 +51,7 @@ export default function MultiPalette(props) {
     {data.palettes.length === 0 
       ? <p>You have no palettes. Click on '+' to create your first palette!</p>
       : (<main className="p-6 grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))' }}>
-        
-        {/* Palette card */}
-        { data.palettes.map(palette => { <PaletteCard palette={palette}/> }
+        { data.palettes.map(palette => <PaletteCard palette={palette}/>) }
       </main>)
     }
   </>

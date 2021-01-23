@@ -1,5 +1,4 @@
 import React from "react";
-import { Palette } from "../services/getPalettesGraphQL";
 
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert'
@@ -12,14 +11,13 @@ type AppProps = {
 }
 
 export default function PaletteCard(props: AppProps) {
-  const colors = [...props.palette.colors];
+  const colors: Color[] = [...props.palette.colors];
 
   //Ensure that there are at least three colors
-  for (let i=0; i<3; i++)
-    if (colors.length === 2)
-      colors.push({id: i, shades: ['#FFFFFF']})
+  if (colors.length === 0)
+    colors.push({id: -1, shades: ['#FFFFFF']})
 
-  return (<article className="rounded-md shadow-md h-40 border-2 border-grey-300 flex flex-col truncate" key={palette.id}>
+  return (<article className="rounded-md shadow-md h-40 border-2 border-grey-300 flex flex-col truncate" key={props.palette.id}>
     {/* Title and More button */}
     <div className="p-2 flex justify-between">
       <h2 className="text-xl flex-grow"><Link to={`/app/palettes/${props.palette.id}`}>{props.palette.name}</Link></h2>
@@ -31,8 +29,8 @@ export default function PaletteCard(props: AppProps) {
     {/* Three palette sample stripes */}
     <div className="flex-grow flex flex-col justify-between">
     {
-      colors.slice(0, 3).map(({shades,id}, index) => {
-        return <div className="flex" key={id}>
+      colors.slice(0, 3).map((shades, index) => {
+        return <div className="flex">
           {(shades.length === 2
           ? [
               shades[0],
