@@ -31,7 +31,7 @@ import ColorDialog from "./components/ColorDialog/index";
 import SendIcon from "#src/components/SendIcon/index";
 import SUBMIT_PALETTE from "./services/submitPaletteGraphQL"
 import SUBMIT_COLOR from "./services/submitColorGraphQL";
-import GET_GROUPS from "./services/getGroupsGraphQL"
+import GET_GROUPS from "./services/getGroupsGraphQL";
 import RightEdgeIconButton from "#src/components/RightEdgeIconButton/index";
 
 const useStyles = makeStyles((theme) => ({
@@ -45,11 +45,11 @@ export default function CreatePalette(props: RouteComponentProps) {
   const classes = useStyles();
   const [name, setName] = useState('');
   const [group, setGroup] = useState('');
-  const [colors, setColors] = useState([]);
-  const [colorToEdit, setColorToEdit] = useState({});
-  const [colorToBeDeleted, setColorToBeDeleted] = useState(null);
+  const [colors, setColors] = useState<Color[]>([]);
+  const [colorToEdit, setColorToEdit] = useState<Color | {} | null>({});
+  const [colorToBeDeleted, setColorToBeDeleted] = useState<number | null>(null);
   const [editColor, setEditColor] = useState(() => addColor);
-  const [colorOptionsAnchorEl, setColorOptionsAnchorEl] = useState(null);
+  const [colorOptionsAnchorEl, setColorOptionsAnchorEl] = useState<HTMLElement | null>(null);
   const [paletteIsSubmittable, setPaletteIsSubmittable] = useState(false);
   const [submitPalette, submitPaletteResult] = useMutation(SUBMIT_PALETTE);
   const [submitColor] = useMutation(SUBMIT_COLOR);
@@ -79,18 +79,19 @@ export default function CreatePalette(props: RouteComponentProps) {
     const colorIds = []
     for (let i=0; i<colorCreationPromises.length; i++) {
       const colorCreation = await colorCreationPromises[i];
-      colorIds.push(colorCreation.data.createColor.color.id);
+      // TODO: handle error
+      colorIds.push((colorCreation as Record<string, any>).data.createColor.color.id);
     }
 
     submitPalette({variables: { name: name, group: group, colors: colorIds }})
   }
 
-  const handleNameChange = (event) => {
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
   }
 
-  const handleGroupChange = (event) => {
-    setGroup(event.target.value);
+  const handleGroupChange = (event: React.ChangeEvent<{ name?: string | undefined; value: unknown; }>) => {
+    setGroup(event.target.value as string);
   }
 
   const handleNewColorCreate = () => {
@@ -102,14 +103,14 @@ export default function CreatePalette(props: RouteComponentProps) {
     setColorToEdit(null);
   }
 
-  function addColor(color) {
+  function addColor(color: Color) {
     setColors([...colors, color])
   }
 
   const handleEditColor = () => {
-    const colorIndex = parseInt(colorOptionsAnchorEl.dataset.index);
+    const colorIndex = parseInt((colorOptionsAnchorEl as HTMLElement).dataset.index as string);
 
-    const editColor = (newColor) => {
+    const editColor = (newColor: Color) => {
       const newColors = [...colors];
       newColors[colorIndex] = newColor;
       setColors(newColors);
@@ -120,7 +121,7 @@ export default function CreatePalette(props: RouteComponentProps) {
   }
 
   const handleDeleteColorDialogOpen = () => {
-    const colorIndex = parseInt(colorOptionsAnchorEl.dataset.index);
+    const colorIndex = parseInt((colorOptionsAnchorEl as HTMLElement).dataset.index as string);
     setColorToBeDeleted(colorIndex);
     setColorOptionsAnchorEl(null);
   }
@@ -134,7 +135,7 @@ export default function CreatePalette(props: RouteComponentProps) {
     setColorToBeDeleted(null);
   }
 
-  const handleColorOptionsOpen = (event) => {
+  const handleColorOptionsOpen = (event: React.SyntheticEvent<HTMLElement>) => {
     setColorOptionsAnchorEl(event.currentTarget);
   }
 
@@ -177,7 +178,7 @@ export default function CreatePalette(props: RouteComponentProps) {
             }}
           >
             <option aria-label="none" value=""/>
-            {data.groups.map(group => {
+            {data.groups.map((group: Group) => {
               return <option value={group.id}>{group.name}</option>
             })}
           </Select>
@@ -254,7 +255,7 @@ export default function CreatePalette(props: RouteComponentProps) {
         {/* Add color button */}
         <button className="py-2 px-4 clickable-card flex items-center justify-between w-full mt-4" onClick={handleNewColorCreate}>
           <span className="text-neutral-500">Add Color</span>
-          <AddIcon alt="Add Color" className="text-primary-500"/>
+          <AddIcon className="text-primary-500"/>
         </button>
       </section>
 

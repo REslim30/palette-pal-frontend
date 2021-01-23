@@ -10,3 +10,8 @@ declare type Color = {
   name: string,
   shades: string[]
 }
+
+declare type Group = {
+  id: number,
+  name: group
+}
