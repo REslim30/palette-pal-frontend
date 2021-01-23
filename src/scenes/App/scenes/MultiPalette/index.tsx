@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { styled } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -11,19 +11,14 @@ import PaletteCard from "./components/PaletteCard";
 import CircularProgress from "@material-ui/core/CircularProgress"
 
 
-const useStyles = makeStyles((theme) => ({
+const RightEdgeIconButton = styled(IconButton)({
   rightEdgeButton: {
     marginRight: '-12px',
-  },
-  paletteMoreButton: {
-    marginRight: '-10px',
-    marginTop: '-10px'
   }
-}));
+});
 
 
 export default function MultiPalette(props : {}) {
-  const classes = useStyles();
   const [group, setGroup] = useState('');
   const { loading, error, data } = useQuery(GET_PALETTE);
 
@@ -41,9 +36,9 @@ export default function MultiPalette(props : {}) {
           <MenuIcon />
         </IconButton>
         <h1 className='pl-4 text-xl flex-grow'>All</h1>
-        <IconButton edge="start" className={ classes.rightEdgeButton } color="inherit" aria-label="Add Palette" onClick={onAddPalette}>
+        <RightEdgeIconButton edge="start" color="inherit" aria-label="Add Palette" onClick={onAddPalette}>
           <AddIcon />
-        </IconButton>
+        </RightEdgeIconButton>
       </Toolbar>
     </AppBar>
 
