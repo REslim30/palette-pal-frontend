@@ -18,7 +18,7 @@ export default function MultiPalette(props : {}) {
 
   if (error) return <p>Error...</p>;
 
-  const onAddPalette = (event) => {
+  const onAddPalette = () => {
     window.location.href = "/app/palettes/new"
   }
 
@@ -46,7 +46,7 @@ function Palettes(props: {loading: boolean, palettes: Palette[] | undefined}) {
   if (!props.loading) {
     markup = <p>You have no palettes. Click on '+' to create your first palette!</p>
     
-    if (props.palettes.length) {
+    if (props.palettes?.length) {
       markup = <main className="p-6 grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))' }}>
         { props.palettes.map(palette => <PaletteCard palette={palette}/>) }
       </main>;

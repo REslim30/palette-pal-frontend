@@ -7,7 +7,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert'
-import { useQuery } from '@apollo/client';
+import ApolloClient, { useQuery } from '@apollo/client';
 import  ArrowBackIcon  from "@material-ui/icons/ArrowBack";
 import Dialog  from '@material-ui/core/Dialog';
 import DialogTitle  from '@material-ui/core/DialogTitle';
@@ -18,9 +18,9 @@ import RightEdgeIconButton from "#src/components/RightEdgeIconButton/index";
 import GET_SINGLE_PALETTE from "./services/getSinglePaletteGraphQL";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-export default function SinglePalette(props) {
+export default function SinglePalette(props: {id: number}) {
   const { loading, error, data } = useQuery(GET_SINGLE_PALETTE, {variables: {id: props.id}});
-  const onArrowBack = (event) => {
+  const onArrowBack = () => {
     window.history.back();
   }
 
@@ -44,46 +44,46 @@ export default function SinglePalette(props) {
 type ColorListProps = { 
   palette: Palette | undefined, 
   loading: boolean, 
-  error: ApolloError,
+  error: ApolloClient.ApolloError | undefined,
 }
 
-function ColorList(props: any) {
+function ColorList(props: ColorListProps) {
   // Dialog state
-  const [selectedColor, setSelectedColor] = useState(null);
+  const [selectedColor, setSelectedColor] = useState('');
   const [successCopySnackbarOpen, setSuccessCopySnackbarOpen] = useState(false);
 
   if (props.loading) return <CircularProgress/>;
   if (props.error) return <p>Hello World...</p>;
 
   //Dialog Handlers
-  const makeHandleOpen = (shade) => {
-    return (event) => {
+  const makeHandleOpen = (shade: string) => {
+    return () => {
       setSelectedColor(shade);
     }
   }
 
   const handleClose = () => {
-    setSelectedColor(null);
+    setSelectedColor('');
   }
 
-  const handleCopy = (event) => {
+  const handleCopy = (event: React.SyntheticEvent) => {
     // Creates a span that's off the page to copy
     const colorSpan = document.createElement('span');
-    colorSpan.textContent = event.currentTarget.querySelector('.js-color-text').textContent;
+    colorSpan.textContent = event.currentTarget.querySelector('.js-color-text')?.textContent || '';
     colorSpan.className = 'absolute -left-96';
     document.body.appendChild(colorSpan);
 
     // Selects and copies
-    const selection = window.getSelection();
-    const range = document.createRange();
+    const selection: Selection | null = window.getSelection();
+    const range: Range = document.createRange();
 
     range.selectNodeContents(colorSpan);
-    selection.removeAllRanges();
-    selection.addRange(range);
+    selection?.removeAllRanges();
+    selection?.addRange(range);
 
     try {
       document.execCommand('copy');
-      selection.removeAllRanges();
+      selection?.removeAllRanges();
 
       setSuccessCopySnackbarOpen(true);
     } catch (e) {
@@ -94,7 +94,7 @@ function ColorList(props: any) {
     colorSpan.remove();
 
     // Close dialog
-    setSelectedColor(null);
+    setSelectedColor('');
   }
 
   const handleSuccessCopySnackbarClose = () => {
@@ -111,7 +111,7 @@ function ColorList(props: any) {
   }
 
   return <main className="p-6">
-    {props.palette.colors.map(color => {
+    {props.palette?.colors.map(color => {
         return <section className="mb-10" key={color.id}>
           <h2 className="text-3xl mb-2">{color.name}</h2>
           <div className="grid gap-8" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(80px, 1fr))' }}>
