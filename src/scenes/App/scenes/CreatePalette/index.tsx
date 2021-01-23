@@ -46,7 +46,7 @@ export default function CreatePalette(props: RouteComponentProps) {
   const [name, setName] = useState('');
   const [group, setGroup] = useState('');
   const [colors, setColors] = useState<Color[]>([]);
-  const [colorToEdit, setColorToEdit] = useState<Color | {} | null>({});
+  const [colorToEdit, setColorToEdit] = useState<Color | null>(null);
   const [colorToBeDeleted, setColorToBeDeleted] = useState<number | null>(null);
   const [editColor, setEditColor] = useState(() => addColor);
   const [colorOptionsAnchorEl, setColorOptionsAnchorEl] = useState<HTMLElement | null>(null);
