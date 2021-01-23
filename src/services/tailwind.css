@@ -4,12 +4,14 @@
 @tailwind utilities;
 
 @layer base {
-  a {
+  a.regular-link {
     @apply border-b-2 border-current;
   }
-  a:hover {
+  a.regular-link:hover {
     @apply border-purple-700 text-purple-700 pb-0.5
   }
+
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-header
   }

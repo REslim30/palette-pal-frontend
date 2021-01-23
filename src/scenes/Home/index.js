@@ -14,8 +14,8 @@ export default function Home(props) {
       <header className="flex justify-between items-center p-4">
         <h1 className="text-3xl">Palette Pal</h1>
         <nav>
-          <Link className="text-lg" to="/login/">login</Link>
-          <Link className="text-lg text-primary-600 ml-4" to="/signup/">signup</Link>
+          <Link className="text-lg regular-link" to="/login/">login</Link>
+          <Link className="text-lg text-primary-600 ml-4 regular-link" to="/signup/">signup</Link>
         </nav>
       </header>
 
