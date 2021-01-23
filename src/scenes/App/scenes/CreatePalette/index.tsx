@@ -96,7 +96,7 @@ export default function CreatePalette(props: RouteComponentProps) {
 
   const handleNewColorCreate = () => {
     setEditColor(() => addColor);
-    setColorToEdit({ name: '', shades: [] });
+    setColorToEdit({ id: 1, name: '', shades: [] });
   }
 
   const handleColorDialogClose = () => {
