@@ -10,8 +10,9 @@ import ArrowBackIcon  from "@material-ui/icons/ArrowBack";
 import RightEdgeIconButton from "#src/components/RightEdgeIconButton/index";
 import GET_SINGLE_PALETTE from "./services/getSinglePaletteGraphQL";
 import ColorList from "./scenes/ColorList/index";
+import { RouteComponentProps } from '@reach/router';
 
-export default function SinglePalette(props: {id: number}) {
+export default function SinglePalette(props: RouteComponentProps) {
   const { loading, error, data } = useQuery(GET_SINGLE_PALETTE, {variables: {id: props.id}});
   const onArrowBack = () => {
     window.history.back();

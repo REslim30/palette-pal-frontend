@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
-import ColorDialog from "./components/ColorDialog/index";
-import SendIcon from "#src/components/SendIcon/index";
-import SUBMIT_PALETTE from "./services/submitPaletteGraphQL"
-import SUBMIT_COLOR from "./services/submitColorGraphQL";
-import GET_GROUPS from "./services/getGroupsGraphQL"
+
 
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from "@material-ui/core/AppBar";
@@ -29,19 +25,23 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import { array } from 'prop-types';
+import { RouteComponentProps } from '@reach/router';
+
+import ColorDialog from "./components/ColorDialog/index";
+import SendIcon from "#src/components/SendIcon/index";
+import SUBMIT_PALETTE from "./services/submitPaletteGraphQL"
+import SUBMIT_COLOR from "./services/submitColorGraphQL";
+import GET_GROUPS from "./services/getGroupsGraphQL"
+import RightEdgeIconButton from "#src/components/RightEdgeIconButton/index";
 
 const useStyles = makeStyles((theme) => ({
-  rightEdgeButton: {
-    marginRight: '-12px',
-  },
   formControl: {
     minWidth: '50%'
   }
 }));
 
 // Page to create a new palette
-export default function CreatePalette(props) {
+export default function CreatePalette(props: RouteComponentProps) {
   const classes = useStyles();
   const [name, setName] = useState('');
   const [group, setGroup] = useState('');
@@ -64,15 +64,15 @@ export default function CreatePalette(props) {
   if (loading || submitPaletteResult.loading) return <p>Loading...</p>;
   if (error) return <p>Error...</p>;
 
-  const onArrowBack = (event) => {
+  const onArrowBack = () => {
     window.history.back();
   }
 
   if (submitPaletteResult.data) {
-    window.location = `/app/palettes/${submitPaletteResult.data.createPalette.palette.id}`;
+    window.location.href = `/app/palettes/${submitPaletteResult.data.createPalette.palette.id}`;
   }
 
-  const handlePaletteSubmit = async(event) => {
+  const handlePaletteSubmit = async() => {
     const colorCreationPromises = colors.map(color => submitColor({variables: { name: color.name, shades: color.shades }}).catch(console.log))
 
     // Must use a regular loop instead of .forEach due to async-await
@@ -149,15 +149,14 @@ export default function CreatePalette(props) {
           <ArrowBackIcon />
         </IconButton>
         <h1 className='pl-4 text-xl flex-grow'>Add Palette</h1>
-        <IconButton 
+        <RightEdgeIconButton 
           edge="end" 
-          className={ classes.rightEdgeButton } 
           color="inherit" 
           aria-label="Create palette"
           disabled={!paletteIsSubmittable}
           onClick={ handlePaletteSubmit }>
           <SendIcon />
-        </IconButton>
+        </RightEdgeIconButton>
       </Toolbar>
     </AppBar>
 

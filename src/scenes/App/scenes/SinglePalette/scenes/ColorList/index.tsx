@@ -6,7 +6,7 @@ import ShadeCard from "./components/ShadeCard/index";
 import CopyShadeDialog from "./components/CopyShadeDialog/index"
 
 // List of colors and their corresponding shades
-type ColorListProps = { 
+interface ColorListProps { 
   palette: Palette | undefined, 
   loading: boolean, 
   error: ApolloClient.ApolloError | undefined,

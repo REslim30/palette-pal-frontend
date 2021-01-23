@@ -27,13 +27,13 @@ ColorDialog.propTypes = {
   color: PropTypes.object, // can optionally iniialize fields by passing in object with fields { name: String, shades: [HexColors] }
 }
 
-export default function ColorDialog(props) {
+export default function ColorDialog(props: any) {
   const [cssColorString, setCssColorString] = useState('');
   const [name, setName] = useState('');
-  const [shades, setShades] = useState([]);
+  const [shades, setShades] = useState<string[]>([]);
   const [shadeInputError, setShadeInputError] = useState({});
   const [submitDisabled, setSubmitDisabled] = useState(true);
-  const [shadeMenuAnchorEl, setShadeMenuAnchorEl] = useState(null);
+  const [shadeMenuAnchorEl, setShadeMenuAnchorEl] = useState<HTMLElement | null>(null);
 
   // Initialize name and shades if given
   useEffect(() => {
@@ -58,15 +58,15 @@ export default function ColorDialog(props) {
   }, [shades.length, name]);
 
 
-  const handleNameChange = (event) => {
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
   };
 
-  const handleCssColorStringChange = (event) => {
+  const handleCssColorStringChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCssColorString(event.target.value);
   };
 
-  const handleAddShade = (event) => {
+  const handleAddShade = () => {
     const hexValue = fromString(cssColorString)?.toHexString();
     if (hexValue) {
       setShadeInputError({});
@@ -77,42 +77,42 @@ export default function ColorDialog(props) {
     }
   }
 
-  const handleAddShadeKeyDown = (event) => {
+  const handleAddShadeKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
     if (event.keyCode === 13) {
       event.preventDefault();
-      handleAddShade(event);
+      handleAddShade();
     }
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: React.SyntheticEvent<HTMLElement>) => {
     props.submitColor({ name, shades })
     props.onClose(event);
   }
 
-  const handleShadeMenuOpen = (event) => {
+  const handleShadeMenuOpen = (event: React.SyntheticEvent<HTMLElement>) => {
     setShadeMenuAnchorEl(event.currentTarget);
   }
 
-  const handleShadeMenuClose = (event) => {
+  const handleShadeMenuClose = () => {
     setShadeMenuAnchorEl(null);
   }
 
-  const handleShadeDelete = (event) => {
-    const shadeIndex = parseInt(shadeMenuAnchorEl.dataset.index);
+  const handleShadeDelete = (event: React.MouseEvent<HTMLElement>) => {
+    const shadeIndex = parseInt(shadeMenuAnchorEl?.dataset.index as string);
     setShades(shades.filter((shade, index) => index !== shadeIndex));
-    handleShadeMenuClose(event);
+    handleShadeMenuClose();
   }
 
-  const handleShadeMoveUp = (event) => {
-    const shadeIndex = parseInt(shadeMenuAnchorEl.dataset.index);
+  const handleShadeMoveUp = (event: React.MouseEvent<HTMLElement>) => {
+    const shadeIndex = parseInt(shadeMenuAnchorEl?.dataset.index as string);
     setShades(tryToSwapElementsImmutably(shades, shadeIndex, shadeIndex-1));
-    handleShadeMenuClose(event);
+    handleShadeMenuClose();
   }
 
-  const handleShadeMoveDown = (event) => {
-    const shadeIndex = parseInt(shadeMenuAnchorEl.dataset.index);
+  const handleShadeMoveDown = (event: React.MouseEvent<HTMLElement>) => {
+    const shadeIndex = parseInt(shadeMenuAnchorEl?.dataset.index as string);
     setShades(tryToSwapElementsImmutably(shades, shadeIndex, shadeIndex+1));
-    handleShadeMenuClose(event);
+    handleShadeMenuClose();
   }
 
 
@@ -155,7 +155,7 @@ export default function ColorDialog(props) {
         {/* List of Shades */}
         <div className="pt-6">
           <h2 className="text-xl">Shades:</h2>
-          {shades.map((shade, index) => {
+          {shades.map((shade: string, index: number) => {
             return <>
               <div 
                 className="grid gap-4 items-center my-3" 
@@ -223,7 +223,7 @@ export default function ColorDialog(props) {
 
 // Tries to swap elements and then
 // returns a NEW array
-function tryToSwapElementsImmutably(array, firstElement, secondElement) {
+function tryToSwapElementsImmutably(array: any[], firstElement: number, secondElement: number) {
   let newArray = [...array];
 
   if (firstElement < 0 
