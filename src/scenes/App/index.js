@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router } from '@reach/router';
 
-import MultiPalette from './scenes/MultiPalette/index';
+import MultiPalette from './scenes/MultiPalette/index.tsx';
 import SinglePalette from './scenes/SinglePalette/index';
 import CreatePalette from "./scenes/CreatePalette/index";
 

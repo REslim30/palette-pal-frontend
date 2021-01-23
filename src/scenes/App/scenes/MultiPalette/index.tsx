@@ -6,8 +6,9 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import AddIcon from '@material-ui/icons/Add';
 import { useQuery } from '@apollo/client';
-import GET_PALETTE from "./services/getPalettesGraphQL.ts";
+import GET_PALETTE from "./services/getPalettesGraphQL";
 import PaletteCard from "./components/PaletteCard";
+import CircularProgress from "@material-ui/core/CircularProgress"
 
 
 const useStyles = makeStyles((theme) => ({
@@ -21,16 +22,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function MultiPalette(props) {
+export default function MultiPalette(props : {}) {
   const classes = useStyles();
   const [group, setGroup] = useState('');
   const { loading, error, data } = useQuery(GET_PALETTE);
 
-  if (loading) return <p>Loading...</p>;
   if (error) return <p>Error...</p>;
 
   const onAddPalette = (event) => {
-    window.location = "/app/palettes/new"
+    window.location.href = "/app/palettes/new"
   }
 
   return <>
@@ -48,11 +48,22 @@ export default function MultiPalette(props) {
     </AppBar>
 
     {/* Main palette View */}
-    {data.palettes.length === 0 
-      ? <p>You have no palettes. Click on '+' to create your first palette!</p>
-      : (<main className="p-6 grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))' }}>
-        { data.palettes.map(palette => <PaletteCard palette={palette}/>) }
-      </main>)
-    }
+    <Palettes loading={loading} palettes={data?.palettes}/>
   </>
+}
+
+function Palettes(props: {loading: boolean, palettes: Palette[] | undefined}) {
+  let markup = <CircularProgress />;
+
+  if (!props.loading) {
+    markup = <p>You have no palettes. Click on '+' to create your first palette!</p>
+    
+    if (props.palettes.length) {
+      markup = <main className="p-6 grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))' }}>
+        { props.palettes.map(palette => <PaletteCard palette={palette}/>) }
+      </main>;
+    }
+  }
+
+  return markup;
 }
