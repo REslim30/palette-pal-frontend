@@ -9,13 +9,7 @@ import { useQuery } from '@apollo/client';
 import GET_PALETTE from "./services/getPalettesGraphQL";
 import PaletteCard from "./components/PaletteCard";
 import CircularProgress from "@material-ui/core/CircularProgress"
-
-
-const RightEdgeIconButton = styled(IconButton)({
-  rightEdgeButton: {
-    marginRight: '-12px',
-  }
-});
+import RightEdgeIconButton from "#src/components/RightEdgeIconButton/index";
 
 
 export default function MultiPalette(props : {}) {
@@ -42,7 +36,6 @@ export default function MultiPalette(props : {}) {
       </Toolbar>
     </AppBar>
 
-    {/* Main palette View */}
     <Palettes loading={loading} palettes={data?.palettes}/>
   </>
 }
