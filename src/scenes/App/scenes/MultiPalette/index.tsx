@@ -10,6 +10,7 @@ import PaletteCard from "./components/PaletteCard";
 import CircularProgress from "@material-ui/core/CircularProgress"
 import RightEdgeIconButton from "#src/components/RightEdgeIconButton/index";
 import { RouteComponentProps } from '@reach/router';
+import IconLink from "#src/components/IconLink/index";
 
 
 export default function MultiPalette(props : RouteComponentProps) {
@@ -30,9 +31,11 @@ export default function MultiPalette(props : RouteComponentProps) {
           <MenuIcon />
         </IconButton>
         <h1 className='pl-4 text-xl flex-grow'>All</h1>
-        <RightEdgeIconButton edge="start" color="inherit" aria-label="Add Palette" onClick={onAddPalette}>
-          <AddIcon />
+        <RightEdgeIconButton aria-label="Add Palette" onClick={onAddPalette}>
         </RightEdgeIconButton>
+        <IconLink to="/app/palettes/new">
+          <AddIcon />
+        </IconLink>
       </Toolbar>
     </AppBar>
 
