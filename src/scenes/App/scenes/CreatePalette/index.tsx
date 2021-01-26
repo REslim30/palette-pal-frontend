@@ -28,7 +28,7 @@ import usePaletteIsSubmittable from './services/usePaletteIsSubmittable';
 // Page to create a new palette
 export default function CreatePalette(props: RouteComponentProps) {
   const [name, setName] = useState('');
-  const [group, setGroup] = useState('');
+  const [group, setGroup] = useState<number | null>(null);
   const [colors, setColors] = useState<Color[]>([]);
   const paletteIsSubmittable = usePaletteIsSubmittable(name, colors);
 

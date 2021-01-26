@@ -5,6 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import useGroups from "#src/services/backendApi/useGroups";
 
@@ -15,15 +16,15 @@ const StyledFormControl = styled(FormControl)({
 });
 
 type NameAndGroupInputProps = {
-  setName: () => void,
-  setGroup: () => void,
-  group: number,
+  setName: (input: string) => void,
+  setGroup: (input: number | null) => void,
+  group: number | null,
   name: string,
 }
 export default function NameAndGroupInput(props: NameAndGroupInputProps) {
   const { loading, error, data } = useGroups();
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <CircularProgress />;
   if (error) return <p>Error...</p>;
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +32,7 @@ export default function NameAndGroupInput(props: NameAndGroupInputProps) {
   }
 
   const handleGroupChange = (event: React.ChangeEvent<{ name?: string | undefined; value: unknown; }>) => {
-    props.setGroup(event.target.value as string);
+    props.setGroup(event.target.value as number);
   }
 
   return <section className="grid grid-cols-2 gap-4">
