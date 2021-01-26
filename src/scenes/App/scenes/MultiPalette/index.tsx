@@ -1,24 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import usePalettes from "#src/services/backendApi/usePalettes";
+import PaletteCard from "./components/PaletteCard";
+import { RouteComponentProps, useLocation } from '@reach/router';
+import IconLink from "#src/components/IconLink/index";
+import { parse } from "query-string";
+
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import AddIcon from '@material-ui/icons/Add';
-import usePalettes from "#src/services/backendApi/usePalettes";
-import PaletteCard from "./components/PaletteCard";
 import CircularProgress from "@material-ui/core/CircularProgress"
-import { RouteComponentProps } from '@reach/router';
-import IconLink from "#src/components/IconLink/index";
 
 
-export default function MultiPalette(props : RouteComponentProps) {
-  const [group, setGroup] = useState('');
+interface MultiPaletteProps extends RouteComponentProps {
+  groupId?: number;
+}
+
+export default function MultiPalette(props : MultiPaletteProps) {
+  const [group, setGroup] = useState<number | null>(null);
+  const location = useLocation();
   const { loading, error, data } = usePalettes();
+
+  useEffect(() => {
+    const params = parse(location.search);
+    if (params.group)
+      setGroup(parseInt(params.group as string));
+  }, [props.groupId])
 
   if (error) return <p>Error...</p>;
 
   return <>
-    <MultiPaletteAppBar>{group || 'All'}</MultiPaletteAppBar>
+    <MultiPaletteAppBar group={group}/>
     <Palettes loading={loading} palettes={data?.palettes}/>
   </>
 }
@@ -29,7 +42,7 @@ function MultiPaletteAppBar(props: any) {
       <IconButton edge="start" color="inherit" aria-label="Menu">
         <MenuIcon />
       </IconButton>
-      <h1 className='pl-4 text-xl flex-grow'>{props.children}</h1>
+      <h1 className='pl-4 text-xl flex-grow'>{props.group || 'All'}</h1>
       <IconLink to="/app/palettes/new">
         <AddIcon />
       </IconLink>
