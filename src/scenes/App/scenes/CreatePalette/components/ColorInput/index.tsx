@@ -13,10 +13,8 @@ type ColorInput = {
 }
 export default function ColorInput({...props}: any) {
   const [colors, setColors] = useContext(ColorContext);
-  const [colorToEdit, setColorToEdit] = useState<Color | null>(null);
+  const [colorToSubmit, setColorToSubmit] = useState<number | 'new' | null>(null);
   const [colorToDelete, setColorToDelete] = useState<number | null>(null);
-
-  const [submitColorFunction, setSubmitColorFunction] = useState(() => addColor);
 
   const handleDeleteColorDialogClose = () => {
     setColorToDelete(null);
@@ -28,23 +26,17 @@ export default function ColorInput({...props}: any) {
   }
 
   const handleNewColorCreate = () => {
-    setSubmitColorFunction(() => addColor);
-    setColorToEdit({ id: 1, name: '', shades: [] });
+    setColorToSubmit('new');
   }
 
   const handleColorDialogClose = () => {
-    setColorToEdit(null);
-  }
-
-  function addColor(color: Color) {
-    setColors([...colors, color])
+    setColorToSubmit(null);
   }
 
   return <section className="mt-6">
     <ColorList
-      setColorToEdit={setColorToEdit}
-      setColorToDelete={setColorToDelete}
-      setSubmitColorFunction={setSubmitColorFunction}/>
+      setColorToEdit={setColorToSubmit}
+      setColorToDelete={setColorToDelete}/>
 
     <ColorDeleteDialog 
       color={colorToDelete as number}
@@ -54,10 +46,9 @@ export default function ColorInput({...props}: any) {
     <AddColorButton onClick={handleNewColorCreate}/>
     
     <ColorSubmitDialog 
-      open={Boolean(colorToEdit)} 
+      colorToSubmit={colorToSubmit}
       onClose={handleColorDialogClose}
-      submitColor={submitColorFunction}
-      color={colorToEdit}/>
+      />
   </section>
 };
 

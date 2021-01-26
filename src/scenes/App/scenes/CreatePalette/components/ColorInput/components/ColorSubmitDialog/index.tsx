@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import SendIcon from "#src/components/SendIcon";
 import { fromString } from "css-color-converter";
-import PropTypes from 'prop-types';
 
 import Dialog  from '@material-ui/core/Dialog';
 import DialogTitle  from '@material-ui/core/DialogTitle';
@@ -18,45 +17,42 @@ import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 
-// Dialog that submits a color
-// passes color to submitColor
-ColorSubmitDialog.propTypes = {
-  submitColor: PropTypes.func.isRequired, //submitColor(color) : void
-  open: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-  color: PropTypes.object, // can optionally iniialize fields by passing in object with fields { name: String, shades: [HexColors] }
+import ColorContext from "../../../../services/ColorContext";
+import useSubmitDisabled from './services/useSubmitDisabled';
+import { tryToSwapElementsImmutably, replaceElementImmutably } from "./services/immutableArrayActions";
+
+// Dialog that edits or creates a color
+type ColorSubmitDialogProps = {
+  colorToSubmit: "new" | number | null,
+  onClose: (event: React.SyntheticEvent<HTMLElement>) => void,
 }
 
-export default function ColorSubmitDialog(props: any) {
+export default function ColorSubmitDialog(props: ColorSubmitDialogProps) {
+  const [colors, setColors] = useContext(ColorContext);
   const [cssColorString, setCssColorString] = useState('');
   const [name, setName] = useState('');
   const [shades, setShades] = useState<string[]>([]);
   const [shadeInputError, setShadeInputError] = useState({});
-  const [submitDisabled, setSubmitDisabled] = useState(true);
   const [shadeMenuAnchorEl, setShadeMenuAnchorEl] = useState<HTMLElement | null>(null);
 
   // Initialize name and shades if given
   useEffect(() => {
-    const color = props.color;
-    if (color?.name)
+    if (typeof props.colorToSubmit === "number") {
+      const color = colors[props.colorToSubmit];
       setName(color.name);
-    
-    if (color?.shades)
       setShades(color?.shades)
+    }
+  }, [props.colorToSubmit])
 
+  // Reset all state after componenet unmount
+  useEffect(() => {
     return () => {
       setCssColorString('');
       setName('');
       setShades([]);
       setShadeInputError({});
-      setSubmitDisabled(true);
     }
-  }, [props.color])
-
-  useEffect(() => {
-    setSubmitDisabled(shades.length <= 0 || !name);
-  }, [shades.length, name]);
-
+  }, [props.colorToSubmit])
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -85,7 +81,11 @@ export default function ColorSubmitDialog(props: any) {
   }
 
   const handleSubmit = (event: React.SyntheticEvent<HTMLElement>) => {
-    props.submitColor({ name, shades })
+    if (props.colorToSubmit === "new") {
+      setColors([...colors, { id: -1, name, shades }])
+    } else {
+      setColors(replaceElementImmutably(colors, props.colorToSubmit as number, { id: -1, name, shades }))
+    }
     props.onClose(event);
   }
 
@@ -115,11 +115,11 @@ export default function ColorSubmitDialog(props: any) {
     handleShadeMenuClose();
   }
 
-
+  const submitDisabled = shades.length <= 0 || !name;
 
   return <>
     <Dialog 
-      open={props.open} 
+      open={Boolean(props.colorToSubmit)} 
       aria-labelledby="add-color-dialog-title" 
       onClose={props.onClose}>
 
@@ -221,19 +221,3 @@ export default function ColorSubmitDialog(props: any) {
   </>
 };
 
-// Tries to swap elements and then
-// returns a NEW array
-function tryToSwapElementsImmutably(array: any[], firstElement: number, secondElement: number) {
-  let newArray = [...array];
-
-  if (firstElement < 0 
-    || firstElement >= array.length 
-    || secondElement < 0 
-    || secondElement >= array.length)
-    return newArray;
-
-  newArray[firstElement] = array[secondElement];
-  newArray[secondElement] = array[firstElement];
-
-  return newArray;
-}

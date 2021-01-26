@@ -13,12 +13,10 @@ import ColorContext from "../../../../services/ColorContext";
 
 type ColorListProps = {
   setColorToDelete: (colorIndex: number) => void,
-  setColorToEdit: (color: Color) => void,
-  setSubmitColorFunction: any,
+  setColorToEdit: (colorIndex: number) => void,
 }
 
 export default function ColorList(props: ColorListProps) {
-  const [colors, setColors] = useContext(ColorContext);
   const [colorOptionsAnchorEl, setColorOptionsAnchorEl] = useState<HTMLElement | null>(null);
 
   const handleColorOptionsOpen = (event: React.SyntheticEvent<HTMLElement>) => {
@@ -31,15 +29,7 @@ export default function ColorList(props: ColorListProps) {
 
   const handleColorEdit = () => {
     const colorIndex = parseInt((colorOptionsAnchorEl as HTMLElement).dataset.index as string);
-
-    const editColor = (newColor: Color) => {
-      const newColors = [...colors];
-      newColors[colorIndex] = newColor;
-      setColors(newColors);
-    }
-
-    props.setSubmitColorFunction(() => editColor);
-    props.setColorToEdit(colors[colorIndex]);
+    props.setColorToEdit(colorIndex);
   }
 
   const handleDeleteColorDialogOpen = () => {

@@ -15,7 +15,6 @@ const StyledFormControl = styled(FormControl)({
   }
 });
 
-
 type NameAndGroupInputProps = {
   setName: (input: string) => void,
   setGroup: (input: number | null) => void,
@@ -33,7 +32,7 @@ export default function NameAndGroupInput(props: NameAndGroupInputProps) {
   }
 
   const handleGroupChange = (event: React.ChangeEvent<{ name?: string | undefined; value: unknown; }>) => {
-    props.setGroup(event.target.value as number);
+    props.setGroup(parseInt(event.target.value as string));
   }
 
   return <section className="grid grid-cols-2 gap-4">
@@ -42,7 +41,7 @@ export default function NameAndGroupInput(props: NameAndGroupInputProps) {
       <InputLabel htmlFor="group-select-label">Group</InputLabel>
       <Select 
         native
-        value={props.group}
+        value={props.group ?? ''}
         onChange={handleGroupChange}
         label="Group"
         inputProps={{
