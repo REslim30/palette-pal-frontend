@@ -18,23 +18,26 @@ interface SinglePaletteProps extends RouteComponentProps {
 
 export default function SinglePalette(props: SinglePaletteProps) {
   const { loading, error, data } = usePalette(props.id as number);
+  return <>
+    <SinglePaletteAppBar>{data.palette.name}</SinglePaletteAppBar>
+    <ColorList palette={data?.palette} loading={loading} error={error}/>
+  </>
+};
+
+function SinglePaletteAppBar(props: any) {
   const onArrowBack = () => {
     window.history.back();
   }
 
-  return <>
-    <AppBar position="static">
-      <Toolbar>
-        <IconButton edge="start" color="inherit" aria-label="Menu" onClick={onArrowBack}>
-          <ArrowBackIcon />
-        </IconButton>
-        <h1 className='pl-4 text-xl flex-grow'>{data?.palette.name}</h1>
-        <RightEdgeIconButton edge="end" color="inherit" aria-label="Add Palette">
-          <MoreVertIcon />
-        </RightEdgeIconButton>
-      </Toolbar>
-    </AppBar>
-
-    <ColorList palette={data?.palette} loading={loading} error={error}/>
-  </>
-};
+  return <AppBar position="static">
+    <Toolbar>
+      <IconButton edge="start" color="inherit" aria-label="Menu" onClick={onArrowBack}>
+        <ArrowBackIcon />
+      </IconButton>
+      <h1 className='pl-4 text-xl flex-grow'>{props.children}</h1>
+      <RightEdgeIconButton edge="end" color="inherit" aria-label="Add Palette">
+        <MoreVertIcon />
+      </RightEdgeIconButton>
+    </Toolbar>
+  </AppBar>
+}

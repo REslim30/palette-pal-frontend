@@ -4,11 +4,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import AddIcon from '@material-ui/icons/Add';
-import { useQuery } from '@apollo/client';
 import usePalettes from "#src/services/backendApi/usePalettes";
 import PaletteCard from "./components/PaletteCard";
 import CircularProgress from "@material-ui/core/CircularProgress"
-import RightEdgeIconButton from "#src/components/RightEdgeIconButton/index";
 import { RouteComponentProps } from '@reach/router';
 import IconLink from "#src/components/IconLink/index";
 
@@ -19,28 +17,24 @@ export default function MultiPalette(props : RouteComponentProps) {
 
   if (error) return <p>Error...</p>;
 
-  const onAddPalette = () => {
-    window.location.href = "/app/palettes/new"
-  }
-
   return <>
-    {/* App Bar */}
-    <AppBar position="static">
-      <Toolbar>
-        <IconButton edge="start" color="inherit" aria-label="Menu">
-          <MenuIcon />
-        </IconButton>
-        <h1 className='pl-4 text-xl flex-grow'>All</h1>
-        <RightEdgeIconButton aria-label="Add Palette" onClick={onAddPalette}>
-        </RightEdgeIconButton>
-        <IconLink to="/app/palettes/new">
-          <AddIcon />
-        </IconLink>
-      </Toolbar>
-    </AppBar>
-
+    <MultiPaletteAppBar>{group || 'All'}</MultiPaletteAppBar>
     <Palettes loading={loading} palettes={data?.palettes}/>
   </>
+}
+
+function MultiPaletteAppBar(props: any) {
+  return <AppBar position="static">
+    <Toolbar>
+      <IconButton edge="start" color="inherit" aria-label="Menu">
+        <MenuIcon />
+      </IconButton>
+      <h1 className='pl-4 text-xl flex-grow'>{props.children}</h1>
+      <IconLink to="/app/palettes/new">
+        <AddIcon />
+      </IconLink>
+    </Toolbar>
+  </AppBar>
 }
 
 function Palettes(props: {loading: boolean, palettes: Palette[] | undefined}) {
