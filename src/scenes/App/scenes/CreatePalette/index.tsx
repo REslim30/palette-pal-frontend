@@ -1,16 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useQuery, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
+import { RouteComponentProps } from '@reach/router';
 
-
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import TextField from "@material-ui/core/TextField";
-import Select from "@material-ui/core/Select";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormControl from "@material-ui/core/FormControl";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
@@ -25,48 +17,27 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import { RouteComponentProps } from '@reach/router';
 
 import ColorDialog from "./components/ColorDialog/index";
-import SendIcon from "#src/components/SendIcon/index";
+import CreatePaletteAppBar from "./components/CreatePaletteAppBar/index";
+import NameAndGroupInput from "./components/NameAndGroupInput/index";
 import SUBMIT_PALETTE from "./services/submitPaletteGraphQL"
 import SUBMIT_COLOR from "./services/submitColorGraphQL";
-import useGroups from "#src/services/backendApi/useGroups";
-import RightEdgeIconButton from "#src/components/RightEdgeIconButton/index";
-
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    minWidth: '50%'
-  }
-}));
+import usePaletteIsSubmittable from './services/usePaletteIsSubmittable';
 
 // Page to create a new palette
 export default function CreatePalette(props: RouteComponentProps) {
-  const classes = useStyles();
   const [name, setName] = useState('');
   const [group, setGroup] = useState('');
   const [colors, setColors] = useState<Color[]>([]);
+  const paletteIsSubmittable = usePaletteIsSubmittable(name, colors);
+
   const [colorToEdit, setColorToEdit] = useState<Color | null>(null);
   const [colorToBeDeleted, setColorToBeDeleted] = useState<number | null>(null);
   const [editColor, setEditColor] = useState(() => addColor);
   const [colorOptionsAnchorEl, setColorOptionsAnchorEl] = useState<HTMLElement | null>(null);
-  const [paletteIsSubmittable, setPaletteIsSubmittable] = useState(false);
   const [submitPalette, submitPaletteResult] = useMutation(SUBMIT_PALETTE);
   const [submitColor] = useMutation(SUBMIT_COLOR);
-
-  useEffect(() => {
-    if (name && colors.length !== 0)
-      setPaletteIsSubmittable(true);
-  }, [name, group, colors]);
-  
-  const { loading, error, data } = useGroups();
-
-  if (loading || submitPaletteResult.loading) return <p>Loading...</p>;
-  if (error) return <p>Error...</p>;
-
-  const onArrowBack = () => {
-    window.history.back();
-  }
 
   if (submitPaletteResult.data) {
     window.location.href = `/app/palettes/${submitPaletteResult.data.createPalette.palette.id}`;
@@ -86,13 +57,7 @@ export default function CreatePalette(props: RouteComponentProps) {
     submitPalette({variables: { name: name, group: group, colors: colorIds }})
   }
 
-  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
-  }
 
-  const handleGroupChange = (event: React.ChangeEvent<{ name?: string | undefined; value: unknown; }>) => {
-    setGroup(event.target.value as string);
-  }
 
   const handleNewColorCreate = () => {
     setEditColor(() => addColor);
@@ -107,7 +72,7 @@ export default function CreatePalette(props: RouteComponentProps) {
     setColors([...colors, color])
   }
 
-  const handleEditColor = () => {
+  const handleColorEdit = () => {
     const colorIndex = parseInt((colorOptionsAnchorEl as HTMLElement).dataset.index as string);
 
     const editColor = (newColor: Color) => {
@@ -144,46 +109,17 @@ export default function CreatePalette(props: RouteComponentProps) {
   }
   
   return <>
-    <AppBar position="static">
-      <Toolbar>
-        <IconButton edge="start" color="inherit" aria-label="Menu" onClick={onArrowBack}>
-          <ArrowBackIcon />
-        </IconButton>
-        <h1 className='pl-4 text-xl flex-grow'>Add Palette</h1>
-        <RightEdgeIconButton 
-          edge="end" 
-          color="inherit" 
-          aria-label="Create palette"
-          disabled={!paletteIsSubmittable}
-          onClick={ handlePaletteSubmit }>
-          <SendIcon />
-        </RightEdgeIconButton>
-      </Toolbar>
-    </AppBar>
+    <CreatePaletteAppBar 
+      submitButtonDisabled={!paletteIsSubmittable} 
+      handleSubmit={handlePaletteSubmit}/>
 
     <main className="p-6">
-      {/* Name and Group input*/}
-      <section className="grid grid-cols-2 gap-4">
-        <TextField variant="outlined" label="Name" value={name} onChange={handleNameChange}></TextField>
-        <FormControl className={classes.formControl} variant="outlined">
-          <InputLabel htmlFor="group-select-label">Group</InputLabel>
-          <Select 
-            native
-            value={group}
-            onChange={handleGroupChange}
-            label="Group"
-            inputProps={{
-              name: 'group',
-              id: 'group-select-label'
-            }}
-          >
-            <option aria-label="none" value=""/>
-            {data.groups.map((group: Group) => {
-              return <option value={group.id}>{group.name}</option>
-            })}
-          </Select>
-        </FormControl> 
-      </section>
+      <NameAndGroupInput
+        setGroup={setGroup}
+        setName={setName}
+        group={group}
+        name={name}
+      />
 
       <section className="mt-6">
         {/* List of colors */}
@@ -216,7 +152,7 @@ export default function CreatePalette(props: RouteComponentProps) {
           anchorEl={colorOptionsAnchorEl}
           open={Boolean(colorOptionsAnchorEl)}
           onClose={handleColorOptionsClose}>
-          <MenuItem onClick={handleEditColor}>
+          <MenuItem onClick={handleColorEdit}>
             <ListItemIcon>
               <EditIcon/>
             </ListItemIcon>
