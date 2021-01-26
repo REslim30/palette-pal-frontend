@@ -15,6 +15,7 @@ const StyledFormControl = styled(FormControl)({
   }
 });
 
+
 type NameAndGroupInputProps = {
   setName: (input: string) => void,
   setGroup: (input: number | null) => void,

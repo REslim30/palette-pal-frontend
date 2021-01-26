@@ -18,16 +18,16 @@ import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 
-// Dialog that creates or edits a color
+// Dialog that submits a color
 // passes color to submitColor
-ColorDialog.propTypes = {
+ColorSubmitDialog.propTypes = {
   submitColor: PropTypes.func.isRequired, //submitColor(color) : void
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   color: PropTypes.object, // can optionally iniialize fields by passing in object with fields { name: String, shades: [HexColors] }
 }
 
-export default function ColorDialog(props: any) {
+export default function ColorSubmitDialog(props: any) {
   const [cssColorString, setCssColorString] = useState('');
   const [name, setName] = useState('');
   const [shades, setShades] = useState<string[]>([]);
