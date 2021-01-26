@@ -21,13 +21,13 @@ export default function PaletteCard(props: AppProps) {
 
   //Ensure that there are at least three colors
   if (colors.length === 0)
-    colors.push({id: -1, shades: ['#FFFFFF']})
+    colors.push({id: -1, shades: ['#FFFFFF'], name: "test"})
 
   if (colors.length === 1)
-    colors.push({id: -2, shades: colors[0].shades})
+    colors.push({id: -2, shades: colors[0].shades, name: "test"})
 
   if (colors.length === 2)
-    colors.push({id: -3, shades: colors[1].shades})
+    colors.push({id: -3, shades: colors[1].shades, name: "test"})
 
   return <div className="relative">
     <Link to={`/app/palettes/${props.palette.id}`} aria-label={props.palette.name} className="clickable-card w-full text-left h-40 flex flex-col truncate" key={props.palette.id}>

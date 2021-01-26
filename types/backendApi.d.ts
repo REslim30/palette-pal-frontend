@@ -1,4 +1,4 @@
-// Types received from the graphql backendAPI
+// Types received from the backendAPI
 declare type Palette = {
   id: number,
   name: string,
@@ -14,4 +14,11 @@ declare type Color = {
 declare type Group = {
   id: number,
   name: group
+}
+
+// The return type for custom api hooks. E.g. useSinglePalette
+declare interface useBackendApiReturn {
+  data: any | undefined, 
+  loading: boolean, 
+  error: ApolloError | undefined
 }

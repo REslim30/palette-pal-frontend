@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useQuery } from '@apollo/client';
+import React from "react";
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -8,12 +7,17 @@ import MoreVertIcon from '@material-ui/icons/MoreVert'
 import ArrowBackIcon  from "@material-ui/icons/ArrowBack";
 
 import RightEdgeIconButton from "#src/components/RightEdgeIconButton/index";
-import GET_SINGLE_PALETTE from "./services/getSinglePaletteGraphQL";
+import usePalette from "#src/services/backendApi/usePalette";
 import ColorList from "./scenes/ColorList/index";
 import { RouteComponentProps } from '@reach/router';
 
-export default function SinglePalette(props: RouteComponentProps) {
-  const { loading, error, data } = useQuery(GET_SINGLE_PALETTE, {variables: {id: props.id}});
+// Displays colors from a single palette
+interface SinglePaletteProps extends RouteComponentProps {
+  id?: number
+}
+
+export default function SinglePalette(props: SinglePaletteProps) {
+  const { loading, error, data } = usePalette(props.id as number);
   const onArrowBack = () => {
     window.history.back();
   }

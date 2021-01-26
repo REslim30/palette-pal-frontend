@@ -31,7 +31,7 @@ import ColorDialog from "./components/ColorDialog/index";
 import SendIcon from "#src/components/SendIcon/index";
 import SUBMIT_PALETTE from "./services/submitPaletteGraphQL"
 import SUBMIT_COLOR from "./services/submitColorGraphQL";
-import GET_GROUPS from "./services/getGroupsGraphQL";
+import useGroups from "#src/services/backendApi/useGroups";
 import RightEdgeIconButton from "#src/components/RightEdgeIconButton/index";
 
 const useStyles = makeStyles((theme) => ({
@@ -59,7 +59,7 @@ export default function CreatePalette(props: RouteComponentProps) {
       setPaletteIsSubmittable(true);
   }, [name, group, colors]);
   
-  const { loading, error, data } = useQuery(GET_GROUPS);
+  const { loading, error, data } = useGroups();
 
   if (loading || submitPaletteResult.loading) return <p>Loading...</p>;
   if (error) return <p>Error...</p>;

@@ -5,7 +5,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import AddIcon from '@material-ui/icons/Add';
 import { useQuery } from '@apollo/client';
-import GET_PALETTE from "./services/getPalettesGraphQL";
+import usePalettes from "#src/services/backendApi/usePalettes";
 import PaletteCard from "./components/PaletteCard";
 import CircularProgress from "@material-ui/core/CircularProgress"
 import RightEdgeIconButton from "#src/components/RightEdgeIconButton/index";
@@ -15,7 +15,7 @@ import IconLink from "#src/components/IconLink/index";
 
 export default function MultiPalette(props : RouteComponentProps) {
   const [group, setGroup] = useState('');
-  const { loading, error, data } = useQuery(GET_PALETTE);
+  const { loading, error, data } = usePalettes();
 
   if (error) return <p>Error...</p>;
 
