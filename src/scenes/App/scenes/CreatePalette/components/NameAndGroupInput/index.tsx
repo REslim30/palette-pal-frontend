@@ -20,7 +20,7 @@ type NameAndGroupInputProps = {
   group: number,
   name: string,
 }
-export default function NameAndGroupInput(props: any) {
+export default function NameAndGroupInput(props: NameAndGroupInputProps) {
   const { loading, error, data } = useGroups();
 
   if (loading) return <p>Loading...</p>;

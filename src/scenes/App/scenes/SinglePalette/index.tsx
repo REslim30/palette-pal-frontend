@@ -19,7 +19,7 @@ interface SinglePaletteProps extends RouteComponentProps {
 export default function SinglePalette(props: SinglePaletteProps) {
   const { loading, error, data } = usePalette(props.id as number);
   return <>
-    <SinglePaletteAppBar>{data.palette.name}</SinglePaletteAppBar>
+    <SinglePaletteAppBar>{data?.palette.name || ''}</SinglePaletteAppBar>
     <ColorList palette={data?.palette} loading={loading} error={error}/>
   </>
 };
