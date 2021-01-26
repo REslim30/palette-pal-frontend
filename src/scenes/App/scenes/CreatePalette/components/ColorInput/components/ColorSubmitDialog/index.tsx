@@ -18,8 +18,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 
 import ColorContext from "../../../../services/ColorContext";
-import useSubmitDisabled from './services/useSubmitDisabled';
-import { tryToSwapElementsImmutably, replaceElementImmutably } from "./services/immutableArrayActions";
+import { tryToSwapElementsImmutably, replaceElementImmutably } from "#src/services/immutableArrayActions";
 
 // Dialog that edits or creates a color
 type ColorSubmitDialogProps = {

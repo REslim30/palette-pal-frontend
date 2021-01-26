@@ -6,6 +6,7 @@ import ColorSubmitDialog from "./components/ColorSubmitDialog/index";
 import ColorContext from "../../services/ColorContext";
 import ColorDeleteDialog from "./components/ColorDeleteDialog";
 import ColorList from "./components/ColorList/index";
+import { deleteArrayItemImmutably } from "#src/services/immutableArrayActions";
 
 type ColorInput = {
   colors: Color[],
@@ -60,6 +61,3 @@ function AddColorButton(props: any) {
   </button>;
 }
 
-function deleteArrayItemImmutably(array: any[], indexToDelete: number) {
-  return array.filter((color: Color, index: number) => indexToDelete !== index);
-}
