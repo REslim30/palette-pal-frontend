@@ -8,14 +8,12 @@ import ColorInput from "./components/ColorInput";
 import ColorContext from "./services/ColorContext";
 import SUBMIT_PALETTE from "./services/submitPaletteGraphQL"
 import SUBMIT_COLOR from "./services/submitColorGraphQL";
-import usePaletteIsSubmittable from './services/usePaletteIsSubmittable';
 
 // Page to create a new palette
 export default function CreatePalette(props: RouteComponentProps) {
   const [name, setName] = useState('');
   const [group, setGroup] = useState<number | null>(null);
-  const [colors, setColors] = useContext(ColorContext);
-  const paletteIsSubmittable = usePaletteIsSubmittable(name, colors);
+  const [colors, setColors] = useState<Color[]>([]);
 
   const [submitPalette, submitPaletteResult] = useMutation(SUBMIT_PALETTE);
   const [submitColor] = useMutation(SUBMIT_COLOR);
@@ -38,7 +36,9 @@ export default function CreatePalette(props: RouteComponentProps) {
     submitPalette({variables: { name: name, group: group, colors: colorIds }})
   }
   
-  
+
+  const paletteIsSubmittable = name && colors.length !== 0;
+  console.log(paletteIsSubmittable);
   return <>
     <CreatePaletteAppBar 
       submitButtonDisabled={!paletteIsSubmittable} 
@@ -52,7 +52,9 @@ export default function CreatePalette(props: RouteComponentProps) {
         name={name}
       />
 
-      <ColorInput />
+      <ColorContext.Provider value={[colors, setColors]}>
+        <ColorInput />
+      </ColorContext.Provider>
     </main>
   </>
 };

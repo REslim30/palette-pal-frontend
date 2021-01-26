@@ -7,6 +7,7 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
 import RightEdgeIconButton from "#src/components/RightEdgeIconButton/index";
 import SendIcon from "#src/components/SendIcon/index";
+import IconLink from "#src/components/IconLink";
 
 type CreatePaletteAppBarProps = {
   submitButtonDisabled: boolean,
@@ -14,15 +15,11 @@ type CreatePaletteAppBarProps = {
 }
 
 export default function CreatePaletteAppBar(props: CreatePaletteAppBarProps) {
-  const onArrowBack = () => {
-    window.history.back();
-  }
-
   return <AppBar position="static">
     <Toolbar>
-      <IconButton edge="start" color="inherit" aria-label="Menu" onClick={onArrowBack}>
+      <IconLink to="/app/palettes" edge="start" color="inherit" aria-label="Menu">
         <ArrowBackIcon />
-      </IconButton>
+      </IconLink>
       <h1 className='pl-4 text-xl flex-grow'>Add Palette</h1>
       <RightEdgeIconButton 
         edge="end" 

@@ -8,9 +8,7 @@ type ColorContext = [
 
 const colorContext: ColorContext = [
   [],
-  (colors: Color[]) => {
-    colorContext[0] = colors;
-  }
+  () => {}
 ]
 
 export default createContext(colorContext);
