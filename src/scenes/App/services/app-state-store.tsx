@@ -36,7 +36,7 @@ const appSlice = createSlice({
     setGroups: (state, action) => {
       const newState = {...state};
       newState.groups = action.payload;
-      newState.groupIdLookup = (newState.groups as Group[]).reduce((acc: any, cur: Group) => {
+      newState.groupIdLookup = (newState.groups as Group[])?.reduce((acc: any, cur: Group) => {
         acc[cur.id as number] = cur;
         return acc;
       }, {})
@@ -152,15 +152,41 @@ export function refreshPalettes(): void {
   })();
 }
 
+const GET_GROUPS = `
+  query GetGroups {
+    groups {
+      id
+      name
+      palettes {
+        id
+        name
+        colors {
+          name
+          shades
+        }
+      }
+    }
+  }
+`;
+
 export function refreshGroups(): void {
   (async () => {
-    const fetchPromise = await fetch(`${BACKEND_API_URL}/groups`, {
-      method: 'GET',
+    const fetchPromise = await fetch(`${BACKEND_API_URL}/graphql`, {
+      method: 'POST',
       headers: {
-        authorization: `Bearer ${localStorage.getItem('jwt')}`
-      }
+        authorization: `Bearer ${localStorage.getItem('jwt')}`,
+        "Content-Type": 'application/json',
+        "Accept": 'application/json'
+      },
+      body: JSON.stringify({
+        query: GET_GROUPS
+      })
     });
+    try {
       const body = await fetchPromise.json();
-      store.dispatch(setGroups(body));
+      store.dispatch(setGroups(body.data.groups));
+    } catch(e) {
+      console.error(e);
+    }
   })();
 }
