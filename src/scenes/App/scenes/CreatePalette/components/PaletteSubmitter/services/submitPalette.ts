@@ -1,5 +1,54 @@
-import submitPaletteGraphQL from "./submitPaletteGraphQL";
+import fetchGraphQL from "#src/services/fetchGraphQL";
 
-export default function submitPalette(palette: Palette): void {
+export default async function submitPalette({name, group, colors}: {name: string, group: number | null, colors: Color[]}): Promise<Palette> {
+  const colorCreationPromises = colors.map(color => submitColor({ name: color.name, shades: color.shades }));
 
+  // Must use a regular loop instead of .forEach due to async-await
+  const colorIds = []
+  for (let i=0; i<colorCreationPromises.length; i++) {
+    const colorCreation = await colorCreationPromises[i];
+    const colorBody = await colorCreation.json(); 
+    // TODO: handle error
+    colorIds.push(parseInt((colorBody as Record<string, any>).data.createColor.color.id));
+  }
+
+  const variables = {name, group, colors: colorIds}
+  const response = await fetchGraphQL(`
+    mutation SubmitPalette($name: String!, $group: ID, $colors: [ID]) {
+      createPalette(input: {
+        data: {
+          name: $name,
+          group: $group,
+          colors: $colors
+        }
+      }) {
+        palette {
+          id,
+          name
+        }
+      }
+    }
+  `, variables)
+
+  const responseBody = await response.json();
+
+  return responseBody.data.createPalette.palette;
+}
+
+
+async function submitColor(variables: {name: string, shades: string[]}) {
+  return fetchGraphQL(`
+    mutation SubmitColor($name: String!, $shades: JSON) {
+      createColor(input: {
+        data: {
+          name: $name
+          shades: $shades
+        }
+      }) {
+        color {
+          id
+        }
+      }
+    }
+  `, variables);
 }

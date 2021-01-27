@@ -2,7 +2,7 @@
 declare type Palette = {
   id?: number,
   name: string,
-  colors: Color[]
+  colors: Color[],
 };
 
 declare type Color = {
