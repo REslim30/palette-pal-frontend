@@ -7,7 +7,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-import useGroups from "#src/services/backendApi/useGroups";
+import { useGroups } from "#app/services/app-state-store";
 
 const StyledFormControl = styled(FormControl)({
   formControl: {
@@ -22,10 +22,9 @@ type NameAndGroupInputProps = {
   name: string,
 }
 export default function NameAndGroupInput(props: NameAndGroupInputProps) {
-  const { loading, error, data } = useGroups();
+  const groups = useGroups();
 
-  if (loading) return <CircularProgress />;
-  if (error) return <p>Error...</p>;
+  if (!groups) return <CircularProgress />;
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     props.setName(event.target.value);
@@ -41,7 +40,7 @@ export default function NameAndGroupInput(props: NameAndGroupInputProps) {
       <InputLabel htmlFor="group-select-label">Group</InputLabel>
       <Select 
         native
-        value={props.group ?? ''}
+        value={props.group || ''}
         onChange={handleGroupChange}
         label="Group"
         inputProps={{
@@ -50,7 +49,7 @@ export default function NameAndGroupInput(props: NameAndGroupInputProps) {
         }}
       >
         <option aria-label="none" value=""/>
-        {data.groups.map((group: Group) => {
+        {groups.map((group: Group) => {
           return <option value={group.id}>{group.name}</option>
         })}
       </Select>
