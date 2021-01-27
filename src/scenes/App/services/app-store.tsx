@@ -6,38 +6,47 @@ import BACKEND_API_URL from "#src/services/backendApi/BACKEND_API_URL"
 type AppState = {
   palettes: Palette[] | null,
   paletteIdLookup: {} | null,
-  groups: Group[] | null
+  groups: Group[] | null,
+  groupIdLookup: {} | null,
+  currentGroup: number | null,
 }
 
 const initialState: AppState = {
   palettes: null,
   paletteIdLookup: null,
   groups: null,
+  groupIdLookup: null,
+  currentGroup: null,
 };
 
 const appSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
-    setPalette: (state, action) => {
-      const palettes = action.payload;
-      const paletteIdLookup = palettes.reduce((acc: any, cur: Palette) => {
+    setPalettes: (state, action) => {
+      const newState = {...state};
+      newState.palettes = action.payload;
+      newState.paletteIdLookup = (newState.palettes as Palette[]).reduce((acc: any, cur: Palette) => {
         acc[cur.id as number] = cur;
         return acc;
       }, {});
 
-      return {
-        palettes,
-        paletteIdLookup,
-        groups: state.groups,
-      };
+      return newState;
     },
-    refetchGroups: state => {
+    setGroups: (state, action) => {
+      const newState = {...state};
+      newState.groups = action.payload;
+      newState.groupIdLookup = (newState.groups as Group[]).reduce((acc: any, cur: Group) => {
+        acc[cur.id as number] = cur;
+        return acc;
+      }, {})
+
+      return newState;
     }
   }
 })
 
-const { setPalette, refetchGroups } = appSlice.actions
+const { setPalettes, setGroups } = appSlice.actions
 
 const store = configureStore({
   reducer: appSlice.reducer
@@ -96,6 +105,9 @@ export function useGroup(id: number): Group | null {
   return group;
 }
 
+export function setCurrentGroup(id: number): void {
+}
+
 export function AppStoreProvider(props: any) {
   return <Provider store={store}>
     {props.children}
@@ -111,10 +123,19 @@ export function refreshPalettes(): void {
       }
     });
       const body = await fetchPromise.json();
-      store.dispatch(setPalette(body));
+      store.dispatch(setPalettes(body));
   })();
 }
 
-export function refreshGroups() {
-  store.dispatch(refetchGroups())
+export function refreshGroups(): void {
+  (async () => {
+    const fetchPromise = await fetch(`${BACKEND_API_URL}/groups`, {
+      method: 'GET',
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('jwt')}`
+      }
+    });
+      const body = await fetchPromise.json();
+      store.dispatch(setGroups(body));
+  })();
 }
