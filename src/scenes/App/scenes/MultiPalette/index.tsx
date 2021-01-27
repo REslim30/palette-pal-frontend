@@ -1,47 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import PaletteCard from "./components/PaletteCard";
+import PaletteCard from "./components/PaletteCard/index";
 import { RouteComponentProps, useLocation } from '@reach/router';
-import { parse } from "query-string";
 
 
 import CircularProgress from "@material-ui/core/CircularProgress"
-import { usePalettes } from "#app/services/app-store";
-import LeftDrawer from "./components/LeftDrawer/index";
+import { useCurrentGroup, usePalettes } from "#src/scenes/App/services/app-state-store";
 
 import MultiPaletteAppBar from "./components/MultiPaletteAppBar/index";
+import LeftDrawer from "./components/LeftDrawer/index";
 
 interface MultiPaletteProps extends RouteComponentProps {
   groupId?: number;
 }
 
 export default function MultiPalette(props : MultiPaletteProps) {
-  const [group, setGroup] = useState<number | null>(null);
-  const location = useLocation();
-  const palettes = usePalettes();
-
-  useEffect(() => {
-    const params = parse(location.search);
-    if (params.group)
-      setGroup(parseInt(params.group as string));
-  }, [props.groupId])
-
   return <>
-    <MultiPaletteAppBar group={group}/>
-    <Palettes palettes={palettes}/>
+    <MultiPaletteAppBar/>
+    <Palettes/>
     <LeftDrawer /> 
   </>
 }
 
 
 
-function Palettes(props: {palettes: Palette[] | null}) {
-  if (!props.palettes)
+function Palettes(props: unknown) {
+  const allPalettes = usePalettes();
+  const group = useCurrentGroup();
+
+  let palettes = group?.palettes || allPalettes;
+
+  if (!palettes)
     return <CircularProgress />;
 
-  if (!props.palettes.length)
+  if (!palettes.length)
     return <p>You have no palettes. Click on '+' to create your first palette!</p>
   else 
     return <main className="p-6 grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))' }}>
-      { props.palettes.map(palette => <PaletteCard palette={palette}/>) }
+      { palettes.map(palette => <PaletteCard palette={palette}/>) }
     </main>;
 }

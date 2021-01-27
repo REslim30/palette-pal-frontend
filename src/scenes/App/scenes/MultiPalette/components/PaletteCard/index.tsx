@@ -4,6 +4,7 @@ import { styled } from "@material-ui/core/styles"
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import { Link } from "gatsby";
+import CircularProgress from "@material-ui/core/CircularProgress"
 
 const TopRightIconButton = styled(IconButton)({
   right: "0px",

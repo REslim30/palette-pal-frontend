@@ -6,7 +6,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert'
 import ArrowBackIcon  from "@material-ui/icons/ArrowBack";
 
 import RightEdgeIconButton from "#src/components/RightEdgeIconButton/index";
-import { usePalette } from "#app/services/app-store";
+import { usePalette } from "#src/scenes/App/services/app-state-store";
 import ColorList from "./scenes/ColorList/index";
 import { RouteComponentProps } from '@reach/router';
 import IconLink from "#src/components/IconLink";

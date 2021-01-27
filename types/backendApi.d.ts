@@ -13,7 +13,8 @@ declare type Color = {
 
 declare type Group = {
   id?: number,
-  name: group
+  name: group,
+  palettes?: Palette[]
 }
 
 // The return type for custom api hooks. E.g. useSinglePalette
