@@ -9,7 +9,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import DeleteIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
 
-import ColorContext from "../../../../services/ColorContext";
+import { useCreatePaletteContext } from "#app/scenes/CreatePalette/services/CreatePaletteContext";
 
 type ColorListProps = {
   setColorToDelete: (colorIndex: number) => void,
@@ -51,7 +51,7 @@ export default function ColorList(props: ColorListProps) {
 };
 
 function CreatedColors(props: { onColorOptionsOpen: (event: React.SyntheticEvent<HTMLElement>) => void }) {
-  const [colors] = useContext(ColorContext);
+  const {colors} = useCreatePaletteContext();
 
   return <>
     {colors.map((color: Color, index: number) => {

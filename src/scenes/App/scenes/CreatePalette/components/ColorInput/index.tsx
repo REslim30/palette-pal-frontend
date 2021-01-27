@@ -1,9 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 
 import AddIcon from "@material-ui/icons/Add";
 
 import ColorSubmitDialog from "./components/ColorSubmitDialog/index";
-import ColorContext from "../../services/ColorContext";
+import ColorContext, { useCreatePaletteContext } from "../../services/CreatePaletteContext";
 import ColorDeleteDialog from "./components/ColorDeleteDialog";
 import ColorList from "./components/ColorList/index";
 import { deleteArrayItemImmutably } from "#src/services/immutableArrayActions";
@@ -13,7 +13,7 @@ type ColorInput = {
   setColors: (colors: Color[]) => void,
 }
 export default function ColorInput({...props}: any) {
-  const [colors, setColors] = useContext(ColorContext);
+  const {colors, setColors} = useCreatePaletteContext();
   const [colorToSubmit, setColorToSubmit] = useState<number | 'new' | null>(null);
   const [colorToDelete, setColorToDelete] = useState<number | null>(null);
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { styled } from '@material-ui/core/styles';
 import TextField from "@material-ui/core/TextField";
@@ -8,6 +8,8 @@ import FormControl from "@material-ui/core/FormControl";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { useGroups } from "#app/services/app-state-store";
+import { useCreatePaletteContext } from "../../services/CreatePaletteContext";
+import { useCurrentGroup } from "#app/services/app-state-store";
 
 const StyledFormControl = styled(FormControl)({
   formControl: {
@@ -15,32 +17,33 @@ const StyledFormControl = styled(FormControl)({
   }
 });
 
-type NameAndGroupInputProps = {
-  setName: (input: string) => void,
-  setGroup: (input: number | null) => void,
-  group: number | null,
-  name: string,
-}
-export default function NameAndGroupInput(props: NameAndGroupInputProps) {
+export default function NameAndGroupInput(props: unknown) {
+  const currentGroup = useCurrentGroup();
+
   const groups = useGroups();
+  const { name, setName, group, setGroup } = useCreatePaletteContext();
+
+  useEffect(() => {
+    setGroup(currentGroup?.id || null)
+  }, [currentGroup]);
 
   if (!groups) return <CircularProgress />;
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    props.setName(event.target.value);
+    setName(event.target.value);
   }
 
   const handleGroupChange = (event: React.ChangeEvent<{ name?: string | undefined; value: unknown; }>) => {
-    props.setGroup(parseInt(event.target.value as string));
+    setGroup(parseInt(event.target.value as string));
   }
 
   return <section className="grid grid-cols-2 gap-4">
-    <TextField variant="outlined" label="Name" value={props.name} onChange={handleNameChange}></TextField>
+    <TextField variant="outlined" label="Name" value={name} onChange={handleNameChange}></TextField>
     <StyledFormControl variant="outlined">
       <InputLabel htmlFor="group-select-label">Group</InputLabel>
       <Select 
         native
-        value={props.group || ''}
+        value={group || ''}
         onChange={handleGroupChange}
         label="Group"
         inputProps={{

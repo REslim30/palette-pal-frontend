@@ -8,13 +8,16 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import RightEdgeIconButton from "#src/components/RightEdgeIconButton/index";
 import SendIcon from "#src/components/SendIcon/index";
 import IconLink from "#src/components/IconLink";
+import { useCreatePaletteContext } from "#app/scenes/CreatePalette/services/CreatePaletteContext";
 
 type CreatePaletteAppBarProps = {
-  submitButtonDisabled: boolean,
   handleSubmit: () => void,
 }
 
 export default function CreatePaletteAppBar(props: CreatePaletteAppBarProps) {
+  const { name, colors } = useCreatePaletteContext();
+  const paletteIsSubmittable = Boolean(name && colors.length !== 0);
+
   return <AppBar position="static">
     <Toolbar>
       <IconLink to="/app/palettes" edge="start" color="inherit" aria-label="Menu">
@@ -25,7 +28,7 @@ export default function CreatePaletteAppBar(props: CreatePaletteAppBarProps) {
         edge="end" 
         color="inherit" 
         aria-label="Create palette"
-        disabled={ props.submitButtonDisabled }
+        disabled={ !paletteIsSubmittable }
         onClick={ props.handleSubmit }>
         <SendIcon />
       </RightEdgeIconButton>

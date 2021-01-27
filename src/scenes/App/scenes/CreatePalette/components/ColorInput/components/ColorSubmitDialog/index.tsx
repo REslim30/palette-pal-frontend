@@ -17,7 +17,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 
-import ColorContext from "../../../../services/ColorContext";
+import { useCreatePaletteContext } from "#app/scenes/CreatePalette/services/CreatePaletteContext";
 import { tryToSwapElementsImmutably, replaceElementImmutably } from "#src/services/immutableArrayActions";
 
 // Dialog that edits or creates a color
@@ -27,7 +27,7 @@ type ColorSubmitDialogProps = {
 }
 
 export default function ColorSubmitDialog(props: ColorSubmitDialogProps) {
-  const [colors, setColors] = useContext(ColorContext);
+  const {colors, setColors} = useCreatePaletteContext();
   const [cssColorString, setCssColorString] = useState('');
   const [name, setName] = useState('');
   const [shades, setShades] = useState<string[]>([]);

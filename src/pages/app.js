@@ -4,7 +4,7 @@ import theme from '#src/services/muiTheme';
 
 import App from '#src/scenes/App/index';
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
-import BACKEND_API_URL from "#src/services/backendApi/BACKEND_API_URL";
+import BACKEND_API_URL from "#src/services/BACKEND_API_URL";
 
 
 export default function AppPage(props) {
