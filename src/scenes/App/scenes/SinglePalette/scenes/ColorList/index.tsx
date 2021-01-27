@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import ApolloClient, { useQuery } from '@apollo/client';
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 import ShadeCard from "./components/ShadeCard/index";
@@ -9,7 +8,6 @@ import CopyShadeDialog from "./components/CopyShadeDialog/index"
 interface ColorListProps { 
   palette: Palette | null, 
   loading: boolean, 
-  error: ApolloClient.ApolloError | undefined,
 }
 
 export default function ColorList(props: ColorListProps) {
@@ -17,7 +15,6 @@ export default function ColorList(props: ColorListProps) {
   const [selectedShade, setSelectedShade] = useState('');
 
   if (props.loading) return <CircularProgress/>;
-  if (props.error) return <p>Error...</p>;
 
   //Dialog Handlers
   const makeHandleOpen = (shade: string) => {

@@ -1,38 +1,42 @@
 import fetchGraphQL from "#src/services/fetchGraphQL";
 
+// TODO: handle errors and bad requests
 export default async function submitPalette({name, group, colors}: {name: string, group: number | null, colors: Color[]}): Promise<Palette> {
   const colorCreationPromises = colors.map(color => submitColor({ name: color.name, shades: color.shades }));
+  try {
+    // Must use a regular loop instead of .forEach due to async-await
+    const colorIds = []
+    for (let i=0; i<colorCreationPromises.length; i++) {
+      const colorCreation = await colorCreationPromises[i];
+      const colorBody = await colorCreation.json(); 
+      colorIds.push(parseInt((colorBody as Record<string, any>).data.createColor.color.id));
+    }
 
-  // Must use a regular loop instead of .forEach due to async-await
-  const colorIds = []
-  for (let i=0; i<colorCreationPromises.length; i++) {
-    const colorCreation = await colorCreationPromises[i];
-    const colorBody = await colorCreation.json(); 
-    // TODO: handle error
-    colorIds.push(parseInt((colorBody as Record<string, any>).data.createColor.color.id));
-  }
-
-  const variables = {name, group, colors: colorIds}
-  const response = await fetchGraphQL(`
-    mutation SubmitPalette($name: String!, $group: ID, $colors: [ID]) {
-      createPalette(input: {
-        data: {
-          name: $name,
-          group: $group,
-          colors: $colors
-        }
-      }) {
-        palette {
-          id,
-          name
+    const variables = {name, group, colors: colorIds}
+    const response = await fetchGraphQL(`
+      mutation SubmitPalette($name: String!, $group: ID, $colors: [ID]) {
+        createPalette(input: {
+          data: {
+            name: $name,
+            group: $group,
+            colors: $colors
+          }
+        }) {
+          palette {
+            id,
+            name
+          }
         }
       }
-    }
-  `, variables)
+    `, variables)
 
-  const responseBody = await response.json();
+    const responseBody = await response.json();
 
-  return responseBody.data.createPalette.palette;
+    return responseBody.data.createPalette.palette;
+  } catch(e) {
+    console.error(e);
+    return Promise.reject(new Error(e));
+  }
 }
 
 

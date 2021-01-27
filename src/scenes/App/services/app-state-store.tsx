@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { createSlice, configureStore } from "@reduxjs/toolkit";
 import { useSelector, Provider } from "react-redux";
 import BACKEND_API_URL from "#src/services/BACKEND_API_URL"
+import fetchGraphQL from "#src/services/fetchGraphQL";
 
 type AppState = {
   palettes: Palette[] | null,
@@ -141,14 +142,18 @@ export function AppStoreProvider(props: any) {
 
 export function refreshPalettes(): void {
   (async () => {
-    const fetchPromise = await fetch(`${BACKEND_API_URL}/palettes`, {
-      method: 'GET',
-      headers: {
-        authorization: `Bearer ${localStorage.getItem('jwt')}`
-      }
-    });
+    try {
+      const fetchPromise = await fetch(`${BACKEND_API_URL}/palettes`, {
+        method: 'GET',
+        headers: {
+          authorization: `Bearer ${localStorage.getItem('jwt')}`
+        }
+      });
       const body = await fetchPromise.json();
       store.dispatch(setPalettes(body));
+    } catch(e) {
+      console.error(e);
+    }
   })();
 }
 
@@ -171,18 +176,8 @@ const GET_GROUPS = `
 
 export function refreshGroups(): void {
   (async () => {
-    const fetchPromise = await fetch(`${BACKEND_API_URL}/graphql`, {
-      method: 'POST',
-      headers: {
-        authorization: `Bearer ${localStorage.getItem('jwt')}`,
-        "Content-Type": 'application/json',
-        "Accept": 'application/json'
-      },
-      body: JSON.stringify({
-        query: GET_GROUPS
-      })
-    });
     try {
+      const fetchPromise = await fetchGraphQL(GET_GROUPS);
       const body = await fetchPromise.json();
       store.dispatch(setGroups(body.data.groups));
     } catch(e) {
