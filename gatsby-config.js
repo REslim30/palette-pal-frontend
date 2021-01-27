@@ -2,8 +2,7 @@ module.exports = {
   siteMetadata: {
     title: `Palette Pal`,
     description: `Store all of your palettes for your next big project.`,
-    author: `@Aidan Do`,
-    backendApi: 'http://localhost:1337',
+    author: `@Aidan Do`
   },
   plugins: [
     `gatsby-plugin-apollo`,

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import usePalettes from "#src/services/backendApi/usePalettes";
 import PaletteCard from "./components/PaletteCard";
 import { RouteComponentProps, useLocation } from '@reach/router';
 import IconLink from "#src/components/IconLink/index";
@@ -11,6 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import AddIcon from '@material-ui/icons/Add';
 import CircularProgress from "@material-ui/core/CircularProgress"
+import { usePalettes } from "#app/services/app-store";
 
 
 interface MultiPaletteProps extends RouteComponentProps {
@@ -20,7 +20,7 @@ interface MultiPaletteProps extends RouteComponentProps {
 export default function MultiPalette(props : MultiPaletteProps) {
   const [group, setGroup] = useState<number | null>(null);
   const location = useLocation();
-  const { loading, error, data } = usePalettes();
+  const palettes = usePalettes();
 
   useEffect(() => {
     const params = parse(location.search);
@@ -28,11 +28,9 @@ export default function MultiPalette(props : MultiPaletteProps) {
       setGroup(parseInt(params.group as string));
   }, [props.groupId])
 
-  if (error) return <p>Error...</p>;
-
   return <>
     <MultiPaletteAppBar group={group}/>
-    <Palettes loading={loading} palettes={data?.palettes}/>
+    <Palettes palettes={palettes}/>
   </>
 }
 
@@ -50,18 +48,14 @@ function MultiPaletteAppBar(props: any) {
   </AppBar>
 }
 
-function Palettes(props: {loading: boolean, palettes: Palette[] | undefined}) {
-  let markup = <CircularProgress />;
+function Palettes(props: {palettes: Palette[] | null}) {
+  if (!props.palettes)
+    return <CircularProgress />;
 
-  if (!props.loading) {
-    markup = <p>You have no palettes. Click on '+' to create your first palette!</p>
-    
-    if (props.palettes?.length) {
-      markup = <main className="p-6 grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))' }}>
-        { props.palettes.map(palette => <PaletteCard palette={palette}/>) }
-      </main>;
-    }
-  }
-
-  return markup;
+  if (!props.palettes.length)
+    return <p>You have no palettes. Click on '+' to create your first palette!</p>
+  else 
+    return <main className="p-6 grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))' }}>
+      { props.palettes.map(palette => <PaletteCard palette={palette}/>) }
+    </main>;
 }

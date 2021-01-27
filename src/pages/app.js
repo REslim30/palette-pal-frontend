@@ -4,11 +4,10 @@ import theme from '#src/services/muiTheme';
 
 import App from '#src/scenes/App/index';
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
-import useBackendApi from '#src/services/useBackendApi';
+import BACKEND_API_URL from "#src/services/backendApi/BACKEND_API_URL";
 
 
 export default function AppPage(props) {
-  const backendApiUrl = useBackendApi();
   // Check if user is logged in
   useEffect(() => {
     if (!localStorage.getItem('jwt')) {
@@ -18,7 +17,7 @@ export default function AppPage(props) {
 
   // Create Apollo Graphql client
   const client = new ApolloClient({
-    uri: `${backendApiUrl}/graphql`,
+    uri: `${BACKEND_API_URL}/graphql`,
     cache: new InMemoryCache(),
     headers: {
       authorization: `Bearer ${localStorage.getItem('jwt')}`

@@ -1,24 +1,11 @@
 import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { useStaticQuery, graphql } from 'gatsby';
+import BACKEND_API_URL from "#src/services/backendApi/BACKEND_API_URL";
 
 // Sign Up page
 export default function SignUp(props) {
   const [errorMessage, setErrorMessage] = useState("");
-
-  // Get URL of backend website
-  const query = useStaticQuery(
-    graphql`
-      query {
-        site {
-          siteMetadata {
-            backendApi
-          }
-        }
-      }
-    `
-  );
 
   //Submit form
   const submitForm = function(event) {
@@ -29,7 +16,7 @@ export default function SignUp(props) {
     }
 
     // Send a post request to server
-    fetch(`${query.site.siteMetadata.backendApi}/auth/local/register`, {
+    fetch(`${BACKEND_API_URL}/auth/local/register`, {
       headers: {
         'Content-Type': 'application/json'
       },

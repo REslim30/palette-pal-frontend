@@ -1,0 +1,2 @@
+
+export default process.env.GATSBY_BACKEND_API_URL
