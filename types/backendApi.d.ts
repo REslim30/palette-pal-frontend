@@ -16,10 +16,3 @@ declare type Group = {
   name: group,
   palettes?: Palette[]
 }
-
-// The return type for custom api hooks. E.g. useSinglePalette
-declare interface useBackendApiReturn {
-  data: any | undefined, 
-  loading: boolean, 
-  error: ApolloError | undefined
-}

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { createSlice, configureStore } from "@reduxjs/toolkit";
 import { useSelector, Provider } from "react-redux";
-import BACKEND_API_URL from "#src/services/backendApi/BACKEND_API_URL"
+import BACKEND_API_URL from "#src/services/BACKEND_API_URL"
 
 type AppState = {
   palettes: Palette[] | null,
