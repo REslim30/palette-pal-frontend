@@ -1,18 +1,18 @@
 // Types received from the backendAPI
 declare type Palette = {
-  id: number,
+  id?: number,
   name: string,
   colors: Color[]
 };
 
 declare type Color = {
-  id: number,
+  id?: number,
   name: string,
   shades: string[]
 }
 
 declare type Group = {
-  id: number,
+  id?: number,
   name: group
 }
 
