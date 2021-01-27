@@ -21,7 +21,6 @@
     "gatsby-transformer-sharp": "^2.6.0",
     "hex-to-hsl": "^1.0.2",
     "postcss": "^8.2.4",
-    "prop-types": "^15.7.2",
     "query-string": "^6.13.8",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
