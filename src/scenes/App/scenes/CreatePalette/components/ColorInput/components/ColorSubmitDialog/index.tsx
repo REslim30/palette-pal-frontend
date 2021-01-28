@@ -153,13 +153,12 @@ export default function ColorSubmitDialog(props: ColorSubmitDialogProps) {
 
         {/* List of Shades */}
         <div className="pt-6">
-          <h2 className="text-xl">Shades:</h2>
           {shades.map((shade: string, index: number) => {
             return <>
               <div 
                 className="grid gap-4 items-center my-3" 
                 style={{ gridTemplateColumns: 'min-content auto min-content' }} 
-                key={shade + index}>
+                >
                 <span 
                   className="h-4 w-4 block rounded-full" 
                   style={{ backgroundColor: shade }}/>
@@ -219,4 +218,3 @@ export default function ColorSubmitDialog(props: ColorSubmitDialogProps) {
     </Dialog>
   </>
 };
-
