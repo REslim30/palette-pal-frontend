@@ -35,6 +35,13 @@ export default function ColorSubmitDialog(props: ColorSubmitDialogProps) {
     }
   }, [props.colorToSubmit])
 
+  useEffect(() => {
+    return () => {
+      setName('');
+      setShades([]);
+    }
+  }, [props.colorToSubmit])
+
   return <ColorSubmitContext.Provider 
     value={{
       name,
