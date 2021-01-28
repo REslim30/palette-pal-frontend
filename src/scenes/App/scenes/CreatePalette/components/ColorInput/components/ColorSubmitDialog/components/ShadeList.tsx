@@ -1,3 +1,5 @@
+import React from "react";
+
 import { useColorSubmitContext } from "../services/ColorSubmitContext";
 
 import IconButton from "@material-ui/core/IconButton";
