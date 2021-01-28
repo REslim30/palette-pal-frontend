@@ -5,12 +5,13 @@ import Drawer from "@material-ui/core/Drawer";
 import { useGroups, setCurrentGroup, useCurrentGroup, usePalettes } from "#app/services/app-state-store";
 import ColorBall from "#src/components/ColorBall/index";
 import { useMultiPaletteContext } from "../../services/MultiPaletteContext";
-import ListIcon from "@material-ui/icons/List";
+import ListIcon from "@material-ui/icons/FormatListBulletedRounded";
+import IconButton from "@material-ui/core/IconButton";
+import AddIcon from "@material-ui/icons/Add";
 
 export default function LeftDrawer(props: any) {
   const groups = useGroups();
   const palettes = usePalettes();
-  const currentGroup = useCurrentGroup();
   const { leftDrawerOpen, setLeftDrawerOpen } = useMultiPaletteContext();
   
   const handleClose = () => {
