@@ -32,12 +32,15 @@ export default function LeftDrawer(props: any) {
 
       {groups?.map((group) => (
         <button 
-          className={`w-64 grid gap-6 items-center justify-start pl-6 py-2 hover:bg-neutral-100 ${selectedGroupStyle(group)}`} 
-          style={{ gridTemplateColumns: "min-content 1fr" }} 
+          className={`w-64 grid gap-6 items-center justify-start pl-6 pr-2 py-2 hover:bg-neutral-100 ${selectedGroupStyle(group)}`} 
+          style={{ gridTemplateColumns: "min-content 1fr min-content" }} 
           key={group.id}>
           <ColorBall color={group.color || 'gray'}/>
           <span className="text-left mt-0.5 font-sans text-lg">
             {group.name}
+          </span>
+          <span className="text-neutral-400 self-end">
+            {group.palettes?.length ?? 0}
           </span>
         </button>
       ))}
