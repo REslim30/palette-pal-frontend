@@ -19,8 +19,4 @@
   .clickable-card {
     @apply rounded-md shadow-md border-2
   }
-
-  .color-ball {
-    @apply h-4 w-4 rounded-full inline-block
-  }
 }

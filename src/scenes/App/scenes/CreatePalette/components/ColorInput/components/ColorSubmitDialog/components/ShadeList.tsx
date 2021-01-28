@@ -13,6 +13,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 
 import { tryToSwapElementsImmutably, deleteArrayItemImmutably } from "#src/services/immutableArrayActions";
+import ColorBall from "#src/components/ColorBall/index";
 
 
 export default function ShadeList(props: unknown) {
@@ -56,9 +57,7 @@ export default function ShadeList(props: unknown) {
             className="grid gap-4 items-center my-3" 
             style={{ gridTemplateColumns: 'min-content auto min-content' }} 
             key={(shade as any).uid}>
-            <span 
-              className="h-4 w-4 block rounded-full" 
-              style={{ backgroundColor: shade.toString() }}/>
+            <ColorBall color={ shade.toString() }/>
             <span>{shade}</span>
             <IconButton 
               size="small" 

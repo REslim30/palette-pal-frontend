@@ -10,6 +10,7 @@ import DeleteIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
 
 import { useCreatePaletteContext } from "#app/scenes/CreatePalette/services/CreatePaletteContext";
+import ColorBall from "#src/components/ColorBall/index";
 
 type ColorListProps = {
   setColorToDelete: (colorIndex: number) => void,
@@ -72,7 +73,7 @@ function CreatedColors(props: { onColorOptionsOpen: (event: React.SyntheticEvent
           { color.shades.length === 1
           ? <span className="h-4 w-full rounded-full" style={{ backgroundColor: color.shades[0] }}/>
           : color.shades.map((shade) => {
-              return <span className="color-ball mr-3 " style={{ backgroundColor: shade }}/>
+              return <ColorBall color={shade}/>
             })}
         </div>
       </div>
