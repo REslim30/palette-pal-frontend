@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 
 import Drawer from "@material-ui/core/Drawer";
 
@@ -8,11 +8,13 @@ import { useMultiPaletteContext } from "../../services/MultiPaletteContext";
 import ListIcon from "@material-ui/icons/FormatListBulletedRounded";
 import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
+import GroupCreator from "./components/GroupCreator/index";
 
 export default function LeftDrawer(props: any) {
   const groups = useGroups();
   const palettes = usePalettes();
   const { leftDrawerOpen, setLeftDrawerOpen } = useMultiPaletteContext();
+  const [groupCreatorOpen, setGroupCreatorOpen] = useState(false);
   
   const handleClose = () => {
     setLeftDrawerOpen(false);
@@ -25,15 +27,26 @@ export default function LeftDrawer(props: any) {
     }
   }
 
+  const handleGroupCreatorOpen = () => {
+    setGroupCreatorOpen(true);
+  }
+
+  const handleGroupCreatorClose = () => {
+    setGroupCreatorOpen(false);
+  }
+
   return <Drawer anchor="left" open={leftDrawerOpen} onClose={handleClose}>
     <div className="bg-primary-500 h-24">
       {/* TODO: Fill out profile section */}
     </div>
     <article>
-      <div className="px-6 mt-4 mb-2">
+      <div className="px-6 mt-4 mb-4 flex justify-between items-end">
         <h2 className="text-3xl">
           Groups
         </h2>
+        <IconButton size="small" onClick={handleGroupCreatorOpen}>
+          <AddIcon/>
+        </IconButton>
       </div>
 
       <LeftDrawerItem 
@@ -49,6 +62,8 @@ export default function LeftDrawer(props: any) {
         />
       ))}
     </article>
+
+    <GroupCreator open={groupCreatorOpen} close={handleGroupCreatorClose}/>
   </Drawer>;
 };
 
