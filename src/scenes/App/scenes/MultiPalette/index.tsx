@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PaletteCard from "./components/PaletteCard/index";
-import { RouteComponentProps, useLocation } from '@reach/router';
+import { RouteComponentProps } from '@reach/router';
 
 
 import CircularProgress from "@material-ui/core/CircularProgress"
@@ -8,17 +8,24 @@ import { useCurrentGroup, usePalettes } from "#src/scenes/App/services/app-state
 
 import MultiPaletteAppBar from "./components/MultiPaletteAppBar/index";
 import LeftDrawer from "./components/LeftDrawer/index";
+import MultiPaletteContext from './services/MultiPaletteContext';
 
 interface MultiPaletteProps extends RouteComponentProps {
   groupId?: number;
 }
 
 export default function MultiPalette(props : MultiPaletteProps) {
-  return <>
+  const [leftDrawerOpen, setLeftDrawerOpen] = useState(false);
+
+  return <MultiPaletteContext.Provider
+    value={{
+      leftDrawerOpen,
+      setLeftDrawerOpen,
+    }}>
     <MultiPaletteAppBar/>
     <Palettes/>
     <LeftDrawer /> 
-  </>
+  </MultiPaletteContext.Provider>
 }
 
 
