@@ -130,7 +130,7 @@ export function useCurrentGroup(): Group | null {
     return result;
 }
 
-export function setCurrentGroup(id: number): void {
+export function setCurrentGroup(id: number | null): void {
   store.dispatch(setCurrentGroupId(id));
 }
 
@@ -162,6 +162,7 @@ const GET_GROUPS = `
     groups {
       id
       name
+      iconColor
       palettes {
         id
         name

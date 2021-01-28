@@ -14,6 +14,6 @@ declare type Color = {
 declare type Group = {
   id?: number,
   name: group,
-  color?: string,
+  iconColor?: string,
   palettes?: Palette[]
 }
