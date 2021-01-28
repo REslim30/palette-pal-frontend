@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import SendIcon from "#src/components/SendIcon";
 import { fromString } from "css-color-converter";
+import { nanoid } from "nanoid";
 
 import Dialog  from '@material-ui/core/Dialog';
 import DialogTitle  from '@material-ui/core/DialogTitle';
@@ -18,7 +19,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 
 import { useCreatePaletteContext } from "#app/scenes/CreatePalette/services/CreatePaletteContext";
-import { tryToSwapElementsImmutably, replaceElementImmutably } from "#src/services/immutableArrayActions";
+import { tryToSwapElementsImmutably, replaceElementImmutably, deleteArrayItemImmutably } from "#src/services/immutableArrayActions";
 
 // Dialog that edits or creates a color
 type ColorSubmitDialogProps = {
@@ -30,7 +31,7 @@ export default function ColorSubmitDialog(props: ColorSubmitDialogProps) {
   const {colors, setColors} = useCreatePaletteContext();
   const [cssColorString, setCssColorString] = useState('');
   const [name, setName] = useState('');
-  const [shades, setShades] = useState<string[]>([]);
+  const [shades, setShades] = useState<String[]>([]);
   const [shadeInputError, setShadeInputError] = useState({});
   const [shadeMenuAnchorEl, setShadeMenuAnchorEl] = useState<HTMLElement | null>(null);
 
@@ -64,8 +65,10 @@ export default function ColorSubmitDialog(props: ColorSubmitDialogProps) {
   const handleAddShade = () => {
     const hexValue = fromString(cssColorString)?.toHexString();
     if (hexValue) {
+      const newShade: any = new String(hexValue.toUpperCase());
+      newShade.uid = nanoid();
+      setShades([...shades, newShade]);
       setShadeInputError({});
-      setShades([...shades, hexValue.toUpperCase()]);
       setCssColorString('');
     } else {
       setShadeInputError({error: true, helperText: 'Invalid hex, rgb, or hsl CSS string.'})
@@ -80,10 +83,11 @@ export default function ColorSubmitDialog(props: ColorSubmitDialogProps) {
   }
 
   const handleSubmit = (event: React.SyntheticEvent<HTMLElement>) => {
+    const newShades = shades.map(shade => shade.toString());
     if (props.colorToSubmit === "new") {
-      setColors([...colors, { id: -1, name, shades }])
+      setColors([...colors, { id: -1, name, shades: newShades }])
     } else {
-      setColors(replaceElementImmutably(colors, props.colorToSubmit as number, { id: -1, name, shades }))
+      setColors(replaceElementImmutably(colors, props.colorToSubmit as number, { id: -1, name, shades: newShades }))
     }
     props.onClose(event);
   }
@@ -98,7 +102,7 @@ export default function ColorSubmitDialog(props: ColorSubmitDialogProps) {
 
   const handleShadeDelete = (event: React.MouseEvent<HTMLElement>) => {
     const shadeIndex = parseInt(shadeMenuAnchorEl?.dataset.index as string);
-    setShades(shades.filter((shade, index) => index !== shadeIndex));
+    setShades(deleteArrayItemImmutably(shades, shadeIndex));
     handleShadeMenuClose();
   }
 
@@ -153,15 +157,15 @@ export default function ColorSubmitDialog(props: ColorSubmitDialogProps) {
 
         {/* List of Shades */}
         <div className="pt-6">
-          {shades.map((shade: string, index: number) => {
+          {shades.map((shade: String, index: number) => {
             return <>
               <div 
                 className="grid gap-4 items-center my-3" 
                 style={{ gridTemplateColumns: 'min-content auto min-content' }} 
-                >
+                key={(shade as any).uid}>
                 <span 
                   className="h-4 w-4 block rounded-full" 
-                  style={{ backgroundColor: shade }}/>
+                  style={{ backgroundColor: shade.toString() }}/>
                 <span>{shade}</span>
                 <IconButton 
                   size="small" 

@@ -20,5 +20,5 @@ export function replaceElementImmutably(array: any[], elementIndex: number, elem
 }
 
 export function deleteArrayItemImmutably(array: any[], indexToDelete: number) {
-  return array.filter((color: Color, index: number) => indexToDelete !== index);
+  return array.filter((item: any, index: number) => indexToDelete !== index);
 }
