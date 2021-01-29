@@ -1,13 +1,16 @@
 import React, {useState} from "react";
 
 import Drawer from "@material-ui/core/Drawer";
+import ListIcon from "@material-ui/icons/FormatListBulletedRounded";
+import IconButton from "@material-ui/core/IconButton";
+import AddIcon from "@material-ui/icons/Add";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+
 
 import { useGroups, setCurrentGroup, useCurrentGroup, usePalettes } from "#app/services/app-state-store";
 import ColorBall from "#src/components/ColorBall/index";
 import { useMultiPaletteContext } from "../../services/MultiPaletteContext";
-import ListIcon from "@material-ui/icons/FormatListBulletedRounded";
-import IconButton from "@material-ui/core/IconButton";
-import AddIcon from "@material-ui/icons/Add";
 import GroupCreator from "../GroupCreator/index";
 
 export default function LeftDrawer(props: any) {
@@ -32,8 +35,7 @@ export default function LeftDrawer(props: any) {
   }
 
   return <Drawer anchor="left" open={leftDrawerOpen} onClose={handleClose}>
-    <div className="bg-primary-500 h-24">
-    </div>
+    <ProfileSection />
     <article>
       <div className="px-6 mt-4 mb-4 flex justify-between items-end">
         <h2 className="text-3xl">
@@ -63,6 +65,47 @@ export default function LeftDrawer(props: any) {
   </Drawer>;
 };
 
+function ProfileSection(props: any) {
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+
+  const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  }
+
+  const handleLogOut = () => {
+    window.localStorage.removeItem('jwt');
+    window.location.href = "/";
+  }
+
+  return <>
+    <div className="bg-primary-500 h-24 p-4 w-64">
+      <div className="grid gap-4 max-w-full overflow-hidden" style={{ gridTemplateColumns: 'min-content 1fr'}}>
+        <button aria-label="account menu" 
+          className="bg-yellow-500 w-14 rounded-full h-14 text-white text-4xl font-header"
+          onClick={ handleOpen }
+          aria-controls="profile-menu">gi</button>
+        <div className="flex flex-col justify-between">
+          <span className="font-header text-white text-2xl">giahuydo99</span>
+          <span className="text-white">giahuydo99@gmail.com</span>
+        </div>
+      </div>
+    </div>
+
+    <Menu
+      open={Boolean(anchorEl)}
+      anchorEl={anchorEl}
+      id="profile-menu"
+      onClose={handleClose}
+    >
+      <MenuItem onClick={handleLogOut}>Log Out</MenuItem>
+    </Menu>
+  </>
+}
+
 function LeftDrawerItem(props: {group: Group, LeftIcon: React.ReactNode, onClick: () => void}) {
   const currentGroup = useCurrentGroup();
   
@@ -72,7 +115,7 @@ function LeftDrawerItem(props: {group: Group, LeftIcon: React.ReactNode, onClick
 
   const { group, LeftIcon, onClick } = props 
   return <button 
-    className={`w-64 grid gap-6 items-center justify-items-center pl-6 pr-4 py-2 ${selectedGroupStyle(group)}`} 
+    className={`grid gap-6 items-center justify-items-center pl-6 pr-4 py-2 w-64 ${selectedGroupStyle(group)}`} 
     style={{ gridTemplateColumns: "24px 1fr min-content" }} 
     onClick={ onClick }>
     {LeftIcon}

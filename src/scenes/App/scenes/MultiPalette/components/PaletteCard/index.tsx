@@ -23,7 +23,7 @@ export default function PaletteCard(props: PaletteCardProps) {
     setOptionsAnchorEl(null);
   }
 
-  return <div className="relative" key={props.palette.id}>
+  return <div className="relative">
     <Link to={`/app/palettes/${props.palette.id}`} aria-label={props.palette.name} className="clickable-card w-full text-left h-40 flex flex-col truncate" key={props.palette.id}>
       {/* Title and More button */}
       <div className="p-2 flex justify-between">
@@ -34,7 +34,7 @@ export default function PaletteCard(props: PaletteCardProps) {
       <div className="flex-grow flex flex-col justify-between mt-4">
       {
         colors.slice(0, 3).map(({shades, id}, index) => {
-          return <div className="flex" key={id}>
+          return <div className="flex">
             {(shades.length === 2
             ? [
                 shades[0],
@@ -45,8 +45,8 @@ export default function PaletteCard(props: PaletteCardProps) {
                 shades[Math.trunc(shades.length/2)],
                 shades[shades.length-1],
               ]
-            ).map(shade => {
-              return <span className="flex-grow h-5" style={{ backgroundColor: shade }}/>
+            ).map((shade, shadeIndex) => {
+              return <span className="flex-grow h-5" style={{ backgroundColor: shade }} key={shadeIndex}/>
             })}
           </div>
         })

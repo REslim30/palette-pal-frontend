@@ -48,6 +48,6 @@ function Palettes(props: unknown) {
     return <p>You have no palettes. Click on '+' to create your first palette!</p>
   else 
     return <main className="p-6 grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))' }}>
-      { palettes.map(palette => <PaletteCard palette={palette}/>) }
+      { palettes.map(palette => <PaletteCard palette={palette} key={palette.id}/>) }
     </main>;
 }
