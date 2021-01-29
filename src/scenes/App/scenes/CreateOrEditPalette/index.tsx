@@ -5,17 +5,25 @@ import PaletteSubmitter from "./components/PaletteSubmitter/index";
 import NameAndGroupInput from "./components/NameAndGroupInput/index";
 import ColorInput from "./components/ColorInput";
 import CreateOrEditPaletteContext from "./services/CreateOrEditPaletteContext";
-import { getPalette } from "#app/services/app-state-store";
+import { usePalette } from "#app/services/app-state-store";
 
 interface CreateOrEditPalette extends RouteComponentProps {
   id?: number
 }
 
 export default function CreateOrEditPalette(props: CreateOrEditPaletteContext) {
-  const palette = props.id && getPalette(props.id);
+  const palette = usePalette(props.id);
   const [name, setName] = useState('');
   const [group, setGroup] = useState<number | null>(null);
   const [colors, setColors] = useState<Color[]>([]);
+
+  useEffect(() => {
+    if (palette) {
+      setName(palette.name);
+      setGroup(palette.group?.id || null);
+      setColors(palette.colors);
+    }
+  }, [palette])
 
   return <>
     <CreateOrEditPaletteContext.Provider 
@@ -26,7 +34,7 @@ export default function CreateOrEditPalette(props: CreateOrEditPaletteContext) {
         setName,
         group,
         setGroup,
-        props.id
+        id: props.id
       }}>
 
       <PaletteSubmitter />

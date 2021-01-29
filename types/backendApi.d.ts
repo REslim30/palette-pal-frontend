@@ -3,6 +3,7 @@ declare type Palette = {
   id?: number,
   name: string,
   colors: Color[],
+  group?: Group
 };
 
 declare type Color = {

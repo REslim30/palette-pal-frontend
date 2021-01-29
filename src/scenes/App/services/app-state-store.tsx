@@ -6,9 +6,9 @@ import fetchGraphQL from "#src/services/fetchGraphQL";
 
 type AppState = {
   palettes: Palette[] | null,
-  paletteIdLookup: {} | null,
+  paletteIdLookup: { [key:number]: Palette } | null,
   groups: Group[] | null,
-  groupIdLookup: {} | null,
+  groupIdLookup: { [key:number]: Palette } | null,
   currentGroupId: number | null,
 }
 
@@ -75,7 +75,10 @@ export function usePalettes(): Palette[] | null {
   return palettes;
 }
 
-export function usePalette(id: number): Palette | null {
+export function usePalette(id: number | undefined): Palette | null {
+  if (id === undefined)
+    return null;
+
   const palette = useSelector((state: any) => state.paletteIdLookup?.[id]);
 
   useEffect(() => {

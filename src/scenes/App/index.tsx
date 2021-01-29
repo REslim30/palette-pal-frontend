@@ -14,6 +14,7 @@ export default function App(props: {}) {
       <MultiPalette path="/palettes"/>
       <SinglePalette path="/palettes/:id"/>
       <CreateOrEditPalette path="/palettes/new"/>
+      <CreateOrEditPalette path="/palettes/edit/:id"/>
     </Router>
   </AppStoreProvider>
   </>
