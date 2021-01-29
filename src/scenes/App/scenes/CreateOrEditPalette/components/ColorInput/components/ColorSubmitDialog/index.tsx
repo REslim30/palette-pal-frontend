@@ -9,7 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import Fab from "@material-ui/core/Fab";
 import Button from "@material-ui/core/Button";
 
-import { useCreatePaletteContext } from "#app/scenes/CreatePalette/services/CreatePaletteContext";
+import { useCreateOrEditPaletteContext } from "#app/scenes/CreateOrEditPalette/services/CreateOrEditPaletteContext";
 import ColorSubmitContext, { useColorSubmitContext } from "./services/ColorSubmitContext";
 import { replaceElementImmutably } from "#src/services/immutableArrayActions";
 import ShadeList from "./components/ShadeList";
@@ -21,7 +21,7 @@ type ColorSubmitDialogProps = {
 }
 
 export default function ColorSubmitDialog(props: ColorSubmitDialogProps) {
-  const { colors } = useCreatePaletteContext();
+  const { colors } = useCreateOrEditPaletteContext();
   const [name, setName] = useState('');
   const [shades, setShades] = useState<String[]>([]);
   const [shadeMenuAnchorEl, setShadeMenuAnchorEl] = useState<HTMLElement | null>(null);
@@ -95,7 +95,7 @@ function ColorNameInput(props: unknown) {
 }
 
 function SubmitButton(props: unknown) {
-  const { colors, setColors } = useCreatePaletteContext();
+  const { colors, setColors } = useCreateOrEditPaletteContext();
   const { shades, setShades, name, onClose, colorToSubmit } = useColorSubmitContext();
 
   const handleSubmit = (event: React.SyntheticEvent<HTMLElement>) => {

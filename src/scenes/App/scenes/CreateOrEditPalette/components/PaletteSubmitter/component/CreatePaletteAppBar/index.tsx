@@ -8,14 +8,14 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import RightEdgeIconButton from "#src/components/RightEdgeIconButton/index";
 import SendIcon from "#src/components/SendIcon/index";
 import IconLink from "#src/components/IconLink";
-import { useCreatePaletteContext } from "#app/scenes/CreatePalette/services/CreatePaletteContext";
+import { useCreateOrEditPaletteContext } from "#app/scenes/CreateOrEditPalette/services/CreateOrEditPaletteContext";
 
-type CreatePaletteAppBarProps = {
+type CreateOrEditPaletteAppBarProps = {
   handleSubmit: () => void,
 }
 
-export default function CreatePaletteAppBar(props: CreatePaletteAppBarProps) {
-  const { name, colors } = useCreatePaletteContext();
+export default function CreateOrEditPaletteAppBar(props: CreateOrEditPaletteAppBarProps) {
+  const { name, colors } = useCreateOrEditPaletteContext();
   const paletteIsSubmittable = Boolean(name && colors.length !== 0);
 
   return <AppBar position="static">

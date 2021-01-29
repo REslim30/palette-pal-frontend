@@ -8,7 +8,7 @@ import FormControl from "@material-ui/core/FormControl";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { useGroups } from "#app/services/app-state-store";
-import { useCreatePaletteContext } from "../../services/CreatePaletteContext";
+import { useCreateOrEditPaletteContext } from "../../services/CreateOrEditPaletteContext";
 import { useCurrentGroup } from "#app/services/app-state-store";
 
 const StyledFormControl = styled(FormControl)({
@@ -21,7 +21,7 @@ export default function NameAndGroupInput(props: unknown) {
   const currentGroup = useCurrentGroup();
 
   const groups = useGroups();
-  const { name, setName, group, setGroup } = useCreatePaletteContext();
+  const { name, setName, group, setGroup } = useCreateOrEditPaletteContext();
 
   useEffect(() => {
     setGroup(currentGroup?.id || null)

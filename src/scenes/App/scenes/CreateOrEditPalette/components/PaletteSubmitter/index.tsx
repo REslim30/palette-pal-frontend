@@ -1,12 +1,12 @@
 import React from "react";
 
-import CreatePaletteAppBar from "./component/CreatePaletteAppBar/index";
-import { useCreatePaletteContext } from "../../services/CreatePaletteContext";
+import CreateOrEditPaletteAppBar from "./component/CreateOrEditPaletteAppBar/index";
+import { useCreateOrEditPaletteContext } from "../../services/CreateOrEditPaletteContext";
 import submitPalette from "./services/submitPalette";
 import { refreshPalettes } from "#app/services/app-state-store";
 
 export default function PaletteSubmitter(props: any) {
-  const { colors, name, group } = useCreatePaletteContext();
+  const { colors, name, group } = useCreateOrEditPaletteContext();
 
   const handlePaletteSubmit = () => {
     submitPalette({ name, group, colors })
@@ -16,6 +16,6 @@ export default function PaletteSubmitter(props: any) {
     .catch(console.error)
   }
 
-  return <CreatePaletteAppBar 
+  return <CreateOrEditPaletteAppBar 
     handleSubmit={handlePaletteSubmit}/>
 };

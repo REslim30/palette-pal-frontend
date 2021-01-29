@@ -3,7 +3,7 @@ import { Router } from '@reach/router';
 
 import MultiPalette from './scenes/MultiPalette/index';
 import SinglePalette from './scenes/SinglePalette/index';
-import CreatePalette from "./scenes/CreatePalette/index";
+import CreateOrEditPalette from "./scenes/CreateOrEditPalette/index";
 import { AppStoreProvider } from "./services/app-state-store"
 
 // Main UI
@@ -13,7 +13,7 @@ export default function App(props: {}) {
     <Router basepath="/app">
       <MultiPalette path="/palettes"/>
       <SinglePalette path="/palettes/:id"/>
-      <CreatePalette path="/palettes/new"/>
+      <CreateOrEditPalette path="/palettes/new"/>
     </Router>
   </AppStoreProvider>
   </>

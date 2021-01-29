@@ -9,7 +9,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import DeleteIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
 
-import { useCreatePaletteContext } from "#app/scenes/CreatePalette/services/CreatePaletteContext";
+import { useCreateOrEditPaletteContext } from "#app/scenes/CreateOrEditPalette/services/CreateOrEditPaletteContext";
 import ColorBall from "#src/components/ColorBall/index";
 
 type ColorListProps = {
@@ -52,7 +52,7 @@ export default function ColorList(props: ColorListProps) {
 };
 
 function CreatedColors(props: { onColorOptionsOpen: (event: React.SyntheticEvent<HTMLElement>) => void }) {
-  const {colors} = useCreatePaletteContext();
+  const {colors} = useCreateOrEditPaletteContext();
 
   return <>
     {colors.map((color: Color, index: number) => {
