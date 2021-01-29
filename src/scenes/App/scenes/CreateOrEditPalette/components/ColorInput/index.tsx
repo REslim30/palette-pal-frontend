@@ -4,7 +4,7 @@ import AddIcon from "@material-ui/icons/Add";
 
 import ColorSubmitDialog from "./components/ColorSubmitDialog/index";
 import ColorContext, { useCreateOrEditPaletteContext } from "../../services/CreateOrEditPaletteContext";
-import ColorDeleteDialog from "./components/ColorDeleteDialog";
+import ConfirmDeleteDialog from "#src/components/ConfirmDeleteDialog/index";
 import ColorList from "./components/ColorList/index";
 import { deleteArrayItemImmutably } from "#src/services/immutableArrayActions";
 
@@ -39,10 +39,11 @@ export default function ColorInput({...props}: any) {
       setColorToEdit={setColorToSubmit}
       setColorToDelete={setColorToDelete}/>
 
-    <ColorDeleteDialog 
-      color={colorToDelete as number}
+    <ConfirmDeleteDialog 
+      open={colorToDelete !== null}
       onDelete={handleColorDelete}
-      onClose={handleDeleteColorDialogClose}/>
+      onClose={handleDeleteColorDialogClose}
+      objectToDelete="color"/>
 
     <AddColorButton onClick={handleNewColorCreate}/>
     

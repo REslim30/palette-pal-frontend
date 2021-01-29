@@ -25,6 +25,7 @@ export default function SinglePalette(props: SinglePaletteProps) {
 };
 
 function SinglePaletteAppBar(props: any) {
+
   return <AppBar position="static">
     <Toolbar>
       <IconLink edge="start" color="inherit" aria-label="Menu" to={"/app/palettes"}>

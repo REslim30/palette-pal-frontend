@@ -7,22 +7,23 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 
-type ColorDeleteDialogProps = {
-  color: number,
+type ConfirmDeleteDialogProps = {
+  open: boolean,
   onClose: () => void,
-  onDelete: () => void
+  onDelete: () => void,
+  objectToDelete: string
 }
 
-export default function ColorDeleteDialog(props: ColorDeleteDialogProps) {
+export default function ConfirmDeleteDialog(props: ConfirmDeleteDialogProps) {
   return <Dialog
-    open={props.color !== null}
+    open={props.open}
     onClose={props.onClose}
-    aria-labelledby="delete-color-dialog-title"
-    aria-describedby="delete-color-dialog-description">
-    <DialogTitle id="delete-color-dialog-title">Erase color?</DialogTitle>
+    aria-labelledby={`delete-${props.objectToDelete}-dialog-title`}
+    aria-describedby={`delete-${props.objectToDelete}-dialog-description`}>
+    <DialogTitle id={`delete-${props.objectToDelete}-dialog-title`}>Erase {props.objectToDelete}?</DialogTitle>
     <DialogContent>
       <DialogContentText id="delete-color-dialog-description">
-        You won't be able to recover this color. Are you sure?
+        You won't be able to recover this {props.objectToDelete}. Are you sure?
       </DialogContentText>
     </DialogContent>
     <DialogActions>

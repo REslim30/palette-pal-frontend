@@ -6,15 +6,14 @@ import CopyShadeDialog from "./components/CopyShadeDialog/index"
 
 // List of colors and their corresponding shades
 interface ColorListProps { 
-  palette: Palette | null, 
-  loading: boolean, 
+  palette: Palette | null
 }
 
 export default function ColorList(props: ColorListProps) {
   // Dialog state
   const [selectedShade, setSelectedShade] = useState('');
 
-  if (props.loading) return <CircularProgress/>;
+  if (!props.palette) return <CircularProgress/>;
 
   //Dialog Handlers
   const makeHandleOpen = (shade: string) => {
@@ -33,8 +32,8 @@ export default function ColorList(props: ColorListProps) {
         return <section className="mb-10" key={color.id}>
           <h2 className="text-3xl mb-2">{color.name}</h2>
           <div className="grid gap-8" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(80px, 1fr))' }}>
-            {color.shades.map((shade) => {
-                return <ShadeCard shade={shade} onClick={makeHandleOpen(shade)} />
+            {color.shades.map((shade, index) => {
+                return <ShadeCard shade={shade} onClick={makeHandleOpen(shade)} key={index}/>
               })
             }
           </div>

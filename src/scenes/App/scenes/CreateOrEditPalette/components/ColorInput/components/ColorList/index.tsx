@@ -72,8 +72,8 @@ function CreatedColors(props: { onColorOptionsOpen: (event: React.SyntheticEvent
         <div className="grid gap-x-3 gap-y-2 pb-2" style={{ gridTemplateColumns: 'repeat(auto-fill, 1rem)' }}>
           { color.shades.length === 1
           ? <span className="h-4 w-full rounded-full" style={{ backgroundColor: color.shades[0] }}/>
-          : color.shades.map((shade) => {
-              return <ColorBall color={shade}/>
+          : color.shades.map((shade, index) => {
+              return <ColorBall color={shade} key={index}/>
             })}
         </div>
       </div>

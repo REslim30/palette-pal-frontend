@@ -1,16 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { styled } from "@material-ui/core/styles"
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import { Link } from "gatsby";
-import CircularProgress from "@material-ui/core/CircularProgress"
-
-const TopRightIconButton = styled(IconButton)({
-  right: "0px",
-  top: "0px",
-  position: "absolute",
-});
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import deleteRequest from "#src/services/deleteRequest";
+import { refreshGroups, refreshPalettes } from "#app/services/app-state-store";
+import ConfirmDeleteDialog from "#src/components/ConfirmDeleteDialog/index";
 
 // A card displaying a palette
 type PaletteCardProps = {
@@ -18,8 +16,17 @@ type PaletteCardProps = {
 }
 export default function PaletteCard(props: PaletteCardProps) {
   const colors: Color[] = ensureAtLeastThreeColors(props.palette.colors);
+  const [optionsAnchorEl, setOptionsAnchorEl] = useState<HTMLElement | null>(null);
 
-  return <div className="relative">
+  const handleOptionsOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setOptionsAnchorEl(event.currentTarget);
+  }
+
+  const handleOptionsClose = () => {
+    setOptionsAnchorEl(null);
+  }
+
+  return <div className="relative" key={props.palette.id}>
     <Link to={`/app/palettes/${props.palette.id}`} aria-label={props.palette.name} className="clickable-card w-full text-left h-40 flex flex-col truncate" key={props.palette.id}>
       {/* Title and More button */}
       <div className="p-2 flex justify-between">
@@ -49,13 +56,66 @@ export default function PaletteCard(props: PaletteCardProps) {
       }
       </div>
     </Link>
-    {/* More Options Icon Button */}
-    <TopRightIconButton aria-label="More options">
+
+    <TopRightIconButton aria-label="More options" aria-controls={`palette-${props.palette.id}-options`} onClick={handleOptionsOpen}>
       <MoreVertIcon/>
     </TopRightIconButton>
+    
+    <PaletteMoreOptions 
+      palette={props.palette}
+      anchorEl={optionsAnchorEl}
+      onClose={handleOptionsClose}/>
   </div>;
 };
 
+const TopRightIconButton = styled(IconButton)({
+  right: "0px",
+  top: "0px",
+  position: "absolute",
+});
+
+function PaletteMoreOptions(props: { palette: Palette, anchorEl: HTMLElement | null, onClose: () => void }) {
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+
+  const handleDelete = async() => {
+    await deleteRequest(`/palettes/${props.palette.id}`);
+    const palettes = refreshPalettes();
+    const groups = refreshGroups();
+
+    await palettes;
+    await groups;
+  }
+
+  const handleConfirmDeleteOpen = () => {
+    setConfirmDeleteOpen(true);
+    props.onClose();
+  }
+
+  const handleConfirmDeleteClose = () => {
+    setConfirmDeleteOpen(false);
+  }
+
+  return <>
+    <Menu
+      id={`palette-${props.palette.id}-options`}
+      anchorEl={props.anchorEl}
+      open={Boolean(props.anchorEl)}
+      onClose={props.onClose}>
+      <MenuItem>
+        <Link to={`/app/palettes/edit/${props.palette.id}`} role="menuitem">Edit</Link>
+      </MenuItem>
+      <span className="text-red-800">
+        <MenuItem onClick={handleConfirmDeleteOpen}>Delete</MenuItem>
+      </span>
+    </Menu>
+
+    <ConfirmDeleteDialog 
+      open={confirmDeleteOpen}
+      onDelete={handleDelete}
+      onClose={handleConfirmDeleteClose}
+      objectToDelete="palette"/>
+  </>
+}
 
 function ensureAtLeastThreeColors(inputColors: Color[]) {
   const colors: Color[] = [...inputColors];

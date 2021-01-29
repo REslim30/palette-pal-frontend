@@ -74,8 +74,8 @@ export default function CopyShadeDialog({ selectedShade, ...props }: CopyShadeDi
       </DialogTitle>
       
       <List>
-        {[selectedShade?.toUpperCase(), rgbSelectedShade, hslSelectedShade].map(color => {
-          return <ListItem button onClick={handleCopy}>
+        {[selectedShade?.toUpperCase(), rgbSelectedShade, hslSelectedShade].map((color, index) => {
+          return <ListItem button onClick={handleCopy} key={index}>
             <CopyIcon />
             <span className="js-color-text font-mono">{color}</span>
           </ListItem>
