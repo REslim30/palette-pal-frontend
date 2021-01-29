@@ -4,11 +4,8 @@ import { styled } from "@material-ui/core/styles"
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import { Link } from "gatsby";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import deleteRequest from "#src/services/deleteRequest";
-import { refreshGroups, refreshPalettes } from "#app/services/app-state-store";
-import ConfirmDeleteDialog from "#src/components/ConfirmDeleteDialog/index";
+import PaletteMoreOptions from "#app/components/PaletteMoreOptions/index";
+
 
 // A card displaying a palette
 type PaletteCardProps = {
@@ -73,49 +70,6 @@ const TopRightIconButton = styled(IconButton)({
   top: "0px",
   position: "absolute",
 });
-
-function PaletteMoreOptions(props: { palette: Palette, anchorEl: HTMLElement | null, onClose: () => void }) {
-  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
-
-  const handleDelete = async() => {
-    await deleteRequest(`/palettes/${props.palette.id}`);
-    const palettes = refreshPalettes();
-    const groups = refreshGroups();
-
-    await palettes;
-    await groups;
-  }
-
-  const handleConfirmDeleteOpen = () => {
-    setConfirmDeleteOpen(true);
-    props.onClose();
-  }
-
-  const handleConfirmDeleteClose = () => {
-    setConfirmDeleteOpen(false);
-  }
-
-  return <>
-    <Menu
-      id={`palette-${props.palette.id}-options`}
-      anchorEl={props.anchorEl}
-      open={Boolean(props.anchorEl)}
-      onClose={props.onClose}>
-      <MenuItem>
-        <Link to={`/app/palettes/edit/${props.palette.id}`} role="menuitem">Edit</Link>
-      </MenuItem>
-      <span className="text-red-800">
-        <MenuItem onClick={handleConfirmDeleteOpen}>Delete</MenuItem>
-      </span>
-    </Menu>
-
-    <ConfirmDeleteDialog 
-      open={confirmDeleteOpen}
-      onDelete={handleDelete}
-      onClose={handleConfirmDeleteClose}
-      objectToDelete="palette"/>
-  </>
-}
 
 function ensureAtLeastThreeColors(inputColors: Color[]) {
   const colors: Color[] = [...inputColors];
