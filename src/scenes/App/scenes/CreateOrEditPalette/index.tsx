@@ -7,11 +7,11 @@ import ColorInput from "./components/ColorInput";
 import CreateOrEditPaletteContext from "./services/CreateOrEditPaletteContext";
 import { usePalette } from "#app/services/app-state-store";
 
-interface CreateOrEditPalette extends RouteComponentProps {
+interface CreateOrEditPaletteProps extends RouteComponentProps {
   id?: number
 }
 
-export default function CreateOrEditPalette(props: CreateOrEditPaletteContext) {
+export default function CreateOrEditPalette(props: CreateOrEditPaletteProps) {
   const palette = usePalette(props.id);
   const [name, setName] = useState('');
   const [group, setGroup] = useState<number | null>(null);
