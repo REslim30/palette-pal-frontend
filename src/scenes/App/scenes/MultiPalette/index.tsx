@@ -9,6 +9,7 @@ import { useCurrentGroup, usePalettes } from "#src/scenes/App/services/app-state
 import MultiPaletteAppBar from "./components/MultiPaletteAppBar/index";
 import LeftDrawer from "./components/LeftDrawer/index";
 import MultiPaletteContext from './services/MultiPaletteContext';
+import GroupCreator from "./components/GroupCreator/index";
 
 interface MultiPaletteProps extends RouteComponentProps {
   groupId?: number;
@@ -16,15 +17,19 @@ interface MultiPaletteProps extends RouteComponentProps {
 
 export default function MultiPalette(props : MultiPaletteProps) {
   const [leftDrawerOpen, setLeftDrawerOpen] = useState(false);
+  const [groupCreatorOpen, setGroupCreatorOpen] = useState(false);
 
   return <MultiPaletteContext.Provider
     value={{
       leftDrawerOpen,
       setLeftDrawerOpen,
+      groupCreatorOpen,
+      setGroupCreatorOpen
     }}>
     <MultiPaletteAppBar/>
     <Palettes/>
     <LeftDrawer /> 
+    <GroupCreator />
   </MultiPaletteContext.Provider>
 }
 

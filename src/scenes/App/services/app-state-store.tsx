@@ -140,21 +140,20 @@ export function AppStoreProvider(props: any) {
   </Provider>
 }
 
-export function refreshPalettes(): void {
-  (async () => {
-    try {
-      const fetchPromise = await fetch(`${BACKEND_API_URL}/palettes`, {
-        method: 'GET',
-        headers: {
-          authorization: `Bearer ${localStorage.getItem('jwt')}`
-        }
-      });
-      const body = await fetchPromise.json();
-      store.dispatch(setPalettes(body));
-    } catch(e) {
-      console.error(e);
-    }
-  })();
+export async function refreshPalettes(): Promise<any> {
+  try {
+    const fetchPromise = await fetch(`${BACKEND_API_URL}/palettes`, {
+      method: 'GET',
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('jwt')}`
+      }
+    });
+    const body = await fetchPromise.json();
+    store.dispatch(setPalettes(body));
+    return body;
+  } catch(e) {
+    console.error(e);
+  }
 }
 
 const GET_GROUPS = `
@@ -175,14 +174,13 @@ const GET_GROUPS = `
   }
 `;
 
-export function refreshGroups(): void {
-  (async () => {
+export async function refreshGroups(): Promise<any> {
     try {
       const fetchPromise = await fetchGraphQL(GET_GROUPS);
       const body = await fetchPromise.json();
       store.dispatch(setGroups(body.data.groups));
+      return body;
     } catch(e) {
       console.error(e);
     }
-  })();
 }

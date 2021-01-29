@@ -8,13 +8,12 @@ import { useMultiPaletteContext } from "../../services/MultiPaletteContext";
 import ListIcon from "@material-ui/icons/FormatListBulletedRounded";
 import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
-import GroupCreator from "./components/GroupCreator/index";
+import GroupCreator from "../GroupCreator/index";
 
 export default function LeftDrawer(props: any) {
   const groups = useGroups();
   const palettes = usePalettes();
-  const { leftDrawerOpen, setLeftDrawerOpen } = useMultiPaletteContext();
-  const [groupCreatorOpen, setGroupCreatorOpen] = useState(false);
+  const { leftDrawerOpen, setLeftDrawerOpen, setGroupCreatorOpen } = useMultiPaletteContext();
   
   const handleClose = () => {
     setLeftDrawerOpen(false);
@@ -29,15 +28,11 @@ export default function LeftDrawer(props: any) {
 
   const handleGroupCreatorOpen = () => {
     setGroupCreatorOpen(true);
-  }
-
-  const handleGroupCreatorClose = () => {
-    setGroupCreatorOpen(false);
+    handleClose();
   }
 
   return <Drawer anchor="left" open={leftDrawerOpen} onClose={handleClose}>
     <div className="bg-primary-500 h-24">
-      {/* TODO: Fill out profile section */}
     </div>
     <article>
       <div className="px-6 mt-4 mb-4 flex justify-between items-end">
@@ -53,6 +48,7 @@ export default function LeftDrawer(props: any) {
         group={{ name: "All", palettes: palettes as any }}
         LeftIcon={<ListIcon className="text-primary-800"/>}
         onClick={makeHandleSelect(null)}
+        key={-1}
       />
       {groups?.map((group) => (
         <LeftDrawerItem
@@ -63,7 +59,6 @@ export default function LeftDrawer(props: any) {
       ))}
     </article>
 
-    <GroupCreator open={groupCreatorOpen} close={handleGroupCreatorClose}/>
   </Drawer>;
 };
 
