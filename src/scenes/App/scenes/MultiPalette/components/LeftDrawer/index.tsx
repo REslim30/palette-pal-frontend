@@ -48,13 +48,14 @@ export default function LeftDrawer(props: any) {
         group={{ name: "All", palettes: palettes as any }}
         LeftIcon={<ListIcon className="text-primary-800"/>}
         onClick={makeHandleSelect(null)}
-        key={-1}
+        key="-1"
       />
       {groups?.map((group) => (
         <LeftDrawerItem
           group={group}
           onClick={makeHandleSelect(group)}
           LeftIcon={<ColorBall color={ group?.iconColor || 'gray' }/>}
+          key={group.id}
         />
       ))}
     </article>
@@ -73,7 +74,6 @@ function LeftDrawerItem(props: {group: Group, LeftIcon: React.ReactNode, onClick
   return <button 
     className={`w-64 grid gap-6 items-center justify-items-center pl-6 pr-4 py-2 ${selectedGroupStyle(group)}`} 
     style={{ gridTemplateColumns: "24px 1fr min-content" }} 
-    key={ group.id }
     onClick={ onClick }>
     {LeftIcon}
     <span className="text-left mt-0.5 font-sans text-lg justify-self-start">

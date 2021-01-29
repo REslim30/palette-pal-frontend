@@ -53,7 +53,7 @@ export default function NameAndGroupInput(props: unknown) {
       >
         <option aria-label="none" value=""/>
         {groups.map((group: Group) => {
-          return <option value={group.id}>{group.name}</option>
+          return <option value={group.id} key={group.id}>{group.name}</option>
         })}
       </Select>
     </StyledFormControl> 
