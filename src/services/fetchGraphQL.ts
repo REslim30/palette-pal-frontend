@@ -1,4 +1,4 @@
-import BACKEND_API_URL from "#src/services/BACKEND_API_URL";
+import BACKEND_API_URL from "#src/services/api/BACKEND_API_URL";
 
 // Wrapper around fetch api but tailored to graphQL
 export default function fetchGraphQL(query: any, variables?: any) {

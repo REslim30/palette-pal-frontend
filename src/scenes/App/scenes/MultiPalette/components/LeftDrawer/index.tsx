@@ -12,7 +12,8 @@ import {
   setCurrentGroup,
   useCurrentGroup,
   usePalettes,
-} from "#app/services/app-state-store"
+  useUser
+} from "#src/services/app-state-store"
 import ColorBall from "#src/components/ColorBall/index"
 import { useMultiPaletteContext } from "../../services/MultiPaletteContext"
 import GroupCreator from "../GroupCreator/index"
@@ -23,7 +24,7 @@ export default function LeftDrawer(props: any) {
   const {
     leftDrawerOpen,
     setLeftDrawerOpen,
-    setGroupCreatorOpen,
+    setGroupToEdit,
   } = useMultiPaletteContext()
 
   const handleClose = () => {
@@ -38,12 +39,12 @@ export default function LeftDrawer(props: any) {
   }
 
   const handleGroupCreatorOpen = () => {
-    setGroupCreatorOpen(true)
-    handleClose()
+    setGroupToEdit('new');
+    handleClose();
   }
 
   return (
-    <Drawer anchor="left" open={leftDrawerOpen} onClose={handleClose}>
+    <Drawer anchor="left" open={Boolean(leftDrawerOpen)} onClose={handleClose}>
       <ProfileSection />
       <article>
         <div className="flex items-end justify-between px-6 mt-4 mb-4">
@@ -72,8 +73,9 @@ export default function LeftDrawer(props: any) {
   )
 }
 
-function ProfileSection(props: any) {
+function ProfileSection(props: unknown) {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
+  const user = useUser();
 
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -87,6 +89,7 @@ function ProfileSection(props: any) {
     window.localStorage.removeItem("jwt")
     window.location.href = "/"
   }
+  console.log(user);
 
   return (
     <>
@@ -101,11 +104,11 @@ function ProfileSection(props: any) {
             onClick={handleOpen}
             aria-controls="profile-menu"
           >
-            gi
+            {user?.username.slice(0,2)}
           </button>
           <div className="flex flex-col justify-between">
-            <span className="text-2xl text-white font-header">giahuydo99</span>
-            <span className="text-white">giahuydo99@gmail.com</span>
+            <span className="text-2xl text-white font-header">{user?.username}</span>
+            <span className="text-white">{user?.email}</span>
           </div>
         </div>
       </div>

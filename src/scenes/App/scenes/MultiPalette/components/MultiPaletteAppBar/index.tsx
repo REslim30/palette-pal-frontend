@@ -18,7 +18,7 @@ import {
   refreshGroups,
   refreshPalettes,
   useCurrentGroup,
-} from "#app/services/app-state-store"
+} from "#src/services/app-state-store"
 import { useMultiPaletteContext } from "../../services/MultiPaletteContext"
 
 export default function MultiPaletteAppBar(props: any) {

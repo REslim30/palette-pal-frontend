@@ -7,9 +7,9 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-import { useGroups } from "#app/services/app-state-store";
+import { useGroups } from "#src/services/app-state-store";
 import { useCreateOrEditPaletteContext } from "../../services/CreateOrEditPaletteContext";
-import { useCurrentGroup } from "#app/services/app-state-store";
+import { useCurrentGroup } from "#src/services/app-state-store";
 
 const StyledFormControl = styled(FormControl)({
   formControl: {

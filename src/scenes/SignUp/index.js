@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import BACKEND_API_URL from "#src/services/BACKEND_API_URL";
+import BACKEND_API_URL from "#src/services/api/BACKEND_API_URL";
 
 // Sign Up page
 export default function SignUp(props) {
@@ -46,7 +46,7 @@ export default function SignUp(props) {
 
 
   return <div className="p-4">
-    <h1 className="text-4xl mb-8">Sign up to Palette Pal</h1>
+    <h1 className="mb-8 text-4xl">Sign up to Palette Pal</h1>
     <form onSubmit={submitForm} className="grid gap-4 mb-4">
       <TextField className="w-full" label="Username" inputProps={{name: "username"}} variant="outlined"/>
       <TextField className="w-full" label="Email" inputProps={{name: "email"}} variant="outlined"/>

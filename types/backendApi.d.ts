@@ -18,3 +18,9 @@ declare type Group = {
   iconColor?: string,
   palettes?: Palette[]
 }
+
+declare type User = {
+  id: number,
+  username: string,
+  email: string
+}

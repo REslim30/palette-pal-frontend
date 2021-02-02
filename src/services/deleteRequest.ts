@@ -1,4 +1,4 @@
-import BACKEND_API_URL from "./BACKEND_API_URL";
+import BACKEND_API_URL from "./api/BACKEND_API_URL";
 
 // Submits a PUT request to backend api
 export default function putRequest(route: string) {

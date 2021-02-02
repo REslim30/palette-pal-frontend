@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useMultiPaletteContext } from "../../services/MultiPaletteContext";
-import { refreshGroups } from "#app/services/app-state-store";
+import { refreshGroups } from "#src/services/app-state-store";
 
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";

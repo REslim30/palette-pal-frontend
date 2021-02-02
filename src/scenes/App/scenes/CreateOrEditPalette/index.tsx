@@ -5,7 +5,7 @@ import PaletteSubmitter from "./components/PaletteSubmitter/index";
 import NameAndGroupInput from "./components/NameAndGroupInput/index";
 import ColorInput from "./components/ColorInput";
 import CreateOrEditPaletteContext from "./services/CreateOrEditPaletteContext";
-import { usePalette } from "#app/services/app-state-store";
+import { usePalette } from "#src/services/app-state-store";
 
 interface CreateOrEditPaletteProps extends RouteComponentProps {
   id?: number

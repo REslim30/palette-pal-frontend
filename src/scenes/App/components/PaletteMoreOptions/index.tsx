@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import deleteRequest from "#src/services/deleteRequest";
-import { refreshGroups, refreshPalettes } from "#app/services/app-state-store";
+import { refreshGroups, refreshPalettes } from "#src/services/app-state-store";
 import ConfirmDeleteDialog from "#src/components/ConfirmDeleteDialog/index";
 import { Link } from "gatsby";
 

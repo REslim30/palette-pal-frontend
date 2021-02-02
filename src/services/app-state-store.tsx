@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { createSlice, configureStore } from "@reduxjs/toolkit";
 import { useSelector, Provider } from "react-redux";
-import BACKEND_API_URL from "#src/services/BACKEND_API_URL"
+import BACKEND_API_URL from "#src/services/api/BACKEND_API_URL"
 import fetchGraphQL from "#src/services/fetchGraphQL";
+import getRequest from "./api/getRequest";
 
 type AppState = {
   palettes: Palette[] | null,
@@ -10,6 +11,7 @@ type AppState = {
   groups: Group[] | null,
   groupIdLookup: { [key:number]: Palette } | null,
   currentGroupId: number | null,
+  user: User | null,
 }
 
 const initialState: AppState = {
@@ -18,6 +20,7 @@ const initialState: AppState = {
   groups: null,
   groupIdLookup: null,
   currentGroupId: null,
+  user: null,
 };
 
 const appSlice = createSlice({
@@ -50,11 +53,14 @@ const appSlice = createSlice({
       newState.currentGroupId = id;
 
       return newState;
+    },
+    setUser: (state, action) => {
+      return {...state, user: action.payload};
     }
   }
 })
 
-const { setPalettes, setGroups, setCurrentGroupId } = appSlice.actions
+const { setPalettes, setGroups, setCurrentGroupId, setUser } = appSlice.actions
 
 const store = configureStore({
   reducer: appSlice.reducer
@@ -70,7 +76,7 @@ export function usePalettes(): Palette[] | null {
     if (!palettes) {
       refreshPalettes();
     }
-  });
+  }, [palettes]);
 
   return palettes;
 }
@@ -85,7 +91,7 @@ export function usePalette(id: number | undefined): Palette | null {
     if (!palette) {
       refreshPalettes();
     }
-  });
+  }, [palette]);
 
   return palette;
 }
@@ -97,7 +103,7 @@ export function useGroups(): Group[] | null {
     if (!groups) {
       refreshGroups();
     }
-  });
+  }, [groups]);
 
   return groups
 }
@@ -111,7 +117,7 @@ export function useGroup(id: number): Group | null {
     if (!group) {
       refreshGroups();
     }
-  });
+  }, [group]);
 
   return group;
 }
@@ -123,7 +129,7 @@ export function useCurrentGroup(): Group | null {
   useEffect(() => {
     if (!groupIdLookup) 
       refreshGroups();
-  })
+  }, [groupId, groupIdLookup])
   
   const result = groupIdLookup?.[groupId];
 
@@ -131,6 +137,17 @@ export function useCurrentGroup(): Group | null {
     return null;
   else 
     return result;
+}
+
+export function useUser(): User | null {
+  const user = useSelector((state: AppState) => state.user);
+
+  useEffect(() => {
+    if (!user)
+      refreshUser();
+  }, [user]);
+
+  return user;
 }
 
 export function setCurrentGroup(id: number | null): void {
@@ -186,4 +203,15 @@ export async function refreshGroups(): Promise<any> {
     } catch(e) {
       console.error(e);
     }
+}
+
+export async function refreshUser(): Promise<any> {
+  try {
+    const fetchPromise = await getRequest('/users/me');
+    const body = await fetchPromise.json();
+    store.dispatch(setUser(body));
+    return body;
+  } catch (error) {
+    console.error(error);
+  }
 }
