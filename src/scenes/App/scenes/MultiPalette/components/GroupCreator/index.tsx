@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMultiPaletteContext } from "../../services/MultiPaletteContext";
 import { refreshGroups } from "#app/services/app-state-store";
 
@@ -16,12 +16,20 @@ import Button from "@material-ui/core/Button";
 import submitGroup from "./service/submitGroup";
 
 export default function GroupCreator(props: any) {
-  const { groupCreatorOpen, setGroupCreatorOpen, setLeftDrawerOpen } = useMultiPaletteContext();
+  const { groupToEdit, setGroupToEdit, setLeftDrawerOpen } = useMultiPaletteContext();
   const [iconColor, setIconColor] = useState('');
   const [name, setName] = useState('');
 
+  useEffect(() => {
+    const group = (groupToEdit as Group);
+    if (group?.id) {
+      setIconColor(group.iconColor ?? '');
+      setName(group.name);
+    }
+  }, [groupToEdit]);
+
   const handleClose = () => {
-    setGroupCreatorOpen(false);
+    setGroupToEdit(null);
   }
 
   const handleIconColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,7 +54,7 @@ export default function GroupCreator(props: any) {
   }
 
   return <Dialog
-    open={groupCreatorOpen}
+    open={Boolean(groupToEdit)}
     onClose={handleClose}>
     <DialogTitle>Create a Group</DialogTitle>
     <div className="flex flex-col justify-between px-5 mb-4">

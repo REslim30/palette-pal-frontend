@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { navigate } from "@reach/router";
+import { navigate } from "@reach/router"
 
 import AppBar from "@material-ui/core/AppBar"
 import Toolbar from "@material-ui/core/Toolbar"
@@ -12,9 +12,13 @@ import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
 
 import RightEdgeIconButton from "#src/components/RightEdgeIconButton/index"
-import ConfirmDeleteDialog from "#src/components/ConfirmDeleteDialog/index";
-import deleteRequest from "#src/services/deleteRequest";
-import { refreshGroups, refreshPalettes, useCurrentGroup } from "#app/services/app-state-store"
+import ConfirmDeleteDialog from "#src/components/ConfirmDeleteDialog/index"
+import deleteRequest from "#src/services/deleteRequest"
+import {
+  refreshGroups,
+  refreshPalettes,
+  useCurrentGroup,
+} from "#app/services/app-state-store"
 import { useMultiPaletteContext } from "../../services/MultiPaletteContext"
 
 export default function MultiPaletteAppBar(props: any) {
@@ -49,7 +53,8 @@ export default function MultiPaletteAppBar(props: any) {
 function GroupMenu(props: unknown) {
   const group = useCurrentGroup()
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
-  const [confirmDeleteDialogOpen, setConfirmDeleteDialogOpen] = useState(false);
+  const [confirmDeleteDialogOpen, setConfirmDeleteDialogOpen] = useState(false)
+  const { setGroupToEdit } = useMultiPaletteContext()
 
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -60,21 +65,26 @@ function GroupMenu(props: unknown) {
   }
 
   const handleConfirmDeleteDialogOpen = () => {
-    setConfirmDeleteDialogOpen(true);
-    handleClose();
+    setConfirmDeleteDialogOpen(true)
+    handleClose()
   }
 
   const handleConfirmDeleteDialogClose = () => {
-    setConfirmDeleteDialogOpen(false);
+    setConfirmDeleteDialogOpen(false)
   }
 
   const handleDelete = async () => {
     await deleteRequest(`/groups/${(group as Group).id}`)
-    const groupRefresh = refreshGroups();
-    const paletteRefresh = refreshPalettes();
-    await groupRefresh;
-    await paletteRefresh;
-    handleConfirmDeleteDialogClose();
+    const groupRefresh = refreshGroups()
+    const paletteRefresh = refreshPalettes()
+    await groupRefresh
+    await paletteRefresh
+    handleConfirmDeleteDialogClose()
+  }
+
+  const handleEdit = () => {
+    handleClose();
+    setGroupToEdit(group)
   }
 
   return (
@@ -93,9 +103,11 @@ function GroupMenu(props: unknown) {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-          <MenuItem>Edit Group</MenuItem>
+          <MenuItem onClick={handleEdit}>Edit Group</MenuItem>
           <span className="text-red-800">
-            <MenuItem onClick={handleConfirmDeleteDialogOpen}>Delete Group</MenuItem>
+            <MenuItem onClick={handleConfirmDeleteDialogOpen}>
+              Delete Group
+            </MenuItem>
           </span>
         </Menu>
         <ConfirmDeleteDialog
@@ -103,7 +115,8 @@ function GroupMenu(props: unknown) {
           objectToDelete="group"
           onDelete={handleDelete}
           onClose={handleConfirmDeleteDialogClose}
-          additionalMessage="This will also delete any palettes in the group."/>
+          additionalMessage="This will also delete any palettes in the group."
+        />
       </>
     )
   )

@@ -17,14 +17,14 @@ interface MultiPaletteProps extends RouteComponentProps {
 
 export default function MultiPalette(props : MultiPaletteProps) {
   const [leftDrawerOpen, setLeftDrawerOpen] = useState(false);
-  const [groupCreatorOpen, setGroupCreatorOpen] = useState(false);
+  const [groupToEdit, setGroupToEdit] = useState<'new' | number | null>(null);
 
   return <MultiPaletteContext.Provider
     value={{
       leftDrawerOpen,
       setLeftDrawerOpen,
-      groupCreatorOpen,
-      setGroupCreatorOpen
+      groupToEdit,
+      setGroupToEdit
     }}>
     <MultiPaletteAppBar/>
     <Palettes/>
