@@ -11,7 +11,8 @@ type ConfirmDeleteDialogProps = {
   open: boolean,
   onClose: () => void,
   onDelete: () => void,
-  objectToDelete: string
+  objectToDelete: string,
+  additionalMessage?: string
 }
 
 export default function ConfirmDeleteDialog(props: ConfirmDeleteDialogProps) {
@@ -23,7 +24,7 @@ export default function ConfirmDeleteDialog(props: ConfirmDeleteDialogProps) {
     <DialogTitle id={`delete-${props.objectToDelete}-dialog-title`}>Erase {props.objectToDelete}?</DialogTitle>
     <DialogContent>
       <DialogContentText id="delete-color-dialog-description">
-        You won't be able to recover this {props.objectToDelete}. Are you sure?
+        You won't be able to recover this {props.objectToDelete}. {props.additionalMessage && props.additionalMessage + ' '}Are you sure?
       </DialogContentText>
     </DialogContent>
     <DialogActions>

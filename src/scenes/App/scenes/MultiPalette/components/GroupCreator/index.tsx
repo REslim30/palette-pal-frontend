@@ -49,7 +49,7 @@ export default function GroupCreator(props: any) {
     open={groupCreatorOpen}
     onClose={handleClose}>
     <DialogTitle>Create a Group</DialogTitle>
-    <div className="px-5 flex flex-col justify-between mb-4">
+    <div className="flex flex-col justify-between px-5 mb-4">
       <div className="mb-6">
         <TextField label="Name" variant="outlined" value={name} onChange={handleNameChange}/>
       </div>
@@ -107,7 +107,7 @@ function ColorSelect(props: any) {
         return <MenuItem value={color} key={color} aria-label={color}>
           <div>
             <ColorBall color={color} />
-            <span className="ml-4 pb-2">{color}</span>
+            <span className="pb-2 ml-4">{color}</span>
           </div>
         </MenuItem>
       })}

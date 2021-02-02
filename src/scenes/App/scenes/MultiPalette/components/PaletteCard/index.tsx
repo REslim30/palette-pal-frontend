@@ -24,31 +24,27 @@ export default function PaletteCard(props: PaletteCardProps) {
   }
 
   return <div className="relative">
-    <Link to={`/app/palettes/${props.palette.id}`} aria-label={props.palette.name} className="clickable-card w-full text-left h-40 flex flex-col truncate" key={props.palette.id}>
+    <Link to={`/app/palettes/${props.palette.id}`} aria-label={props.palette.name} className="flex flex-col w-full h-40 text-left truncate clickable-card">
       {/* Title and More button */}
-      <div className="p-2 flex justify-between">
-        <h2 className="text-xl flex-grow">{props.palette.name}</h2>
+      <div className="flex justify-between p-2">
+        <h2 className="flex-grow text-xl">{props.palette.name}</h2>
       </div>
 
       {/* Three palette sample stripes */}
-      <div className="flex-grow flex flex-col justify-between mt-4">
+      <div className="flex flex-col justify-between flex-grow mt-4">
       {
         colors.slice(0, 3).map(({shades, id}, index) => {
-          return <div className="flex">
-            {(shades.length === 2
-            ? [
-                shades[0],
-                shades[shades.length-1]
-              ]
-            : [
-                shades[0],
-                shades[Math.trunc(shades.length/2)],
-                shades[shades.length-1],
-              ]
-            ).map((shade, shadeIndex) => {
-              return <span className="flex-grow h-5" style={{ backgroundColor: shade }} key={shadeIndex}/>
-            })}
-          </div>
+          let styleObj;
+          if (shades.length === 3) {
+            const middleShade = shades[Math.trunc(shades.length/2)];
+            styleObj = { background: `linear-gradient(to right, ${shades[0]} 33.3%, ${middleShade} 0, ${middleShade} 66.6%, ${shades[shades.length-1]} 0)` };
+          } else if (shades.length === 2) {
+            styleObj = { background: `linear-gradient(to right, ${shades[0]} 50%, ${shades[shades.length-1]} 50%)` };
+          } else {
+            styleObj = { background: shades[0] };
+          }
+
+          return <div className="h-5" style={styleObj} key={index}/>
         })
       }
       </div>
