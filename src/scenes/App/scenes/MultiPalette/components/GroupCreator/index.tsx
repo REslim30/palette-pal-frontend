@@ -40,17 +40,11 @@ export default function GroupCreator(props: any) {
     setName(event.target.value);
   }
 
-  const handleSubmit = () => {
-    submitGroup({name, iconColor})
-    .then(() => {
-      handleClose();
-
-      refreshGroups()
-      .then(() => {
-        setLeftDrawerOpen(true);
-      });
-    })
-    .catch(console.error)
+  const handleSubmit = async () => {
+    await submitGroup({id: (groupToEdit as any)?.id, name, iconColor})
+    await refreshGroups()
+    handleClose();
+    setLeftDrawerOpen(true);
   }
 
   return <Dialog
