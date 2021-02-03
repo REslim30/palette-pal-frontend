@@ -35,7 +35,8 @@ export default function PaletteCard(props: PaletteCardProps) {
       {
         colors.slice(0, 3).map(({shades, id}, index) => {
           let styleObj;
-          if (shades.length === 3) {
+          console.log(shades);
+          if (shades.length >= 3) {
             const middleShade = shades[Math.trunc(shades.length/2)];
             styleObj = { background: `linear-gradient(to right, ${shades[0]} 33.3%, ${middleShade} 0, ${middleShade} 66.6%, ${shades[shades.length-1]} 0)` };
           } else if (shades.length === 2) {

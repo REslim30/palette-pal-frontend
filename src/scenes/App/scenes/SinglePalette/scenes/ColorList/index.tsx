@@ -26,11 +26,11 @@ export default function ColorList(props: ColorListProps) {
     setSelectedShade('');
   }
 
-  return <main className="p-6">
+  return <main className="max-w-screen-md p-6 mx-auto">
     {/* List of shades */}
     {props.palette?.colors.map(color => {
         return <section className="mb-10" key={color.id}>
-          <h2 className="text-3xl mb-2">{color.name}</h2>
+          <h2 className="mb-2 text-3xl">{color.name}</h2>
           <div className="grid gap-8" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(80px, 1fr))' }}>
             {color.shades.map((shade, index) => {
                 return <ShadeCard shade={shade} onClick={makeHandleOpen(shade)} key={index}/>
