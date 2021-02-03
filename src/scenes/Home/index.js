@@ -15,7 +15,7 @@ export default function Home(props) {
         <h1 className="text-3xl">Palette Pal</h1>
         <nav>
           <Link className="text-lg regular-link" to="/login/">login</Link>
-          <Link className="ml-4 text-lg text-primary-600 regular" to="/signup/">signup</Link>
+          <Link className="ml-4 text-lg regular-link text-primary-600 regular" to="/signup/">signup</Link>
         </nav>
       </header>
 

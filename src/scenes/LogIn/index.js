@@ -34,7 +34,7 @@ export default function LogIn(props) {
     }
   }
 
-  return <main className="p-4">
+  return <main className="max-w-screen-sm p-4 mx-auto">
     <h1 className="mb-8 text-4xl">Login to Palette Pal</h1>
     <form onSubmit={submitForm} className="grid gap-4 mb-4">
       <TextField id="identifier-input" className="w-full" label="Email or Username" inputProps={{name: "identifier"}} variant="outlined"/>
