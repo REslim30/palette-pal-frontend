@@ -23,7 +23,7 @@ export default function ConfirmDeleteDialog(props: ConfirmDeleteDialogProps) {
     aria-describedby={`delete-${props.objectToDelete}-dialog-description`}>
     <DialogTitle id={`delete-${props.objectToDelete}-dialog-title`}>Erase {props.objectToDelete}?</DialogTitle>
     <DialogContent>
-      <DialogContentText id="delete-color-dialog-description">
+      <DialogContentText id={`delete-${props.objectToDelete}-dialog-description`}>
         You won't be able to recover this {props.objectToDelete}. {props.additionalMessage && props.additionalMessage + ' '}Are you sure?
       </DialogContentText>
     </DialogContent>
