@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import RedMenuItem from "#src/components/RedMenuItem";
 import deleteRequest from "#src/services/deleteRequest";
 import { refreshGroups, refreshPalettes } from "#src/services/app-state-store";
 import ConfirmDeleteDialog from "#src/components/ConfirmDeleteDialog/index";
@@ -43,13 +44,12 @@ export default function PaletteMoreOptions(props: PaletteMoreOptionsProps) {
       id={`palette-${props.palette.id}-options`}
       anchorEl={props.anchorEl}
       open={Boolean(props.anchorEl)}
-      onClose={props.onClose}>
+      onClose={props.onClose}
+      aria-label="palette-options">
       <MenuItem>
         <Link to={`/app/palettes/edit/${props.palette.id}`} role="menuitem">Edit</Link>
       </MenuItem>
-      <span className="text-red-800">
-        <MenuItem onClick={handleConfirmDeleteOpen}>Delete</MenuItem>
-      </span>
+      <RedMenuItem onClick={handleConfirmDeleteOpen}>Delete</RedMenuItem>
     </Menu>
 
     <ConfirmDeleteDialog 

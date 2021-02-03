@@ -11,6 +11,7 @@ import ColorList from "./scenes/ColorList/index";
 import { RouteComponentProps, navigate } from '@reach/router';
 import IconLink from "#src/components/IconLink";
 import PaletteMoreOptions from "#app/components/PaletteMoreOptions/index";
+import SEO from "#src/components/SEO/index";
 
 // Displays colors from a single palette
 interface SinglePaletteProps extends RouteComponentProps {
@@ -42,13 +43,14 @@ function SinglePaletteAppBar(props: { palette: Palette | null }) {
   }
 
   return <>
+    <SEO title="View Palette"/>
     <AppBar position="static">
       <Toolbar>
         <IconLink edge="start" color="inherit" aria-label="Menu" to={"/app/palettes"}>
           <ArrowBackIcon />
         </IconLink>
         <h1 className='flex-grow pl-4 text-xl'>{props.palette?.name || ''}</h1>
-        <RightEdgeIconButton edge="end" color="inherit" aria-label="Add Palette" onClick={handleOptionsOpen}>
+        <RightEdgeIconButton edge="end" color="inherit" aria-label="palette options" onClick={handleOptionsOpen} aria-haspopup="menu">
           <MoreVertIcon />
         </RightEdgeIconButton>
       </Toolbar>
