@@ -37,10 +37,10 @@ export default function LogIn(props) {
   return <div className="p-4">
     <h1 className="mb-8 text-4xl">Login to Palette Pal</h1>
     <form onSubmit={submitForm} className="grid gap-4 mb-4">
-      <TextField className="w-full" label="Email or Username" inputProps={{name: "identifier"}} variant="outlined"/>
-      <TextField type="password" className="w-full" label="Password" inputProps={{name: "password"}} variant="outlined"/>
+      <TextField id="identifier-input" className="w-full" label="Email or Username" inputProps={{name: "identifier"}} variant="outlined"/>
+      <TextField id="password-input" type="password" className="w-full" label="Password" inputProps={{name: "password"}} variant="outlined"/>
       { errorMessage && 
-        <p className="text-red-700">{errorMessage}</p> }
+        <p className="text-red-700" role="alert">{errorMessage}</p> }
       <Button className="w-full" variant="contained" color="primary" type="submit">Login</Button>
 
     </form>
