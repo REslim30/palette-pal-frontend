@@ -50,7 +50,7 @@ function SinglePaletteAppBar(props: { palette: Palette | null }) {
           <ArrowBackIcon />
         </IconLink>
         <h1 className='flex-grow pl-4 text-xl'>{props.palette?.name || ''}</h1>
-        <RightEdgeIconButton edge="end" color="inherit" aria-label="palette options" onClick={handleOptionsOpen} aria-haspopup="menu">
+        <RightEdgeIconButton edge="end" color="inherit" aria-label="palette options" onClick={handleOptionsOpen} aria-haspopup="menu" aria-expanded={Boolean(optionsAnchorEl)}>
           <MoreVertIcon />
         </RightEdgeIconButton>
       </Toolbar>

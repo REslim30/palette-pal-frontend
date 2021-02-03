@@ -26,8 +26,8 @@ export default function PaletteCard(props: PaletteCardProps) {
   return <div className="relative">
     <Link to={`/app/palettes/${props.palette.id}`} aria-label={props.palette.name} className="flex flex-col w-full h-40 text-left truncate clickable-card">
       {/* Title and More button */}
-      <div className="flex justify-between p-2">
-        <h2 className="flex-grow text-xl">{props.palette.name}</h2>
+      <div className="p-2 mr-10">
+        <h2 className="w-full overflow-hidden text-xl overflow-ellipsis">{props.palette.name}</h2>
       </div>
 
       {/* Three palette sample stripes */}
@@ -51,7 +51,7 @@ export default function PaletteCard(props: PaletteCardProps) {
       </div>
     </Link>
 
-    <TopRightIconButton aria-label="More options" aria-controls={`palette-${props.palette.id}-options`} onClick={handleOptionsOpen}>
+    <TopRightIconButton aria-label="More options" aria-haspopup="menu" aria-expanded={Boolean(optionsAnchorEl)} onClick={handleOptionsOpen}>
       <MoreVertIcon/>
     </TopRightIconButton>
     
