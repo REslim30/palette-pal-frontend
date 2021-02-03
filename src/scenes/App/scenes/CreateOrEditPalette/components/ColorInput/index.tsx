@@ -56,7 +56,7 @@ export default function ColorInput({...props}: any) {
 
 
 function AddColorButton(props: any) {
-  return <button className="py-2 px-4 clickable-card flex items-center justify-between w-full mt-4" {...props}>
+  return <button className="flex items-center justify-between w-full px-4 py-2 mt-4 clickable-card" {...props}>
     <span className="text-neutral-500">Add Color</span>
     <AddIcon className="text-primary-500"/>
   </button>;

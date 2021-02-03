@@ -1,8 +1,16 @@
 module.exports = {
   purge: [],
   darkMode: false, // or 'media' or 'class'
+  variants: {
+    extend: {
+      borderWidth: ['focus'],
+    }
+  },
   theme: {
     extend: {
+      boxShadow: {
+        card: '0px 2px 1px rgba(0, 0, 0, 0.25)'
+      },
       colors: {
         primary: {
          "50": "#FFE3EC",

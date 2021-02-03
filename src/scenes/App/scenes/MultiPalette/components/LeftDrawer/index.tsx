@@ -89,7 +89,6 @@ function ProfileSection(props: unknown) {
     window.localStorage.removeItem("jwt")
     window.location.href = "/"
   }
-  console.log(user);
 
   return (
     <>
