@@ -6,6 +6,7 @@ import NameAndGroupInput from "./components/NameAndGroupInput/index";
 import ColorInput from "./components/ColorInput";
 import CreateOrEditPaletteContext from "./services/CreateOrEditPaletteContext";
 import { usePalette } from "#src/services/app-state-store";
+import SEO from "#src/components/SEO/index";
 
 interface CreateOrEditPaletteProps extends RouteComponentProps {
   id?: number
@@ -26,6 +27,7 @@ export default function CreateOrEditPalette(props: CreateOrEditPaletteProps) {
   }, [palette])
 
   return <>
+    <SEO title="Create Palette"/>
     <CreateOrEditPaletteContext.Provider 
       value={{
         colors, 

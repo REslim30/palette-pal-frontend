@@ -12,9 +12,11 @@ export default function ColorNameInput(props: unknown) {
   };
 
   return <TextField 
+    id="color-name-input"
     label="Name" 
     variant="outlined" 
     placeholder="E.g. Primary, Blue, Neutrals"
     value={name}
-    onChange={handleNameChange}/>
+    onChange={handleNameChange}
+    autoFocus/>
 }

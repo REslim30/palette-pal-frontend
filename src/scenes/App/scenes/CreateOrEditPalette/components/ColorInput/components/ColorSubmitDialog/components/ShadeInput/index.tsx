@@ -39,8 +39,9 @@ export default function ShadeInput(props: any) {
   return <div className="pt-4">          
     <div className="flex flex-col items-end">
       <TextField 
+        id="css-color-shade-input"
         {...shadeInputError}
-        label="CSS color string" 
+        label="shade (CSS color string)" 
         variant="outlined" size="small" 
         placeholder="e.g. hsl(10, 20%, 30%)" 
         value={cssColorString}

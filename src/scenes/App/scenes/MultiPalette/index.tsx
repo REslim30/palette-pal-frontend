@@ -6,6 +6,7 @@ import LeftDrawer from "./components/LeftDrawer/index";
 import MultiPaletteContext from './services/MultiPaletteContext';
 import GroupCreator from "./components/GroupCreator/index";
 import Palettes from "./components/Palettes/index";
+import SEO from "#src/components/SEO/index";
 
 interface MultiPaletteProps extends RouteComponentProps {
   groupId?: number;
@@ -15,7 +16,9 @@ export default function MultiPalette(props : MultiPaletteProps) {
   const [leftDrawerOpen, setLeftDrawerOpen] = useState(false);
   const [groupToEdit, setGroupToEdit] = useState<'new' | Group | null>(null);
 
-  return <MultiPaletteContext.Provider
+  return <>
+  <SEO title="View Palettes"/>
+  <MultiPaletteContext.Provider
     value={{
       leftDrawerOpen,
       setLeftDrawerOpen,
@@ -29,6 +32,7 @@ export default function MultiPalette(props : MultiPaletteProps) {
       <GroupCreator />
     </div>
   </MultiPaletteContext.Provider>
+  </>
 }
 
 
