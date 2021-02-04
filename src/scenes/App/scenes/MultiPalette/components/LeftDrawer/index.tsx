@@ -12,10 +12,11 @@ import {
   setCurrentGroup,
   useCurrentGroup,
   usePalettes,
-  useUser
+  useUser,
 } from "#src/services/app-state-store"
 import ColorBall from "#src/components/ColorBall/index"
 import { useMultiPaletteContext } from "../../services/MultiPaletteContext"
+import LeftDrawerItem from "./components/LeftDrawerItem/index";
 
 export default function LeftDrawer(props: any) {
   const groups = useGroups()
@@ -38,24 +39,24 @@ export default function LeftDrawer(props: any) {
   }
 
   const handleGroupCreatorOpen = () => {
-    setGroupToEdit('new');
-    handleClose();
+    setGroupToEdit("new")
+    handleClose()
   }
 
   return (
-    <Drawer 
-      anchor="left" 
-      open={Boolean(leftDrawerOpen)} 
+    <Drawer
+      anchor="left"
+      open={Boolean(leftDrawerOpen)}
       onClose={handleClose}
       aria-role="dialog"
       aria-modal="true"
       aria-label="Left Drawer"
-      >
+    >
       <ProfileSection />
       <article>
         <div className="flex items-end justify-between px-6 mt-4 mb-4">
           <h2 className="text-3xl">Groups</h2>
-          <IconButton size="small" onClick={handleGroupCreatorOpen}>
+          <IconButton size="small" aria-label="Add group" onClick={handleGroupCreatorOpen}>
             <AddIcon />
           </IconButton>
         </div>
@@ -81,7 +82,7 @@ export default function LeftDrawer(props: any) {
 
 function ProfileSection(props: unknown) {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
-  const user = useUser();
+  const user = useUser()
 
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -111,10 +112,12 @@ function ProfileSection(props: unknown) {
             aria-haspopup="menu"
             aria-expanded={Boolean(anchorEl)}
           >
-            {user?.username.slice(0,2)}
+            {user?.username.slice(0, 2)}
           </button>
           <div className="flex flex-col justify-between">
-            <span className="text-2xl text-white font-header">{user?.username}</span>
+            <span className="text-2xl text-white font-header">
+              {user?.username}
+            </span>
             <span className="text-white">{user?.email}</span>
           </div>
         </div>
@@ -129,35 +132,5 @@ function ProfileSection(props: unknown) {
         <MenuItem onClick={handleLogOut}>Log Out</MenuItem>
       </Menu>
     </section>
-  )
-}
-
-function LeftDrawerItem(props: {
-  group: Group
-  LeftIcon: React.ReactNode
-  onClick: () => void
-}) {
-  const currentGroup = useCurrentGroup()
-
-  const selectedGroupStyle = (group: Group) =>
-    group.id === currentGroup?.id ? "bg-neutral-100" : ""
-
-  const { group, LeftIcon, onClick } = props
-  return (
-    <button
-      className={`grid gap-6 items-center justify-items-center pl-6 pr-4 py-2 w-64 ${selectedGroupStyle(
-        group
-      )}`}
-      style={{ gridTemplateColumns: "24px 1fr min-content" }}
-      onClick={onClick}
-    >
-      {LeftIcon}
-      <span className="text-left mt-0.5 font-sans text-lg justify-self-start">
-        {group.name}
-      </span>
-      <span className="self-end text-neutral-400 justify-self-end">
-        {group.palettes?.length ?? 0}
-      </span>
-    </button>
   )
 }

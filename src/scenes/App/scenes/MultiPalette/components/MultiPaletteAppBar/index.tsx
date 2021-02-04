@@ -5,7 +5,6 @@ import Toolbar from "@material-ui/core/Toolbar"
 import IconButton from "@material-ui/core/IconButton"
 import MenuIcon from "@material-ui/icons/Menu"
 import AddIcon from "@material-ui/icons/Add"
-import MoreVertIcon from "@material-ui/icons/MoreVert"
 import IconLink from "#src/components/IconLink/index"
 import { useCurrentGroup } from "#src/services/app-state-store"
 import { useMultiPaletteContext } from "../../services/MultiPaletteContext"
@@ -25,7 +24,7 @@ export default function MultiPaletteAppBar(props: any) {
         <IconButton
           edge="start"
           color="inherit"
-          aria-label="Menu"
+          aria-label="open left drawer"
           onClick={handleMenuOpen}
         >
           <MenuIcon />
