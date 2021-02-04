@@ -57,7 +57,7 @@ function CreatedColors(props: { onColorOptionsOpen: (event: React.SyntheticEvent
   return <>
     {colors.map((color: Color, index: number) => {
       return <div 
-        className="border-2 border-neutral-200 rounded w-full mt-4 py-2 pl-4 pr-2 grid gap-x-4 gap-y-2 items-center" 
+        className="grid items-center w-full py-2 pl-4 pr-2 mt-4 border-2 rounded border-neutral-200 gap-x-4 gap-y-2" 
         style={{ gridTemplateColumns: 'auto min-content' }}
         data-index={index}>
         <h2 className="text-left">{color.name}</h2>
@@ -69,9 +69,9 @@ function CreatedColors(props: { onColorOptionsOpen: (event: React.SyntheticEvent
           size="small">
           <MoreVertIcon className="text-neutral-500"/>
         </IconButton>
-        <div className="grid gap-x-3 gap-y-2 pb-2" style={{ gridTemplateColumns: 'repeat(auto-fill, 1rem)' }}>
+        <div className="grid pb-2 gap-x-3 gap-y-2" style={{ gridTemplateColumns: 'repeat(auto-fill, 1rem)' }}>
           { color.shades.length === 1
-          ? <span className="h-4 w-full rounded-full" style={{ backgroundColor: color.shades[0] }}/>
+          ? <span className="w-full h-4 rounded-full" style={{ backgroundColor: color.shades[0] }}/>
           : color.shades.map((shade, index) => {
               return <ColorBall color={shade} key={index}/>
             })}

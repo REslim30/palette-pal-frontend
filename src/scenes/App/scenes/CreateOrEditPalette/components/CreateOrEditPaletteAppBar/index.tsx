@@ -9,24 +9,16 @@ import RightEdgeIconButton from "#src/components/RightEdgeIconButton/index";
 import SendIcon from "#src/components/SendIcon/index";
 import IconLink from "#src/components/IconLink";
 import { useCreateOrEditPaletteContext } from "#app/scenes/CreateOrEditPalette/services/CreateOrEditPaletteContext";
-import submitPalette from "./services/submitPalette";
+import paletteIsSubmittable from "../../services/paletteIsSubmittable";
+import useWindowSize from "#src/services/useWindowSize";
 
 type CreateOrEditPaletteAppBarProps = {
-  handleSubmit: () => void,
+  onSubmit: () => void,
 }
 
 export default function CreateOrEditPaletteAppBar(props: CreateOrEditPaletteAppBarProps) {
-  const { colors, name, group, id } = useCreateOrEditPaletteContext();
-
-  const handlePaletteSubmit = () => {
-    submitPalette({ id, name, group, colors })
-    .then((palette: Palette) => {
-      window.location.href = `/app/palettes/${palette.id}`;
-    })
-    .catch(console.error)
-  }
-
-  const paletteIsSubmittable = Boolean(name && colors.length !== 0);
+  const { colors, name } = useCreateOrEditPaletteContext();
+  const size = useWindowSize();
 
   return <AppBar position="static">
     <Toolbar>
@@ -38,8 +30,9 @@ export default function CreateOrEditPaletteAppBar(props: CreateOrEditPaletteAppB
         edge="end" 
         color="inherit" 
         aria-label="Create palette"
-        disabled={ !paletteIsSubmittable }
-        onClick={ props.handleSubmit }>
+        disabled={ !paletteIsSubmittable({name, colors}) }
+        onClick={ props.onSubmit }
+        style={{ display: size.width as number <= 768 ? "block" : "none" }}>
         <SendIcon />
       </RightEdgeIconButton>
     </Toolbar>

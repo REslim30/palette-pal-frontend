@@ -34,7 +34,7 @@ export default function ColorInput({...props}: any) {
     setColorToSubmit(null);
   }
 
-  return <section className="mt-6">
+  return <section className="mt-4">
     <ColorList
       setColorToEdit={setColorToSubmit}
       setColorToDelete={setColorToDelete}/>

@@ -1,6 +1,5 @@
 import fetchGraphQL from "#src/services/fetchGraphQL";
 import putRequest from "#src/services/api/putRequest";
-import CreateOrEditPalette from "../../..";
 
 // TODO: handle errors and bad requests
 export default async function submitPalette({id, name, group, colors}: {id?: number, name: string, group: number | null, colors: Color[]}): Promise<Palette> {
