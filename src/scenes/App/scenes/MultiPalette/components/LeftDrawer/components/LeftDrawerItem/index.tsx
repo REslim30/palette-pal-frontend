@@ -27,7 +27,7 @@ export default function LeftDrawerItem(props: LeftDrawerItemProps) {
       <span className="text-left mt-0.5 font-sans text-lg justify-self-start">
         {group.name}
       </span>
-      <span className="self-end text-neutral-400 justify-self-end">
+      <span className="self-end text-neutral-400 justify-self-end" aria-hidden="true">
         {group.palettes?.length ?? 0}
       </span>
     </button>
