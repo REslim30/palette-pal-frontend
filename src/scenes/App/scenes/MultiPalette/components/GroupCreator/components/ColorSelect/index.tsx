@@ -35,6 +35,7 @@ export default function ColorSelect(props: any) {
 
   return <FormControl variant="outlined">
     <InputLabel id="color-select-input-label">Color</InputLabel>
+    {/* TODO: Replace Select with accessible select with suitable styles */}
     <Select
       labelId="color-select-input-label"
       value={props.value}

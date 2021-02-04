@@ -20,10 +20,10 @@ export default function CreateOrEditPaletteAppBar(props: CreateOrEditPaletteAppB
 
   return <AppBar position="static">
     <Toolbar>
-      <IconLink to="/app/palettes" edge="start" color="inherit" aria-label="Menu">
+      <IconLink to="/app/palettes" aria-label="Back to Palettes">
         <ArrowBackIcon />
       </IconLink>
-      <h1 className='pl-4 text-xl flex-grow'>Add Palette</h1>
+      <h1 className='flex-grow pl-4 text-xl'>Add Palette</h1>
       <RightEdgeIconButton 
         edge="end" 
         color="inherit" 

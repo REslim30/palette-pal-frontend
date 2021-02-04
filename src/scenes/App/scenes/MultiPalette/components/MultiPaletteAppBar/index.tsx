@@ -30,7 +30,7 @@ export default function MultiPaletteAppBar(props: any) {
           <MenuIcon />
         </IconButton>
         <h1 className="flex-grow pl-4 text-xl">{group?.name || "All"}</h1>
-        <IconLink to="/app/palettes/new">
+        <IconLink to="/app/palettes/new" aria-label="Add New Palette">
           <AddIcon />
         </IconLink>
         <GroupMenu />

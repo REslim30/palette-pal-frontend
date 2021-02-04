@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useColorSubmitContext } from "../services/ColorSubmitContext";
+import { useColorSubmitContext } from "../../services/ColorSubmitContext";
 
 import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
@@ -54,7 +54,7 @@ export default function ShadeList(props: unknown) {
     <div className="pt-6">
       {shades.map((shade: String, index: number) => {
         return <div 
-            className="grid gap-4 items-center my-3" 
+            className="grid items-center gap-4 my-3" 
             style={{ gridTemplateColumns: 'min-content auto min-content' }} 
             key={(shade as any).uid}>
             <ColorBall color={ shade.toString() }/>

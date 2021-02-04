@@ -38,7 +38,7 @@ export default function NameAndGroupInput(props: unknown) {
   }
 
   return <section className="grid grid-cols-2 gap-4">
-    <TextField variant="outlined" label="Name" value={name} onChange={handleNameChange}></TextField>
+    <TextField id="palette-name-input" variant="outlined" label="Name" value={name} onChange={handleNameChange}></TextField>
     <StyledFormControl variant="outlined">
       <InputLabel htmlFor="group-select-label">Group</InputLabel>
       <Select 
