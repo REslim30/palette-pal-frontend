@@ -12,8 +12,8 @@ import {
 } from "#src/services/app-state-store"
 import ColorBall from "#src/components/ColorBall/index"
 import { useMultiPaletteContext } from "../../services/MultiPaletteContext"
-import LeftDrawerItem from "./components/LeftDrawerItem/index";
-import ProfileSection from "./components/ProfileSection/index";
+import LeftDrawerItem from "./components/LeftDrawerItem/index"
+import ProfileSection from "./components/ProfileSection/index"
 
 export default function LeftDrawer(props: any) {
   const groups = useGroups()
@@ -45,15 +45,21 @@ export default function LeftDrawer(props: any) {
       anchor="left"
       open={Boolean(leftDrawerOpen)}
       onClose={handleClose}
-      aria-role="dialog"
-      aria-modal="true"
-      aria-label="Left Drawer"
+      ModalProps={{
+        role: "dialog",
+        "aria-label": "Left drawer",
+        "aria-modal": "true",
+      }}
     >
       <ProfileSection />
-      <article>
+      <section>
         <div className="flex items-end justify-between px-6 mt-4 mb-4">
           <h2 className="text-3xl">Groups</h2>
-          <IconButton size="small" aria-label="Add group" onClick={handleGroupCreatorOpen}>
+          <IconButton
+            size="small"
+            aria-label="Add group"
+            onClick={handleGroupCreatorOpen}
+          >
             <AddIcon />
           </IconButton>
         </div>
@@ -72,7 +78,7 @@ export default function LeftDrawer(props: any) {
             key={group.id}
           />
         ))}
-      </article>
+      </section>
     </Drawer>
   )
 }

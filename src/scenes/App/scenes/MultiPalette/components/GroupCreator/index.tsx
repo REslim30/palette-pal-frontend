@@ -6,14 +6,10 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
 import TextField from "@material-ui/core/TextField";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import ColorBall from "#src/components/ColorBall/index";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
 import Button from "@material-ui/core/Button";
 
-import submitGroup from "./service/submitGroup";
+import submitGroup from "./services/submitGroup";
+import ColorSelect from "./components/ColorSelect/index";
 
 export default function GroupCreator(props: any) {
   const { groupToEdit, setGroupToEdit, setLeftDrawerOpen } = useMultiPaletteContext();
@@ -69,50 +65,3 @@ export default function GroupCreator(props: any) {
     </DialogActions>
   </Dialog>
 };
-
-function ColorSelect(props: any) {
-  const colorList = [
-    "indianred",
-    "lightcoral",
-    "salmon",
-    "tomato",
-    "coral",
-    "gold",
-    "peachpuff",
-    "palegreen",
-    "darkseagreen",
-    "olive",
-    "paleturquoise",
-    "cadetblue",
-    "teal",
-    "orchid",
-    "mediumpurple",
-    "lightpink",
-    "palevioletred",
-    "gainsboro",
-    "lightslategray",
-    "darkgray",
-    "burlywood",
-    "rosybrown",
-    "peru"
-  ]
-
-  return <FormControl variant="outlined">
-    <InputLabel id="color-select-input-label">Color</InputLabel>
-    <Select
-      labelId="color-select-input-label"
-      value={props.value}
-      onChange={props.onChange}
-      label="Color">
-      <MenuItem value="" aria-label="None"></MenuItem>
-      {colorList.map(color => {
-        return <MenuItem value={color} key={color} aria-label={color}>
-          <div>
-            <ColorBall color={color} />
-            <span className="pb-2 ml-4">{color}</span>
-          </div>
-        </MenuItem>
-      })}
-    </Select>
-  </FormControl>
-}
