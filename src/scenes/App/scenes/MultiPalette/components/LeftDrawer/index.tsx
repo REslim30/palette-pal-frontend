@@ -16,7 +16,6 @@ import {
 } from "#src/services/app-state-store"
 import ColorBall from "#src/components/ColorBall/index"
 import { useMultiPaletteContext } from "../../services/MultiPaletteContext"
-import GroupCreator from "../GroupCreator/index"
 
 export default function LeftDrawer(props: any) {
   const groups = useGroups()
@@ -44,7 +43,14 @@ export default function LeftDrawer(props: any) {
   }
 
   return (
-    <Drawer anchor="left" open={Boolean(leftDrawerOpen)} onClose={handleClose}>
+    <Drawer 
+      anchor="left" 
+      open={Boolean(leftDrawerOpen)} 
+      onClose={handleClose}
+      aria-role="dialog"
+      aria-modal="true"
+      aria-label="Left Drawer"
+      >
       <ProfileSection />
       <article>
         <div className="flex items-end justify-between px-6 mt-4 mb-4">
@@ -91,7 +97,7 @@ function ProfileSection(props: unknown) {
   }
 
   return (
-    <>
+    <section aria-label="Left Drawer">
       <div className="w-64 h-24 p-4 bg-primary-500">
         <div
           className="grid max-w-full gap-4 overflow-hidden"
@@ -102,6 +108,8 @@ function ProfileSection(props: unknown) {
             className="text-4xl text-white bg-yellow-500 rounded-full w-14 h-14 font-header"
             onClick={handleOpen}
             aria-controls="profile-menu"
+            aria-haspopup="menu"
+            aria-expanded={Boolean(anchorEl)}
           >
             {user?.username.slice(0,2)}
           </button>
@@ -120,7 +128,7 @@ function ProfileSection(props: unknown) {
       >
         <MenuItem onClick={handleLogOut}>Log Out</MenuItem>
       </Menu>
-    </>
+    </section>
   )
 }
 

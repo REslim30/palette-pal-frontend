@@ -20,7 +20,8 @@ export default function ConfirmDeleteDialog(props: ConfirmDeleteDialogProps) {
     open={props.open}
     onClose={props.onClose}
     aria-labelledby={`delete-${props.objectToDelete}-dialog-title`}
-    aria-describedby={`delete-${props.objectToDelete}-dialog-description`}>
+    aria-describedby={`delete-${props.objectToDelete}-dialog-description`}
+    aria-modal={true}>
     <DialogTitle id={`delete-${props.objectToDelete}-dialog-title`}>Erase {props.objectToDelete}?</DialogTitle>
     <DialogContent>
       <DialogContentText id={`delete-${props.objectToDelete}-dialog-description`}>
@@ -28,7 +29,7 @@ export default function ConfirmDeleteDialog(props: ConfirmDeleteDialogProps) {
       </DialogContentText>
     </DialogContent>
     <DialogActions>
-      <Button onClick={props.onClose}>
+      <Button onClick={props.onClose} autoFocus>
         Cancel
       </Button>
       <Button onClick={props.onDelete} color="secondary">
