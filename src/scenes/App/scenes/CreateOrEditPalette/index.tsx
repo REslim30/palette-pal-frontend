@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from '@reach/router';
 
-import PaletteSubmitter from "./components/PaletteSubmitter/index";
+import CreateOrEditPaletteAppBar from "./components/CreateOrEditPaletteAppBar/index";
 import NameAndGroupInput from "./components/NameAndGroupInput/index";
 import ColorInput from "./components/ColorInput";
 import CreateOrEditPaletteContext from "./services/CreateOrEditPaletteContext";
@@ -39,9 +39,9 @@ export default function CreateOrEditPalette(props: CreateOrEditPaletteProps) {
         id: props.id
       }}>
 
-      <PaletteSubmitter />
+      <CreateOrEditPaletteAppBar />
 
-      <main className="p-6">
+      <main className="max-w-screen-md p-6 mx-auto">
         <NameAndGroupInput />
 
         <ColorInput />

@@ -59,6 +59,6 @@ function AddColorButton(props: any) {
   return <button className="flex items-center justify-between w-full px-4 py-2 mt-4 clickable-card" {...props}>
     <span className="text-neutral-500">Add Color</span>
     <AddIcon className="text-primary-500"/>
-  </button>;
+  </button>
 }
 

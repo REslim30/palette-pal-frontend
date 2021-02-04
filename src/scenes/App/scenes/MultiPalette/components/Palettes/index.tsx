@@ -4,16 +4,18 @@ import { useCurrentGroup, usePalettes } from "#src/services/app-state-store"
 import PaletteCard from "./components/PaletteCard/index"
 import IconLink from "#src/components/IconLink"
 import AddIcon from "@material-ui/icons/Add";
+import useWindowSize from "#src/services/useWindowSize";
 
 export default function Palettes(props: unknown) {
   const allPalettes = usePalettes()
   const group = useCurrentGroup()
+  const size = useWindowSize();
 
   let palettes = group?.palettes || allPalettes
 
   if (!palettes) return <CircularProgress />
 
-  if (!palettes.length)
+  if (!palettes.length && size.width as number <= 768)
     return (
       <main className="flex flex-col items-center justify-center flex-grow">
         <span className="text-xl text-neutral-800">
@@ -30,10 +32,12 @@ export default function Palettes(props: unknown) {
         {palettes.map(palette => (
           <PaletteCard palette={palette} key={palette.id} />
         ))}
+
+        {/* Add palette link for desktop screens */}
         <IconLink
           to="/app/palettes/new"
           aria-label="create new palette"
-          className="items-center justify-center hidden lg:flex clickable-card text-primary-800"
+          className="items-center justify-center hidden h-40 lg:flex clickable-card text-primary-800"
         >
           <span>
             <AddIcon fontSize="large"/>
