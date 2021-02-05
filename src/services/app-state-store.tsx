@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { createSlice, configureStore } from "@reduxjs/toolkit";
 import { useSelector, Provider } from "react-redux";
 import BACKEND_API_URL from "#src/services/api/BACKEND_API_URL"
-import fetchGraphQL from "#src/services/fetchGraphQL";
+import fetchGraphQL from "#src/services/api/fetchGraphQL";
 import getRequest from "./api/getRequest";
 
 type AppState = {

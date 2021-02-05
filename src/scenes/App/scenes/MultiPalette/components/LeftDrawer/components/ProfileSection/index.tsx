@@ -2,9 +2,8 @@ import React, { useState } from "react"
 
 import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
-import {
-  useUser,
-} from "#src/services/app-state-store"
+import { useUser } from "#src/services/app-state-store"
+import postRequest from "#src/services/api/postRequest";
 
 export default function ProfileSection(props: {}) {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
@@ -19,8 +18,8 @@ export default function ProfileSection(props: {}) {
   }
 
   const handleLogOut = () => {
-    window.localStorage.removeItem("jwt")
     window.location.href = "/"
+    postRequest("/logout")
   }
 
   return (

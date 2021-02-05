@@ -1,4 +1,4 @@
-import fetchGraphQL from "#src/services/fetchGraphQL";
+import fetchGraphQL from "#src/services/api/fetchGraphQL";
 import putRequest from "#src/services/api/putRequest";
 
 // TODO: handle errors and bad requests

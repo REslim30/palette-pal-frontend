@@ -9,7 +9,6 @@ export default function postRequest(route: string, body: any) {
   return fetch(`${BACKEND_API_URL}/${route}`, {
     method: 'POST',
     headers: {
-      authorization: `Bearer ${localStorage.getItem('jwt')}`,
       "Content-Type": 'application/json',
       "Accept": 'application/json'
     },

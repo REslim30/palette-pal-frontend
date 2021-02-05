@@ -11,7 +11,6 @@ export default function fetchGraphQL(query: any, variables?: any) {
   return fetch(`${BACKEND_API_URL}/graphql`, {
     method: 'POST',
     headers: {
-      authorization: `Bearer ${localStorage.getItem('jwt')}`,
       "Content-Type": 'application/json',
       "Accept": 'application/json'
     },

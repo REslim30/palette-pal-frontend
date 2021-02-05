@@ -1,49 +1,39 @@
 import React, { useState } from "react"
 import TextField from "@material-ui/core/TextField"
 import Button from "@material-ui/core/Button"
-import BACKEND_API_URL from "#src/services/api/BACKEND_API_URL"
+import signup from "./services/signup";
 
 // Sign Up page
-export default function SignUp(props) {
+export default function SignUp(props: {}) {
   const [errorMessage, setErrorMessage] = useState("")
 
   //Submit form
-  const submitForm = function (event) {
-    const data = {
-      username: event.currentTarget.querySelector('input[name="username"]')
-        .value,
-      email: event.currentTarget.querySelector('input[name="email"]').value,
-      password: event.currentTarget.querySelector('input[name="password"]')
-        .value,
-    }
-
-    // Send a post request to server
-    fetch(`${BACKEND_API_URL}/auth/local/register`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "post",
-      body: JSON.stringify(data),
-    })
-      .then(response => {
-        return response.json()
-      })
-      .then(body => {
-        if (body.jwt) {
-          // Handle Success
-          localStorage.setItem("jwt", body.jwt)
-          window.location = "/app/palettes"
-        } else if (body.statusCode === 400) {
-          // Handle failure
-          setErrorMessage(body.data[0].messages[0].message)
-        }
-      })
-      .catch(error => {
-        console.log(error)
-      })
-
+  const submitForm = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    return false
+
+    const username = (event.currentTarget.querySelector(
+      'input[name="username"]'
+    ) as HTMLInputElement).value;
+    const email = (event.currentTarget.querySelector(
+      'input[name="email"]'
+    ) as HTMLInputElement).value;
+    const password = (event.currentTarget.querySelector(
+      'input[name="password"]'
+    ) as HTMLInputElement).value;
+
+    try {
+      const response = await signup({username, email, password});
+
+      if (response.status === 200) {
+        window.location.href = "/app/palettes"
+      } else {
+        const body = await response.json();
+        setErrorMessage(body.data[0].messages[0].message)
+      }
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("Connection issue.");
+    }
   }
 
   return (
