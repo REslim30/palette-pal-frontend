@@ -1,7 +1,7 @@
 import BACKEND_API_URL from "./BACKEND_API_URL";
 
 // Submits a post request to the backend api
-export default function postRequest(route: string, body: any) {
+export default function postRequest(route: string, body: any = {}) {
 
   if (route.charAt(0) === '/')
     route = route.slice(1);

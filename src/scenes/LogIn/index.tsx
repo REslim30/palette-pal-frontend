@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import TextField from "@material-ui/core/TextField"
 import Button from "@material-ui/core/Button"
-import login from "./services/login"
+import { login } from "#src/services/authentication"
 
 // Login Page
 export default function LogIn(props: {}) {
@@ -26,7 +26,7 @@ export default function LogIn(props: {}) {
         window.location.href = "/app/palettes"
       } else {
         const body = await response.json()
-        setErrorMessage(body.data[0].messages[0].message)
+        setErrorMessage(body.message);
       }
       
     } catch (error) {

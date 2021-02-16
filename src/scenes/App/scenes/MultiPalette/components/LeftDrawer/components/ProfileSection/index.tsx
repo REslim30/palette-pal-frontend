@@ -19,7 +19,7 @@ export default function ProfileSection(props: {}) {
 
   const handleLogOut = () => {
     window.location.href = "/"
-    postRequest("/logout")
+    postRequest("/logout");
   }
 
   return (
@@ -37,7 +37,7 @@ export default function ProfileSection(props: {}) {
             aria-haspopup="menu"
             aria-expanded={Boolean(anchorEl)}
           >
-            {user?.username.slice(0, 2)}
+            {user?.username?.slice(0, 2)}
           </button>
           <div className="flex flex-col justify-between">
             <span className="text-2xl text-white font-header">
