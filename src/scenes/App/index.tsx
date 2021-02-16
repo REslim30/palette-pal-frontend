@@ -9,13 +9,13 @@ import { AppStoreProvider } from "../../services/app-state-store"
 // Main UI
 export default function App(props: {}) {
   return <>
-  <AppStoreProvider>
-    <Router basepath="/app">
-      <MultiPalette path="/palettes"/>
-      <SinglePalette path="/palettes/:id"/>
-      <CreateOrEditPalette path="/palettes/new"/>
-      <CreateOrEditPalette path="/palettes/edit/:id"/>
-    </Router>
-  </AppStoreProvider>
+    <AppStoreProvider>
+      <Router basepath="/app">
+        <MultiPalette path="/palettes"/>
+        <SinglePalette path="/palettes/:id"/>
+        <CreateOrEditPalette path="/palettes/new"/>
+        <CreateOrEditPalette path="/palettes/edit/:id"/>
+      </Router>
+    </AppStoreProvider>
   </>
 };

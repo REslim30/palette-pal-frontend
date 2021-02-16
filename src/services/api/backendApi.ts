@@ -1,7 +1,8 @@
-import BACKEND_API_URL from "./BACKEND_API_URL";
+import secrets from "./secrets";
+const BACKEND_API_URL = secrets.BACKEND_API_URL;
 
 // Module to abstract connection logic
-let inMemoryToken: { jwt: string };
+let inMemoryToken: { jwt: string } | undefined;
 export function deleteRequest(route: string) {
   route = formatRoute(route);
 
@@ -15,10 +16,10 @@ export function getRequest(route: string) {
 
   return fetch(`${BACKEND_API_URL}/${route}`, {
     headers: {
-      "Authorization": `Bearer ${inMemoryToken.jwt}`
+      "Authorization": `Bearer ${inMemoryToken?.jwt}`
     }
   })
-  .then(redirectIf401);
+  .then(tryRefreshIf401);
 }
 
 export function postRequest(route: string, body: any = {}) {
@@ -56,6 +57,9 @@ function formatRoute(route: string) {
 // Module handles login behaviour 
 export function login(data: { identifier: string, password: string }) {
   return fetch(`${BACKEND_API_URL}/login`, { 
+    headers: {
+      "Content-Type": "application/json"
+    },
     method: "post",
     body: JSON.stringify(data)
   })
@@ -63,7 +67,10 @@ export function login(data: { identifier: string, password: string }) {
 }
 
 export function signup(data: { username: string, password: string, email: string }) {
-  return fetch(`${BACKEND_API_URL}/signup`, { 
+  return fetch(`${BACKEND_API_URL}/register`, { 
+    headers: {
+      "Content-Type": "application/json"
+    },
     method: "post",
     body: JSON.stringify(data)
   })
@@ -74,16 +81,25 @@ export function ensureLoggedIn() {
   if (inMemoryToken)
     return; // Do nothing
   
-  postRequest('/refresh_token')
-    .then(getJWT)
-    .then(redirectIf401)
+  getRefreshToken()
+  .then(getJWT)
+  .then(redirectIf401)
 };
 
 
 // Login middleware
+function tryRefreshIf401(res: Response) {
+  if (res.status === 401) {
+    return getRefreshToken()
+      .then(getJWT)
+      .then(redirectIf401);
+  }
+  return res;
+}
+
 function redirectIf401(res: Response) {
   if (res.status === 401) {
-    window.location.href = "/login";
+    // window.location.href = "/login"
     return res
   }
   return res;
@@ -97,4 +113,12 @@ function getJWT(res: Response) {
         return res;
       })
   return res;
+}
+
+// Helpers
+function getRefreshToken() {
+  return fetch(`${BACKEND_API_URL}/refresh_token`, {
+    method: "get",
+    credentials: "include",
+  })
 }

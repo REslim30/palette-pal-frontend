@@ -3,11 +3,13 @@ import React, { useState } from "react"
 import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
 import { useUser } from "#src/services/app-state-store"
-import postRequest from "#src/services/api/postRequest";
+import { postRequest } from "#src/services/api/backendApi";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function ProfileSection(props: {}) {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
   const user = useUser()
+  const { logout } = useAuth0();
 
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -18,8 +20,7 @@ export default function ProfileSection(props: {}) {
   }
 
   const handleLogOut = () => {
-    window.location.href = "/"
-    postRequest("/logout");
+    logout({ returnTo: window.location.origin });
   }
 
   return (

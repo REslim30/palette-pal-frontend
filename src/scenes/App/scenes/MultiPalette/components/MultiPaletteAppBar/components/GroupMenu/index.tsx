@@ -6,7 +6,7 @@ import MenuItem from "@material-ui/core/MenuItem"
 
 import RightEdgeIconButton from "#src/components/RightEdgeIconButton/index"
 import ConfirmDeleteDialog from "#src/components/ConfirmDeleteDialog/index"
-import deleteRequest from "#src/services/api/deleteRequest"
+import { deleteRequest } from "#src/services/api/backendApi"
 import {
   refreshGroups,
   refreshPalettes,

@@ -1,6 +1,4 @@
-
-import postRequest from "#src/services/api/postRequest";
-import putRequest from "#src/services/api/putRequest";
+import { postRequest, putRequest } from "#src/services/api/backendApi";
 
 export default async function submitGroup(group: Group): Promise<any> {
   try {

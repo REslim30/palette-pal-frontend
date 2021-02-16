@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import TextField from "@material-ui/core/TextField"
 import Button from "@material-ui/core/Button"
-import { signup } from "#src/services/authentication";
+import { signup } from "#src/services/api/backendApi";
 
 // Sign Up page
 export default function SignUp(props: {}) {

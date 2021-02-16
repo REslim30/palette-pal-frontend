@@ -2,11 +2,13 @@ import React from "react"
 import { Button } from "@material-ui/core";
 import artVectorIllustration from "./art-vector-illustration.svg";
 import { Link } from "gatsby";
+import { useAuth0 } from "@auth0/auth0-react";
 
 // Landing page
 export default function Home(props: {}) {
+  const { loginWithRedirect } = useAuth0();
   const goToSignUp = function() {
-    window.location.href = '/signup/';
+    loginWithRedirect();
   }
 
   return (

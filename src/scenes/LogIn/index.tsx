@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import TextField from "@material-ui/core/TextField"
 import Button from "@material-ui/core/Button"
-import { login } from "#src/services/authentication"
+import { login } from "#src/services/api/backendApi"
 
 // Login Page
 export default function LogIn(props: {}) {
@@ -23,7 +23,7 @@ export default function LogIn(props: {}) {
       const response = await login({ identifier, password });
 
       if (response.status === 200) {
-        window.location.href = "/app/palettes"
+        // window.location.href = "/app/palettes"
       } else {
         const body = await response.json()
         setErrorMessage(body.message);

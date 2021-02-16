@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { createSlice, configureStore } from "@reduxjs/toolkit";
 import { useSelector, Provider } from "react-redux";
-import BACKEND_API_URL from "#src/services/api/BACKEND_API_URL"
-import fetchGraphQL from "#src/services/api/fetchGraphQL";
-import getRequest from "./api/getRequest";
+import secrets from "#src/services/api/secrets"
+const BACKEND_API_URL = secrets.BACKEND_API_URL as string;
+import { getRequest }  from "./api/backendApi";
 
 type AppState = {
   palettes: Palette[] | null,
@@ -162,12 +162,7 @@ export function AppStoreProvider(props: any) {
 
 export async function refreshPalettes(): Promise<any> {
   try {
-    const fetchPromise = await fetch(`${BACKEND_API_URL}/palettes`, {
-      method: 'GET',
-      headers: {
-        authorization: `Bearer ${localStorage.getItem('jwt')}`
-      }
-    });
+    const fetchPromise = await getRequest('/palettes');
     const body = await fetchPromise.json();
     store.dispatch(setPalettes(body));
     return body;
@@ -176,27 +171,9 @@ export async function refreshPalettes(): Promise<any> {
   }
 }
 
-const GET_GROUPS = `
-  query GetGroups {
-    groups {
-      id
-      name
-      iconColor
-      palettes {
-        id
-        name
-        colors {
-          name
-          shades
-        }
-      }
-    }
-  }
-`;
-
 export async function refreshGroups(): Promise<any> {
     try {
-      const fetchPromise = await fetchGraphQL(GET_GROUPS);
+      const fetchPromise = await getRequest('/groups');
       const body = await fetchPromise.json();
       store.dispatch(setGroups(body.data.groups));
       return body;
