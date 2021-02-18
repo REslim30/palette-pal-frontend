@@ -10,6 +10,7 @@ import Button from "@material-ui/core/Button"
 
 import submitGroup from "./services/submitGroup"
 import ColorSelect from "./components/ColorSelect/index"
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function GroupCreator(props: any) {
   const {
@@ -19,6 +20,7 @@ export default function GroupCreator(props: any) {
   } = useMultiPaletteContext()
   const [iconColor, setIconColor] = useState("")
   const [name, setName] = useState("")
+  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     const group = groupToEdit as Group
@@ -43,10 +45,14 @@ export default function GroupCreator(props: any) {
   }
 
   const handleSubmit = async () => {
-    await submitGroup({ id: (groupToEdit as any)?.id, name, iconColor })
-    await refreshGroups()
-    handleClose()
-    setLeftDrawerOpen(true)
+    submitGroup({ id: (groupToEdit as any)?.id, name, iconColor }, getAccessTokenSilently)
+    .then(() => {
+      return refreshGroups(getAccessTokenSilently)
+    })
+    .then(() => {
+      handleClose()
+      setLeftDrawerOpen(true)
+    })
   }
 
   return (

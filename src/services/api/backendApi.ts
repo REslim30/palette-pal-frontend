@@ -5,9 +5,15 @@ const BACKEND_API_URL = secrets.BACKEND_API_URL;
 export function deleteRequest(route: string) {
   route = formatRoute(route);
 
-  return fetch(`${BACKEND_API_URL}/${route}`, { 
-    method: 'DELETE' 
-  });
+  return (token: string) => {
+    return fetch(`${BACKEND_API_URL}/${route}`, { 
+      method: 'DELETE',
+      headers: {
+        "Authorization": `Bearer ${token}`
+      },
+    })
+    .then(getBodyIf200)
+  }
 }
 
 export function getRequest(route: string) {
@@ -26,27 +32,35 @@ export function getRequest(route: string) {
 export function postRequest(route: string, body: any = {}) {
   route = formatRoute(route);
 
-  return fetch(`${BACKEND_API_URL}/${route}`, {
-    method: 'POST',
-    headers: {
-      "Content-Type": 'application/json',
-      "Accept": 'application/json'
-    },
-    body: JSON.stringify(body)
-  })
+  return (token: string) => {
+    return fetch(`${BACKEND_API_URL}/${route}`, {
+      method: 'POST',
+      headers: {
+        "Content-Type": 'application/json',
+        "Accept": 'application/json',
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify(body)
+    })
+    .then(getBodyIf200)
+  }
 }
 
 export function putRequest(route: string, body: any) {
   route = formatRoute(route);
 
-  return fetch(`${BACKEND_API_URL}/${route}`, {
-    method: 'PUT',
-    headers: {
-      "Content-Type": 'application/json',
-      "Accept": 'application/json'
-    },
-    body: JSON.stringify(body)
-  })
+  return (token: string) => {
+    return fetch(`${BACKEND_API_URL}/${route}`, {
+      method: 'PUT',
+      headers: {
+        "Content-Type": 'application/json',
+        "Accept": 'application/json',
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify(body)
+    })
+    .then(getBodyIf200)
+  }
 }
 
 function formatRoute(route: string) {

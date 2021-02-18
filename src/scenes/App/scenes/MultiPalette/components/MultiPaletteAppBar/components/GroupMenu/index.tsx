@@ -13,12 +13,14 @@ import {
   useCurrentGroup,
 } from "#src/services/app-state-store"
 import { useMultiPaletteContext } from "../../../../services/MultiPaletteContext"
+import { useAuth0 } from "@auth0/auth0-react"
 
 export default function GroupMenu(props: unknown) {
   const group = useCurrentGroup()
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
   const [confirmDeleteDialogOpen, setConfirmDeleteDialogOpen] = useState(false)
   const { setGroupToEdit } = useMultiPaletteContext()
+  const { getAccessTokenSilently } = useAuth0()
 
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -37,17 +39,22 @@ export default function GroupMenu(props: unknown) {
     setConfirmDeleteDialogOpen(false)
   }
 
-  const handleDelete = async () => {
-    await deleteRequest(`/groups/${(group as Group).id}`)
-    const groupRefresh = refreshGroups()
-    const paletteRefresh = refreshPalettes()
-    await groupRefresh
-    await paletteRefresh
-    handleConfirmDeleteDialogClose()
+  const handleDelete = () => {
+    getAccessTokenSilently()
+      .then(deleteRequest(`/groups/${(group as Group).id}`))
+      .then(() =>
+        Promise.all([
+          refreshGroups(getAccessTokenSilently),
+          refreshPalettes(getAccessTokenSilently),
+        ])
+      )
+      .then(() => {
+        handleConfirmDeleteDialogClose()
+      })
   }
 
   const handleEdit = () => {
-    handleClose();
+    handleClose()
     setGroupToEdit(group)
   }
 
