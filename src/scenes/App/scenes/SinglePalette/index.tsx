@@ -8,10 +8,11 @@ import ArrowBackIcon  from "@material-ui/icons/ArrowBack";
 import RightEdgeIconButton from "#src/components/RightEdgeIconButton/index";
 import { usePalette } from "#src/services/app-state-store";
 import ColorList from "./scenes/ColorList/index";
-import { RouteComponentProps, navigate } from '@reach/router';
+import { RouteComponentProps } from '@reach/router';
 import IconLink from "#src/components/IconLink";
 import PaletteMoreOptions from "#app/components/PaletteMoreOptions/index";
 import SEO from "#src/components/SEO/index";
+import { navigate } from "gatsby";
 
 // Displays colors from a single palette
 interface SinglePaletteProps extends RouteComponentProps {

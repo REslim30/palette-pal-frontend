@@ -34,7 +34,7 @@ export default function NameAndGroupInput(props: unknown) {
   }
 
   const handleGroupChange = (event: React.ChangeEvent<{ name?: string | undefined; value: unknown; }>) => {
-    setGroup(parseInt(event.target.value as string));
+    setGroup(event.target.value as number);
   }
 
   return <section className="grid grid-cols-2 gap-4">

@@ -11,6 +11,8 @@ import submitPalette from "./services/submitPalette"
 import Button from "@material-ui/core/Button"
 import paletteIsSubmittable from "./services/paletteIsSubmittable"
 import useWindowSize from "#src/services/useWindowSize"
+import { useAuth0 } from "@auth0/auth0-react"
+import { navigate } from "gatsby"
 
 interface CreateOrEditPaletteProps extends RouteComponentProps {
   id?: number
@@ -22,11 +24,12 @@ export default function CreateOrEditPalette(props: CreateOrEditPaletteProps) {
   const [group, setGroup] = useState<number | null>(null)
   const [colors, setColors] = useState<Color[]>([])
   const size = useWindowSize()
+  const { getAccessTokenSilently } = useAuth0();
 
   const handlePaletteSubmit = () => {
-    submitPalette({ id: props.id, name, group, colors })
+    submitPalette({ id: props.id, name, group, colors }, getAccessTokenSilently)
       .then((palette: Palette) => {
-        window.location.href = `/app/palettes/${palette.id}`
+        navigate(`/app/palettes/${palette.id}`);
       })
       .catch(console.error)
   }
