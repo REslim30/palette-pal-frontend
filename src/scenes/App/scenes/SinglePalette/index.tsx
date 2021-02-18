@@ -47,7 +47,7 @@ function SinglePaletteAppBar(props: { palette: Palette | null }) {
     <SEO title="View Palette"/>
     <AppBar position="static">
       <Toolbar>
-        <IconLink aria-label="Back to Palettes" to={"/app/palettes"}>
+        <IconLink aria-label="Back to Palettes" to={"/app/palettes"} className="-ml-4">
           <ArrowBackIcon />
         </IconLink>
         <h1 className='flex-grow pl-4 text-xl'>{props.palette?.name || ''}</h1>

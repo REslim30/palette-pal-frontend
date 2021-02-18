@@ -6,9 +6,9 @@ interface IconLinkProps extends Omit<Gatsby.GatsbyLinkProps<Record<string, unkno
   'aria-label': string,
 }
 
-export default function IconLink({children, ...props}: IconLinkProps) {
+export default function IconLink({children, className, ...props}: IconLinkProps) {
 
-  return <Link {...props}>
+  return <Link {...props} className={`flex items-center justify-center w-12 h-12 ${className}`}>
     {children}
   </Link>
 };
