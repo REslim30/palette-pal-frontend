@@ -1,10 +1,10 @@
 import React from "react"
-import CircularProgress from "@material-ui/core/CircularProgress"
 import { useCurrentGroup, usePalettes } from "#src/services/app-state-store"
 import PaletteCard from "./components/PaletteCard/index"
 import IconLink from "#src/components/IconLink"
 import AddIcon from "@material-ui/icons/Add";
 import useWindowSize from "#src/services/useWindowSize";
+import LoadingAnimation from "#src/components/LoadingAnimation";
 
 export default function Palettes(props: unknown) {
   const allPalettes = usePalettes()
@@ -13,7 +13,7 @@ export default function Palettes(props: unknown) {
 
   let palettes = group?.palettes || allPalettes
 
-  if (!palettes) return <CircularProgress />
+  if (!palettes) return <main style={{ height: "calc(100vh - 64px)"}}><LoadingAnimation /></main>
 
   if (!palettes.length && size.width as number <= 1024)
     return (

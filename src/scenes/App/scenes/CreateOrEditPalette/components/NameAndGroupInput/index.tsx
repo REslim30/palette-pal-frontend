@@ -5,11 +5,11 @@ import TextField from "@material-ui/core/TextField";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { useGroups } from "#src/services/app-state-store";
 import { useCreateOrEditPaletteContext } from "../../services/CreateOrEditPaletteContext";
 import { useCurrentGroup } from "#src/services/app-state-store";
+import LoadingAnimation from "#src/components/LoadingAnimation";
 
 const StyledFormControl = styled(FormControl)({
   formControl: {
@@ -27,7 +27,7 @@ export default function NameAndGroupInput(props: unknown) {
     setGroup(currentGroup?.id || null)
   }, [currentGroup]);
 
-  if (!groups) return <CircularProgress />;
+  if (!groups) return <LoadingAnimation />;
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);

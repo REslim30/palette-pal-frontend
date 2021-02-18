@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 import ShadeCard from "./components/ShadeCard/index";
 import CopyShadeDialog from "./components/CopyShadeDialog/index"
+import LoadingAnimation from "#src/components/LoadingAnimation";
 
 // List of colors and their corresponding shades
 interface ColorListProps { 
@@ -13,7 +13,7 @@ export default function ColorList(props: ColorListProps) {
   // Dialog state
   const [selectedShade, setSelectedShade] = useState('');
 
-  if (!props.palette) return <CircularProgress/>;
+  if (!props.palette) return <LoadingAnimation />;
 
   //Dialog Handlers
   const makeHandleOpen = (shade: string) => {
