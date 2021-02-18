@@ -38,6 +38,11 @@ let theme = createMuiTheme({
         fontSize: "1.5rem",
         fontWeight: 600
       }
+    },
+    MuiButton: {
+      root: {
+        outline: "none"
+      }
     }
   }
 });

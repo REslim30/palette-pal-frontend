@@ -37,7 +37,7 @@ export default function Palettes(props: unknown) {
         <IconLink
           to="/app/palettes/new"
           aria-label="create new palette"
-          className="items-center justify-center hidden h-40 lg:flex clickable-card text-primary-800"
+          className="items-center justify-center hidden w-full h-40 lg:flex clickable-card text-primary-800"
         >
           <span>
             <AddIcon fontSize="large"/>
