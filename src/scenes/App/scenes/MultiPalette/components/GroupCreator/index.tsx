@@ -32,6 +32,8 @@ export default function GroupCreator(props: any) {
 
   const handleClose = () => {
     setGroupToEdit(null)
+    setName("");
+    setIconColor("");
   }
 
   const handleIconColorChange = (

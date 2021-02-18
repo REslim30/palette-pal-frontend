@@ -6,7 +6,7 @@ import RedMenuItem from "#src/components/RedMenuItem"
 import { deleteRequest } from "#src/services/api/backendApi"
 import { refreshGroups, refreshPalettes } from "#src/services/app-state-store"
 import ConfirmDeleteDialog from "#src/components/ConfirmDeleteDialog/index"
-import { Link } from "gatsby"
+import { Link, navigate } from "gatsby"
 import { useAuth0 } from "@auth0/auth0-react"
 
 type PaletteMoreOptionsProps = {
@@ -43,6 +43,9 @@ export default function PaletteMoreOptions(props: PaletteMoreOptionsProps) {
     setConfirmDeleteOpen(false)
   }
 
+  const handleEdit = () => {
+    navigate(`/app/palettes/edit/${props.palette.id}`)
+  }
   return (
     <>
       <Menu
@@ -52,10 +55,10 @@ export default function PaletteMoreOptions(props: PaletteMoreOptionsProps) {
         onClose={props.onClose}
         aria-label="palette-options"
       >
-        <MenuItem>
-          <Link to={`/app/palettes/edit/${props.palette.id}`} role="menuitem">
+        <MenuItem
+          onClick={handleEdit}
+        >
             Edit
-          </Link>
         </MenuItem>
         <RedMenuItem onClick={handleConfirmDeleteOpen}>Delete</RedMenuItem>
       </Menu>

@@ -15,7 +15,7 @@ export default function Palettes(props: unknown) {
 
   if (!palettes) return <CircularProgress />
 
-  if (!palettes.length && size.width as number <= 768)
+  if (!palettes.length && size.width as number <= 1024)
     return (
       <main className="flex flex-col items-center justify-center flex-grow">
         <span className="text-xl text-neutral-800">

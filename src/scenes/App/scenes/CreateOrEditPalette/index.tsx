@@ -5,7 +5,7 @@ import CreateOrEditPaletteAppBar from "./components/CreateOrEditPaletteAppBar/in
 import NameAndGroupInput from "./components/NameAndGroupInput/index"
 import ColorInput from "./components/ColorInput"
 import CreateOrEditPaletteContext from "./services/CreateOrEditPaletteContext"
-import { usePalette } from "#src/services/app-state-store"
+import { refreshPalettes, usePalette } from "#src/services/app-state-store"
 import SEO from "#src/components/SEO/index"
 import submitPalette from "./services/submitPalette"
 import Button from "@material-ui/core/Button"
@@ -26,12 +26,14 @@ export default function CreateOrEditPalette(props: CreateOrEditPaletteProps) {
   const size = useWindowSize()
   const { getAccessTokenSilently } = useAuth0();
 
-  const handlePaletteSubmit = () => {
-    submitPalette({ id: props.id, name, group, colors }, getAccessTokenSilently)
-      .then((palette: Palette) => {
-        navigate(`/app/palettes/${palette.id}`);
-      })
-      .catch(console.error)
+  const handlePaletteSubmit = async () => {
+    try {
+      const palette = await submitPalette({ id: props.id, name, group, colors }, getAccessTokenSilently)
+      await refreshPalettes(getAccessTokenSilently)
+      navigate(`/app/palettes/${palette.id}`);
+    } catch (err: any) {
+      console.error(err);
+    }
   }
 
   useEffect(() => {
@@ -73,7 +75,7 @@ export default function CreateOrEditPalette(props: CreateOrEditPaletteProps) {
               marginTop: "1rem",
             }}
           >
-            Create Palette
+            {props.id ? "Edit Palette" : "Create Palette" }
           </Button>
         </main>
       </CreateOrEditPaletteContext.Provider>
