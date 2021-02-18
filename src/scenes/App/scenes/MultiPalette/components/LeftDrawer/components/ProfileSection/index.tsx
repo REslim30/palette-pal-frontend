@@ -40,7 +40,7 @@ export default function ProfileSection(props: {}) {
           >
             <img className="rounded-full" src={user?.picture}/>
           </button>
-          <div className="flex flex-col justify-between">
+          <div className="flex flex-col">
             <span className="text-2xl text-white font-header">
               {user?.nickname}
             </span>
