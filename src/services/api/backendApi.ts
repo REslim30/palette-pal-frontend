@@ -20,7 +20,6 @@ export function getRequest(route: string) {
       }
     })
     .then(getBodyIf200)
-    .catch(redirectHomeIfNotLoggedIn);
   }
 }
 
@@ -56,7 +55,7 @@ function formatRoute(route: string) {
   return route;
 }
 
-function redirectHomeIfNotLoggedIn(err: any) {
+export function redirectHomeIfNotLoggedIn(err: any) {
   if (err?.error === "login_required") 
     window.location.href="/"
   throw err;

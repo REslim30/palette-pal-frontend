@@ -4,7 +4,7 @@ import { useSelector, Provider } from "react-redux";
 import secrets from "#src/services/api/secrets"
 const BACKEND_API_URL = secrets.BACKEND_API_URL as string;
 import { useAuth0 } from "@auth0/auth0-react";
-import { getRequest } from "#src/services/api/backendApi";
+import { getRequest, redirectHomeIfNotLoggedIn } from "#src/services/api/backendApi";
 
 type AppState = {
   palettes: Palette[] | null,
@@ -146,14 +146,15 @@ export function useCurrentGroup(): Group | null {
 }
 
 export function useUser(): User | null {
-  const user = useSelector((state: AppState) => state.user);
+  const userResult = useSelector((state: AppState) => state.user);
+  const { user, isAuthenticated } = useAuth0();
 
   useEffect(() => {
-    if (!user)
-      refreshUser();
-  }, [user]);
+    if (!userResult && isAuthenticated)
+      refreshUser(user);
+  }, [userResult, isAuthenticated]);
 
-  return user;
+  return userResult;
 }
 
 export function setCurrentGroup(id: number | null): void {
@@ -172,6 +173,7 @@ export function refreshPalettes(getAccessTokenSilently: Function): Promise<any> 
     .then((body: Palette[]) => {
       store.dispatch(setPalettes(body))
     })
+    .catch(redirectHomeIfNotLoggedIn)
     .catch(console.error);
 }
 
@@ -181,16 +183,10 @@ export function refreshGroups(getAccessTokenSilently: Function): Promise<any> {
     .then((body: Palette[]) => {
       store.dispatch(setGroups(body));
     })
+    .catch(redirectHomeIfNotLoggedIn)
     .catch(console.error);
 }
 
-export async function refreshUser(): Promise<any> {
-  try {
-    const fetchPromise = await getRequest('/users/me');
-    const body = await fetchPromise.json();
-    store.dispatch(setUser(body));
-    return body;
-  } catch (error) {
-    console.error(error);
-  }
+export function refreshUser(user: any): void {
+  store.dispatch(setUser(user));
 }

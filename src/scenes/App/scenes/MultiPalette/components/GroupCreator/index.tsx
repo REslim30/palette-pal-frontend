@@ -52,8 +52,8 @@ export default function GroupCreator(props: any) {
   return (
     <Dialog open={Boolean(groupToEdit)} onClose={handleClose} aria-describedby="group-dialog-heading">
       <DialogTitle id="group-dialog-heading">Create a Group</DialogTitle>
-      <div className="flex flex-col justify-between px-5 mb-4">
-        <div className="mb-6">
+      <div className="flex flex-col justify-between px-5 mb-2">
+        <div className="mb-4">
           <TextField
             label="Name"
             variant="outlined"

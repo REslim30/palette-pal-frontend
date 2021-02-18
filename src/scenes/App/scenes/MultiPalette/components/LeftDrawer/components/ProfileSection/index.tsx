@@ -32,17 +32,17 @@ export default function ProfileSection(props: {}) {
         >
           <button
             aria-label="account menu"
-            className="text-4xl text-white bg-yellow-500 rounded-full w-14 h-14 font-header"
+            className="w-16 h-16 rounded-full"
             onClick={handleOpen}
             aria-controls="profile-menu"
             aria-haspopup="menu"
             aria-expanded={Boolean(anchorEl)}
           >
-            {user?.username?.slice(0, 2)}
+            <img className="rounded-full" src={user?.picture}/>
           </button>
           <div className="flex flex-col justify-between">
             <span className="text-2xl text-white font-header">
-              {user?.username}
+              {user?.nickname}
             </span>
             <span className="text-white">{user?.email}</span>
           </div>
