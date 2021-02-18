@@ -36,7 +36,7 @@ export default function ShadeInput(props: any) {
     }
   }
 
-  return <div className="pt-4">          
+  return <div className="pt-2">          
     <div className="flex flex-col items-end">
       <TextField 
         id="css-color-shade-input"

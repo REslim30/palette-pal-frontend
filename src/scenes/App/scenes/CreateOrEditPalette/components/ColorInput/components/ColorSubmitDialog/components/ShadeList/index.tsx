@@ -54,7 +54,7 @@ export default function ShadeList(props: unknown) {
 
   return (
     <>
-      <div className="pt-6">
+      <div className="pt-2">
         {shades.map((shade: String, index: number) => {
           return (
             // TODO Have color list update screen readers upon update
