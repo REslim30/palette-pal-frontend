@@ -1,12 +1,21 @@
-const environmentVars: { [keys:string]: string | undefined } = {
-  BACKEND_API_URL: process.env.GATSBY_BACKEND_API_URL,
-  AUTH_DOMAIN: process.env.AUTH_DOMAIN,
-  AUTH_CLIENT_ID: process.env.AUTH_CLIENT_ID
+type Secrets = { 
+  BACKEND_API_URL: string,
+  AUTH_DOMAIN: string,
+  AUTH_CLIENT_ID: string,
+  DOMAIN_NAME: string,
+}
+
+const environmentVars: Secrets = {
+  BACKEND_API_URL: checkNotUndefined(process.env.BACKEND_API_URL, "BACKEND_API_URL"),
+  AUTH_DOMAIN: checkNotUndefined(process.env.AUTH_DOMAIN, "AUTH_DOMAIN"),
+  AUTH_CLIENT_ID: checkNotUndefined(process.env.AUTH_CLIENT_ID, "AUTH_CLIENT_ID"),
+  DOMAIN_NAME: checkNotUndefined(process.env.DOMAIN_NAME, "DOMAIN_NAME")
 };
 
-['BACKEND_API_URL', 'AUTH_DOMAIN', "AUTH_CLIENT_ID"].forEach((varName: string) => {
-  if (environmentVars[varName] === undefined)
-    console.error(`Please ensure ${varName} environment variable is set`);
-})
+function checkNotUndefined(input: string | undefined, inputName: string) {
+  if (input === undefined)
+    throw new Error(`Please ensure ${inputName} environment variable is set`);
+  return input as string;
+}
 
 export default environmentVars;
