@@ -12,6 +12,7 @@ export default function TopLevelWrapper(props: { children: React.ReactNode }) {
       domain={secrets.AUTH_DOMAIN as string}
       clientId={secrets.AUTH_CLIENT_ID as string}
       redirectUri={`${window.location.origin}/app/palettes`}
+      audience="https://palette-pal-api.com"
     >
       <ThemeProvider theme={muiTheme}>
         {props.children}

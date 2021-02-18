@@ -16,8 +16,8 @@ export default function Home(props: {}) {
       <header className="flex items-center justify-between p-4">
         <h1 className="text-3xl">Palette Pal</h1>
         <nav>
-          <Link className="text-lg regular-link" to="/login/">login</Link>
-          <Link className="ml-4 text-lg regular-link text-primary-600 regular" to="/signup/">signup</Link>
+          {/* <Link className="text-lg regular-link" to="/login/">login</Link> */}
+          <a role="button" className="ml-4 text-lg regular-link text-primary-600 regular" onClick={goToSignUp}>login</a>
         </nav>
       </header>
 
