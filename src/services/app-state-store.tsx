@@ -3,8 +3,8 @@ import { createSlice, configureStore } from "@reduxjs/toolkit";
 import { useSelector, Provider } from "react-redux";
 import secrets from "#src/services/api/secrets"
 const BACKEND_API_URL = secrets.BACKEND_API_URL as string;
-import { getRequest }  from "./api/backendApi";
 import { useAuth0 } from "@auth0/auth0-react";
+import { getRequest } from "#src/services/api/backendApi";
 
 type AppState = {
   palettes: Palette[] | null,
@@ -168,14 +168,7 @@ export function AppStoreProvider(props: any) {
 
 export function refreshPalettes(getAccessTokenSilently: Function): Promise<any> {
   return getAccessTokenSilently()
-    .then((token: string) => {
-      return fetch(`${BACKEND_API_URL}/palettes`, {
-        headers: {
-          "Authorization": "Bearer " + token,
-        }
-      });
-    })
-    .then((res: Response) => res.json())
+    .then(getRequest('/palettes'))
     .then((body: Palette[]) => {
       store.dispatch(setPalettes(body))
     })
@@ -184,14 +177,7 @@ export function refreshPalettes(getAccessTokenSilently: Function): Promise<any> 
 
 export function refreshGroups(getAccessTokenSilently: Function): Promise<any> {
   return getAccessTokenSilently()
-    .then((token: string) => {
-      return fetch(`${BACKEND_API_URL}/groups`, {
-        headers: {
-          "Authorization": "Bearer " + token,
-        }
-      });
-    })
-    .then((res: Response) => res.json())
+    .then(getRequest('/groups'))
     .then((body: Palette[]) => {
       store.dispatch(setGroups(body));
     })

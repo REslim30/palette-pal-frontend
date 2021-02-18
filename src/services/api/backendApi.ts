@@ -1,8 +1,7 @@
 import secrets from "./secrets";
 const BACKEND_API_URL = secrets.BACKEND_API_URL;
 
-// Module to abstract connection logic
-let inMemoryToken: { jwt: string } | undefined;
+// Module for api promise middleware
 export function deleteRequest(route: string) {
   route = formatRoute(route);
 
@@ -14,12 +13,15 @@ export function deleteRequest(route: string) {
 export function getRequest(route: string) {
   route = formatRoute(route);
 
-  return fetch(`${BACKEND_API_URL}/${route}`, {
-    headers: {
-      "Authorization": `Bearer ${inMemoryToken?.jwt}`
-    }
-  })
-  .then(tryRefreshIf401);
+  return (token: string) => { 
+    return fetch(`${BACKEND_API_URL}/${route}`, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    })
+    .then(getBodyIf200)
+    .catch(redirectHomeIfNotLoggedIn);
+  }
 }
 
 export function postRequest(route: string, body: any = {}) {
@@ -54,71 +56,13 @@ function formatRoute(route: string) {
   return route;
 }
 
-// Module handles login behaviour 
-export function login(data: { identifier: string, password: string }) {
-  return fetch(`${BACKEND_API_URL}/login`, { 
-    headers: {
-      "Content-Type": "application/json"
-    },
-    method: "post",
-    body: JSON.stringify(data)
-  })
-  .then(getJWT);
+function redirectHomeIfNotLoggedIn(err: any) {
+  if (err?.error === "login_required") 
+    window.location.href="/"
+  throw err;
 }
 
-export function signup(data: { username: string, password: string, email: string }) {
-  return fetch(`${BACKEND_API_URL}/register`, { 
-    headers: {
-      "Content-Type": "application/json"
-    },
-    method: "post",
-    body: JSON.stringify(data)
-  })
-  .then(getJWT);
-}
-
-export function ensureLoggedIn() {
-  if (inMemoryToken)
-    return; // Do nothing
-  
-  getRefreshToken()
-  .then(getJWT)
-  .then(redirectIf401)
-};
-
-
-// Login middleware
-function tryRefreshIf401(res: Response) {
-  if (res.status === 401) {
-    return getRefreshToken()
-      .then(getJWT)
-      .then(redirectIf401);
-  }
-  return res;
-}
-
-function redirectIf401(res: Response) {
-  if (res.status === 401) {
-    // window.location.href = "/login"
-    return res
-  }
-  return res;
-}
-
-function getJWT(res: Response) {
+function getBodyIf200(res: Response) {
   if (res.status === 200)
-    return res.json()
-      .then((body) => {
-        inMemoryToken = { jwt: body.jwt };
-        return res;
-      })
-  return res;
-}
-
-// Helpers
-function getRefreshToken() {
-  return fetch(`${BACKEND_API_URL}/refresh_token`, {
-    method: "get",
-    credentials: "include",
-  })
+    return res.json();
 }
