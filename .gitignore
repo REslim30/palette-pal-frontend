@@ -70,3 +70,5 @@ yarn-error.log
 
 # vscode config files
 .vscode/
+
+.env.*
