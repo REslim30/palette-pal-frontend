@@ -5,6 +5,7 @@ import IconLink from "#src/components/IconLink"
 import AddIcon from "@material-ui/icons/Add";
 import useWindowSize from "#src/services/useWindowSize";
 import LoadingAnimation from "#src/components/LoadingAnimation";
+import { Link } from "gatsby";
 
 export default function Palettes(props: unknown) {
   const allPalettes = usePalettes()
@@ -34,7 +35,7 @@ export default function Palettes(props: unknown) {
         ))}
 
         {/* Add palette link for desktop screens */}
-        <IconLink
+        <Link
           to="/app/palettes/new"
           aria-label="create new palette"
           className="items-center justify-center hidden w-full h-40 lg:flex clickable-card text-primary-800"
@@ -42,7 +43,7 @@ export default function Palettes(props: unknown) {
           <span>
             <AddIcon fontSize="large"/>
           </span>
-        </IconLink>
+        </Link>
       </main>
     )
 }

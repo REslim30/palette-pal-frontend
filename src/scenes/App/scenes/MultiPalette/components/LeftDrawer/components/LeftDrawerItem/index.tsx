@@ -12,12 +12,12 @@ export default function LeftDrawerItem(props: LeftDrawerItemProps) {
   const currentGroup = useCurrentGroup()
 
   const selectedGroupStyle = (group: Group) =>
-    group.id === currentGroup?.id ? "bg-neutral-100" : ""
+    group.id === currentGroup?.id ? "bg-neutral-200 focus:bg-neutral-200 hover:bg-neutral-200" : ""
 
   const { group, LeftIcon, onClick } = props
   return (
     <button
-      className={`grid gap-6 items-center justify-items-center pl-6 pr-4 py-2 w-64 ${selectedGroupStyle(
+      className={`grid gap-6 items-center justify-items-center pl-6 pr-4 py-2 w-64 focus:outline-none focus:bg-neutral-100 hover:bg-neutral-50 ${selectedGroupStyle(
         group
       )}`}
       style={{ gridTemplateColumns: "24px 1fr min-content" }}
