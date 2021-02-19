@@ -13,6 +13,7 @@ export default function IconLink({children, className, ...props}: IconLinkProps)
     {children}
     <span className={classes.RippleRoot}>
       <span className={`absolute w-full h-full transition-transform transform scale-0 bg-white bg-opacity-25 rounded-full ${classes.Ripple}`}/>
+      <span className={`absolute w-full h-full transition-opacity rounded-full bg-black opacity-0 ${classes.HoverRipple}`}></span>
     </span>
   </Link>
 };

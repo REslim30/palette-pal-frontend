@@ -5,9 +5,11 @@
   z-index: -1;
 }
 
-.Ripple {} 
-
 a:focus > .RippleRoot > .Ripple {
   --tw-scale-x: 1;
   --tw-scale-y: 1;
+}
+
+a:hover > .RippleRoot > .HoverRipple {
+  opacity: 0.05;
 }
