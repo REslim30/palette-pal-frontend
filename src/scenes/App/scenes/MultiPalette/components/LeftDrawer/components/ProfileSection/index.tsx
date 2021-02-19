@@ -32,13 +32,14 @@ export default function ProfileSection(props: {}) {
         >
           <button
             aria-label="account menu"
-            className="w-16 h-16 overflow-visible transition-shadow rounded-full shadow outline-none focus:outline-none focus:ring-4"
+            className="relative w-16 h-16 overflow-visible transition-shadow rounded-full shadow outline-none focus:outline-none focus:ring-4 hover:"
             onClick={handleOpen}
             aria-controls="profile-menu"
             aria-haspopup="menu"
             aria-expanded={Boolean(anchorEl)}
           >
             <img className="rounded-full" src={user?.picture}/>
+            <span className="absolute top-0 left-0 z-10 block w-full h-full transition-opacity bg-black rounded-full opacity-0 hover:opacity-25"></span>
           </button>
           <div className="flex flex-col">
             <span className="text-2xl text-white font-header">
