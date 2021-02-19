@@ -39,9 +39,12 @@ let theme = createMuiTheme({
         fontWeight: 600
       }
     },
-    MuiButton: {
+    MuiIconButton: {
       root: {
-        outline: "none"
+        outline: "none",
+        "&:focus": {
+          outline: "none"
+        }
       }
     }
   }

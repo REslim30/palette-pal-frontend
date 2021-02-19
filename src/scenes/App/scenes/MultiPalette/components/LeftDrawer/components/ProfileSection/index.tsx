@@ -27,12 +27,12 @@ export default function ProfileSection(props: {}) {
     <section aria-label="Left Drawer">
       <div className="w-64 h-24 p-4 bg-primary-500">
         <div
-          className="grid max-w-full gap-4 overflow-hidden"
+          className="grid max-w-full gap-4"
           style={{ gridTemplateColumns: "min-content 1fr" }}
         >
           <button
             aria-label="account menu"
-            className="w-16 h-16 rounded-full"
+            className="w-16 h-16 overflow-visible transition-shadow rounded-full shadow outline-none focus:outline-none focus:ring-4"
             onClick={handleOpen}
             aria-controls="profile-menu"
             aria-haspopup="menu"
