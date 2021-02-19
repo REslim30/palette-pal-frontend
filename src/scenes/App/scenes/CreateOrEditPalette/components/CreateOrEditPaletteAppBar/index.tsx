@@ -22,6 +22,7 @@ export default function CreateOrEditPaletteAppBar(props: CreateOrEditPaletteAppB
 
   return <AppBar position="static">
     <Toolbar>
+      {/* TODO: Transitions aren't showing for this Icon Link */}
       <IconLink to="/app/palettes" aria-label="Back to Palettes" className="-ml-4">
         <ArrowBackIcon />
       </IconLink>

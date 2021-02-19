@@ -1,7 +1,6 @@
 import React from "react"
 import { useCurrentGroup, usePalettes } from "#src/services/app-state-store"
 import PaletteCard from "./components/PaletteCard/index"
-import IconLink from "#src/components/IconLink"
 import AddIcon from "@material-ui/icons/Add";
 import useWindowSize from "#src/services/useWindowSize";
 import LoadingAnimation from "#src/components/LoadingAnimation";

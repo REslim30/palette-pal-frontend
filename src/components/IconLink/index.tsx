@@ -9,7 +9,7 @@ interface IconLinkProps extends Omit<Gatsby.GatsbyLinkProps<Record<string, unkno
 
 export default function IconLink({children, className, ...props}: IconLinkProps) {
 
-  return <Link {...props} className={`flex items-center justify-center w-12 h-12 focus:outline-none rounded-full relative ${className}`}>
+  return <Link {...props} className={`flex items-center justify-center w-12 h-12 focus:outline-none rounded-full relative bg-transparent ${className}`} >
     {children}
     <span className={classes.RippleRoot}>
       <span className={`absolute w-full h-full transition-transform transform scale-0 bg-white bg-opacity-25 rounded-full ${classes.Ripple}`}/>
