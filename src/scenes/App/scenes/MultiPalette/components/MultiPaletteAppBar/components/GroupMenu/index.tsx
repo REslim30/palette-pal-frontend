@@ -66,7 +66,7 @@ export default function GroupMenu(props: unknown) {
           aria-haspopup="true"
           onClick={handleOpen}
         >
-          <MoreVertIcon className="text-white" />
+          <MoreVertIcon/>
         </RightEdgeIconButton>
         <Menu
           id="group-menu"

@@ -1,0 +1,13 @@
+.RippleRoot {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.Ripple {} 
+
+a:focus > .RippleRoot > .Ripple {
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+}
