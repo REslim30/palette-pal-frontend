@@ -72,13 +72,13 @@ const store = configureStore({
 // if return is null, then store is loading from api
 export function usePalettes(): Palette[] | null {
   const palettes =  useSelector((state: any) => state.palettes);
-  const { getAccessTokenSilently, loginWithRedirect } = useAuth0();
+  const { getAccessTokenSilently, loginWithRedirect, isAuthenticated } = useAuth0();
 
   useEffect(() => {
-    if (!palettes) {
+    if (!palettes && isAuthenticated) {
       refreshPalettes(getAccessTokenSilently, loginWithRedirect);
     }
-  }, [palettes]);
+  }, [palettes, isAuthenticated]);
 
   return palettes;
 }
@@ -88,26 +88,26 @@ export function usePalette(id: number | undefined): Palette | null {
     return null;
 
   const palette = useSelector((state: any) => state.paletteIdLookup?.[id]);
-  const { getAccessTokenSilently, loginWithRedirect } = useAuth0();
+  const { getAccessTokenSilently, loginWithRedirect, isAuthenticated } = useAuth0();
 
   useEffect(() => {
-    if (!palette) {
+    if (!palette && isAuthenticated) {
       refreshPalettes(getAccessTokenSilently, loginWithRedirect);
     }
-  }, [palette]);
+  }, [palette, isAuthenticated]);
 
   return palette;
 }
 
 export function useGroups(): Group[] | null {
   const groups = useSelector((state: any) => state?.groups);
-  const { getAccessTokenSilently, loginWithRedirect } = useAuth0();
+  const { getAccessTokenSilently, loginWithRedirect, isAuthenticated } = useAuth0();
 
   useEffect(() => {
-    if (!groups) {
+    if (!groups && isAuthenticated) {
       refreshGroups(getAccessTokenSilently, loginWithRedirect);
     }
-  }, [groups]);
+  }, [groups, isAuthenticated]);
 
   return groups
 }
@@ -116,13 +116,13 @@ export function useGroup(id: number): Group | null {
   const group = useSelector((state: any) => {
     return state.groups?.find((group: Group) => group.id === id);
   });
-  const { getAccessTokenSilently, loginWithRedirect } = useAuth0();
+  const { getAccessTokenSilently, loginWithRedirect, isAuthenticated } = useAuth0();
 
   useEffect(() => {
-    if (!group) {
+    if (!group && isAuthenticated) {
       refreshGroups(getAccessTokenSilently, loginWithRedirect);
     }
-  }, [group]);
+  }, [group, isAuthenticated]);
 
   return group;
 }

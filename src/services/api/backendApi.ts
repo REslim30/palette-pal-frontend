@@ -72,7 +72,7 @@ function formatRoute(route: string) {
 export function redirectHomeIfNotLoggedIn(loginWithRedirect: Function) {
   return function(err: any) {
     if (err?.error === "login_required") 
-      loginWithRedirect();
+      // loginWithRedirect();
     throw err;
   }
 }
