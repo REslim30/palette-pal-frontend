@@ -69,10 +69,12 @@ function formatRoute(route: string) {
   return route;
 }
 
-export function redirectHomeIfNotLoggedIn(err: any) {
-  if (err?.error === "login_required") 
-    window.location.href="/"
-  throw err;
+export function redirectHomeIfNotLoggedIn(loginWithRedirect: Function) {
+  return function(err: any) {
+    if (err?.error === "login_required") 
+      loginWithRedirect();
+    throw err;
+  }
 }
 
 function getBodyIf200(res: Response) {

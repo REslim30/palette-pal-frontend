@@ -72,11 +72,11 @@ const store = configureStore({
 // if return is null, then store is loading from api
 export function usePalettes(): Palette[] | null {
   const palettes =  useSelector((state: any) => state.palettes);
-  const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently, loginWithRedirect } = useAuth0();
 
   useEffect(() => {
     if (!palettes) {
-      refreshPalettes(getAccessTokenSilently);
+      refreshPalettes(getAccessTokenSilently, loginWithRedirect);
     }
   }, [palettes]);
 
@@ -88,11 +88,11 @@ export function usePalette(id: number | undefined): Palette | null {
     return null;
 
   const palette = useSelector((state: any) => state.paletteIdLookup?.[id]);
-  const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently, loginWithRedirect } = useAuth0();
 
   useEffect(() => {
     if (!palette) {
-      refreshPalettes(getAccessTokenSilently);
+      refreshPalettes(getAccessTokenSilently, loginWithRedirect);
     }
   }, [palette]);
 
@@ -101,11 +101,11 @@ export function usePalette(id: number | undefined): Palette | null {
 
 export function useGroups(): Group[] | null {
   const groups = useSelector((state: any) => state?.groups);
-  const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently, loginWithRedirect } = useAuth0();
 
   useEffect(() => {
     if (!groups) {
-      refreshGroups(getAccessTokenSilently);
+      refreshGroups(getAccessTokenSilently, loginWithRedirect);
     }
   }, [groups]);
 
@@ -116,11 +116,11 @@ export function useGroup(id: number): Group | null {
   const group = useSelector((state: any) => {
     return state.groups?.find((group: Group) => group.id === id);
   });
-  const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently, loginWithRedirect } = useAuth0();
 
   useEffect(() => {
     if (!group) {
-      refreshGroups(getAccessTokenSilently);
+      refreshGroups(getAccessTokenSilently, loginWithRedirect);
     }
   }, [group]);
 
@@ -130,11 +130,11 @@ export function useGroup(id: number): Group | null {
 export function useCurrentGroup(): Group | null {
   const groupId = useSelector((state: any) => state.currentGroupId);
   const groupIdLookup = useSelector((state: any) => state.groupIdLookup);
-  const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently, loginWithRedirect } = useAuth0();
 
   useEffect(() => {
     if (!groupIdLookup) 
-      refreshGroups(getAccessTokenSilently);
+      refreshGroups(getAccessTokenSilently, loginWithRedirect);
   }, [groupId, groupIdLookup])
   
   const result = groupIdLookup?.[groupId];
@@ -167,24 +167,38 @@ export function AppStoreProvider(props: any) {
   </Provider>
 }
 
-export function refreshPalettes(getAccessTokenSilently: Function): Promise<any> {
-  return getAccessTokenSilently()
-    .then(getRequest('/palettes'))
-    .then((body: Palette[]) => {
-      store.dispatch(setPalettes(body))
-    })
-    .catch(redirectHomeIfNotLoggedIn)
-    .catch(console.error);
+let palettesRequested = false;
+let groupsRequested = false;
+export function refreshPalettes(getAccessTokenSilently: Function, loginWithRedirect: Function): Promise<any> {
+  if (palettesRequested) {
+    return Promise.resolve(null);
+  } else {
+    palettesRequested = true;
+    return getAccessTokenSilently()
+      .then(getRequest('/palettes'))
+      .then((body: Palette[]) => {
+        store.dispatch(setPalettes(body))
+      })
+      .catch(redirectHomeIfNotLoggedIn(loginWithRedirect))
+      .catch(console.error)
+      .finally(() => { palettesRequested = false })
+  }
 }
 
-export function refreshGroups(getAccessTokenSilently: Function): Promise<any> {
-  return getAccessTokenSilently()
-    .then(getRequest('/groups'))
-    .then((body: Palette[]) => {
-      store.dispatch(setGroups(body));
-    })
-    .catch(redirectHomeIfNotLoggedIn)
-    .catch(console.error);
+export function refreshGroups(getAccessTokenSilently: Function, loginWithRedirect: Function): Promise<any> {
+  if (groupsRequested) {
+    return Promise.resolve(null);
+  } else {
+    groupsRequested = true;
+    return getAccessTokenSilently()
+      .then(getRequest('/groups'))
+      .then((body: Palette[]) => {
+        store.dispatch(setGroups(body));
+      })
+      .catch(redirectHomeIfNotLoggedIn(loginWithRedirect))
+      .catch(console.error)
+      .finally(() => { groupsRequested = false })
+  }
 }
 
 export function refreshUser(user: any): void {
