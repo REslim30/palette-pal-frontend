@@ -24,12 +24,12 @@ export default function CreateOrEditPalette(props: CreateOrEditPaletteProps) {
   const [group, setGroup] = useState<number | null>(null)
   const [colors, setColors] = useState<Color[]>([])
   const size = useWindowSize()
-  const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently, loginWithRedirect } = useAuth0();
 
   const handlePaletteSubmit = async () => {
     try {
       const palette = await submitPalette({ id: props.id, name, group, colors }, getAccessTokenSilently)
-      await refreshPalettes(getAccessTokenSilently)
+      await refreshPalettes(getAccessTokenSilently, loginWithRedirect);
       navigate(`/app/palettes/${palette.id}`);
     } catch (err: any) {
       console.error(err);
@@ -39,10 +39,11 @@ export default function CreateOrEditPalette(props: CreateOrEditPaletteProps) {
   useEffect(() => {
     if (palette) {
       setName(palette.name)
-      setGroup(palette.group?.id || null)
+      setGroup(palette.group || null)
       setColors(palette.colors)
     }
   }, [palette])
+
 
   return (
     <>

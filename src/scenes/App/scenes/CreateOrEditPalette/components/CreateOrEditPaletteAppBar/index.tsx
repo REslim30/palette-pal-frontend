@@ -17,7 +17,7 @@ type CreateOrEditPaletteAppBarProps = {
 }
 
 export default function CreateOrEditPaletteAppBar(props: CreateOrEditPaletteAppBarProps) {
-  const { colors, name } = useCreateOrEditPaletteContext();
+  const { colors, name, id } = useCreateOrEditPaletteContext();
   const size = useWindowSize();
 
   return <AppBar position="static">
@@ -26,7 +26,7 @@ export default function CreateOrEditPaletteAppBar(props: CreateOrEditPaletteAppB
       <IconLink to="/app/palettes" aria-label="Back to Palettes" className="-ml-4">
         <ArrowBackIcon />
       </IconLink>
-      <h1 className='flex-grow pl-4 text-xl'>Add Palette</h1>
+      <h1 className='flex-grow pl-4 text-xl'>{ id ? "Edit Palette" : "Add Palette" }</h1>
       <RightEdgeIconButton 
         edge="end" 
         color="inherit" 
