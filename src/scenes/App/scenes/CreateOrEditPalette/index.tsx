@@ -24,15 +24,21 @@ export default function CreateOrEditPalette(props: CreateOrEditPaletteProps) {
   const [group, setGroup] = useState<number | null>(null)
   const [colors, setColors] = useState<Color[]>([])
   const size = useWindowSize()
-  const { getAccessTokenSilently, loginWithRedirect } = useAuth0();
+  const { getAccessTokenSilently, loginWithRedirect } = useAuth0()
 
   const handlePaletteSubmit = async () => {
     try {
-      const palette = await submitPalette({ id: props.id, name, group, colors }, getAccessTokenSilently)
-      await refreshPalettes(getAccessTokenSilently, loginWithRedirect);
-      navigate(`/app/palettes/${palette.id}`);
+      const palette = await submitPalette(
+        { id: props.id, name, group, colors },
+        getAccessTokenSilently
+      )
+      await Promise.all(
+        refreshPalettes(getAccessTokenSilently, loginWithRedirect),
+        refreshGroups(getAccessTokenSilently)
+      )
+      navigate(`/app/palettes/${palette.id}`)
     } catch (err: any) {
-      console.error(err);
+      console.error(err)
     }
   }
 
@@ -43,7 +49,6 @@ export default function CreateOrEditPalette(props: CreateOrEditPaletteProps) {
       setColors(palette.colors)
     }
   }, [palette])
-
 
   return (
     <>
@@ -76,7 +81,7 @@ export default function CreateOrEditPalette(props: CreateOrEditPaletteProps) {
               marginTop: "1rem",
             }}
           >
-            {props.id ? "Edit Palette" : "Create Palette" }
+            {props.id ? "Edit Palette" : "Create Palette"}
           </Button>
         </main>
       </CreateOrEditPaletteContext.Provider>
