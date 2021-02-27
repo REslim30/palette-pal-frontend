@@ -50,7 +50,7 @@ export default function ColorSubmitDialog(props: ColorSubmitDialogProps) {
       colorToSubmit: props.colorToSubmit
     }}>
     <Dialog 
-      open={Boolean(props.colorToSubmit)} 
+      open={Boolean(props.colorToSubmit !== null)} 
       aria-labelledby="add-color-dialog-title" 
       onClose={props.onClose}>
 
