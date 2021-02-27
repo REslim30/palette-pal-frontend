@@ -5,7 +5,7 @@ import CreateOrEditPaletteAppBar from "./components/CreateOrEditPaletteAppBar/in
 import NameAndGroupInput from "./components/NameAndGroupInput/index"
 import ColorInput from "./components/ColorInput"
 import CreateOrEditPaletteContext from "./services/CreateOrEditPaletteContext"
-import { refreshPalettes, usePalette } from "#src/services/app-state-store"
+import { refreshGroups, refreshPalettes, usePalette } from "#src/services/app-state-store"
 import SEO from "#src/components/SEO/index"
 import submitPalette from "./services/submitPalette"
 import Button from "@material-ui/core/Button"
@@ -32,10 +32,10 @@ export default function CreateOrEditPalette(props: CreateOrEditPaletteProps) {
         { id: props.id, name, group, colors },
         getAccessTokenSilently
       )
-      await Promise.all(
+      await Promise.all([
         refreshPalettes(getAccessTokenSilently, loginWithRedirect),
-        refreshGroups(getAccessTokenSilently)
-      )
+        refreshGroups(getAccessTokenSilently, loginWithRedirect)
+      ])
       navigate(`/app/palettes/${palette.id}`)
     } catch (err: any) {
       console.error(err)
