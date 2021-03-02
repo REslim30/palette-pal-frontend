@@ -2,7 +2,8 @@ module.exports = {
   siteMetadata: {
     title: `Palette Pal`,
     description: `Store all of your palettes for your next big project.`,
-    author: `@Aidan Do`
+    author: `@Aidan Do`,
+    image: `https://d1f678jpmf4epc.cloudfront.net/img/thumbnails/palettepal.png`
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
