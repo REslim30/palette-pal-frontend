@@ -29,6 +29,7 @@ function SEO({ description, lang, meta, title }: any) {
   const metaDescription = description || site.siteMetadata.description
   const defaultTitle = site.siteMetadata?.title
   const metaImage = site.siteMetadata?.image || "";
+  const metaAuthor = site.siteMetadata?.author || "",
 
   return (
     <Helmet
@@ -39,18 +40,21 @@ function SEO({ description, lang, meta, title }: any) {
       titleTemplate={defaultTitle ? `%s | ${defaultTitle}` : undefined}
       meta={[
         {
-          name: `description`,
-          content: metaDescription,
-        },
-        {
           name: `image`,
+          property: `og:image`,
           content: metaImage,
         },
         {
+          name: `title`,
           property: `og:title`,
           content: title,
         },
         {
+          name: `author`,
+          content: metaAuthor,
+        },
+        {
+          name: 'description',
           property: `og:description`,
           content: metaDescription,
         },
