@@ -29,7 +29,7 @@ function SEO({ description, lang, meta, title }: any) {
   const metaDescription = description || site.siteMetadata.description
   const defaultTitle = site.siteMetadata?.title
   const metaImage = site.siteMetadata?.image || "";
-  const metaAuthor = site.siteMetadata?.author || "",
+  const metaAuthor = site.siteMetadata?.author || "";
 
   return (
     <Helmet
